@@ -15,5 +15,6 @@ public class Constants {
 
 
     @Value("${DB_URL}")
-    public String DB_URL;
+    public String dbUrl;
+
 }
