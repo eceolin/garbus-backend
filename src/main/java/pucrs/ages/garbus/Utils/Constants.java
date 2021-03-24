@@ -13,8 +13,6 @@ public class Constants {
     public static final String LICENSE = "";
     public static final String LICENSE_URL = "";
 
-
     @Value("${DB_URL}")
-    public String dbUrl;
-
+    public String testString;
 }
