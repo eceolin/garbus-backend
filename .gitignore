@@ -1,9 +1,13 @@
+### BUILD FILES ###
 HELP.md
 .gradle
 build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
+
+### H2 ###
+**/src/main/resources/database
 
 ### STS ###
 .apt_generated
