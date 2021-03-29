@@ -1,2 +1,5 @@
-package pucrs.ages.garbus.SampleVault;public class VaultController {
+package pucrs.ages.garbus.SampleVault;
+
+public class VaultController {
+
 }
