@@ -49,8 +49,8 @@ public class Usuarios {
 
     @Autowired
     @OneToOne
-    @JoinColumn(name = "ID_ZONA")
-    private Zonas Zonas;
+    @JoinColumn(name = "ID_PERFIL")
+    private Perfis perfis;
 
 //    @Setter
 //    public void setSenha(String senha) {
@@ -61,12 +61,5 @@ public class Usuarios {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-//    ID INTEGER PRIMARY KEY,
-//    EMAIL VARCHAR,
-//    NOME VARCHAR NOT NULL,
-//    LOGIN VARCHAR NOT NULL,
-//    SENHA VARCHAR NOT NULL,
-//    BLOQUEADO BOOLEAN NOT NULL DEFAULT FALSE,
-//    DT_CADASTRO TIMESTAMP NOT NULL,
-//    ID_PERFIL INTEGER
+
 }

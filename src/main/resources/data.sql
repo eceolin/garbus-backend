@@ -14,11 +14,10 @@ DROP TABLE IF EXISTS USUARIO_ZONA;
 
 /* brModelo: */
 
-CREATE TABLE EVENTOS (
-                         ID INTEGER PRIMARY KEY,
-                         TIPO VARCHAR NOT NULL,
-                         DESCRICAO VARCHAR NOT NULL,
-                         DATA TIMESTAMP NOT NULL
+CREATE TABLE TIPOS_EVENTOS (
+                               ID INTEGER PRIMARY KEY,
+                               NOME VARCHAR,
+                               DESCRICAO VARCHAR
 );
 
 /* brModelo: */
@@ -53,6 +52,19 @@ CREATE TABLE PERFIS (
                         NOME VARCHAR NOT NULL,
                         DESCRICAO VARCHAR NOT NULL
 );
+
+/* brModelo: */
+
+CREATE TABLE EVENTOS (
+                         ID INTEGER PRIMARY KEY,
+                         DESCRICAO VARCHAR(255),
+                         DATA TIMESTAMP,
+                         ID_TIPO_EVENTOS INTEGER
+);
+
+ALTER TABLE EVENTOS ADD CONSTRAINT FK_TIPO_EVENTOS
+    FOREIGN KEY (ID_TIPO_EVENTOS)
+        REFERENCES TIPOS_EVENTOS (ID);
 
 /* brModelo: */
 
@@ -140,7 +152,8 @@ CREATE TABLE LIXEIRA_EVENTOS (
                                  ID_EVENTO INTEGER,
                                  ID_LIXEIRA INTEGER,
                                  ID_USUARIO INTEGER,
-                                 DATA TIMESTAMP NOT NULL
+                                 DATA_INICIO TIMESTAMP,
+                                 DATA_FIM TIMESTAMP
 );
 
 ALTER TABLE LIXEIRA_EVENTOS ADD CONSTRAINT FK_LIXEIRA_EVENTOS_EVENTOS
