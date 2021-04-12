@@ -1,16 +1,15 @@
-SELECT * FROM dual;
 
-
-DROP TABLE IF EXISTS PREDIOS;
-DROP TABLE IF EXISTS LIXEIRAS;
-DROP TABLE IF EXISTS LIXEIRA_EVENTOS;
-DROP TABLE IF EXISTS EVENTOS;
-DROP TABLE IF EXISTS ZONAS;
-DROP TABLE IF EXISTS LIXEIRA_STATUS;
-DROP TABLE IF EXISTS TIPO_LIXEIRA;
-DROP TABLE IF EXISTS USUARIOS;
+DROP TABLE IF EXISTS TIPOS_EVENTOS;
+DROP TABLE IF EXISTS USUARIO_ZONA CASCADE;
+DROP TABLE IF EXISTS TIPO_LIXEIRA CASCADE;
 DROP TABLE IF EXISTS PERFIS;
-DROP TABLE IF EXISTS USUARIO_ZONA;
+DROP TABLE IF EXISTS EVENTOS;
+DROP TABLE IF EXISTS PREDIOS CASCADE;
+DROP TABLE IF EXISTS ZONAS CASCADE;
+DROP TABLE IF EXISTS USUARIOS CASCADE;
+DROP TABLE IF EXISTS LIXEIRA_STATUS CASCADE;
+DROP TABLE IF EXISTS LIXEIRA_EVENTOS;
+DROP TABLE IF EXISTS LIXEIRAS;
 
 DROP SEQUENCE IF EXISTS SQ_TIPOS_EVENTOS;
 DROP SEQUENCE IF EXISTS SQ_ZONAS;
@@ -200,17 +199,17 @@ INSERT INTO TIPOS_EVENTOS VALUES (SQ_TIPOS_EVENTOS.nextval,
                                   'Outros',
                                   'Lixeira com infiltração');
 
-INSERT INTO ZONAS VALUES (SQ_ZONAS.nextval,
+INSERT INTO ZONAS VALUES (1,
                           'Norte',
                           'Prédios lado Bento Gonçalves',
                           'LTD; LGTD');
 
-INSERT INTO ZONAS VALUES (SQ_ZONAS.nextval,
+INSERT INTO ZONAS VALUES (2,
                           'Leste',
                           'Prédios lado Colégio',
                           'LTD; LGTD');
 
-INSERT INTO ZONAS VALUES (SQ_ZONAS.nextval,
+INSERT INTO ZONAS VALUES (3,
                           'Sul',
                           'Prédios lado Ipiranga',
                           'LTD; LGTD');
@@ -239,19 +238,19 @@ INSERT INTO LIXEIRA_STATUS VALUES (SQ_LIXEIRA_EVENTOS.nextval,
                                    'Excluida',
                                    'A lixeira não existe');
 
-INSERT INTO TIPO_LIXEIRA VALUES (SQ_TIPO_LIXEIRA.nextval,
+INSERT INTO TIPO_LIXEIRA VALUES (1,
                                  'Orgânica',
                                  'Lixo Organico');
 
-INSERT INTO TIPO_LIXEIRA VALUES (SQ_TIPO_LIXEIRA.nextval,
+INSERT INTO TIPO_LIXEIRA VALUES (2,
                                  'Reciclavel',
                                  'Lixo Seco');
 
-INSERT INTO PERFIS VALUES (SQ_PERFIS.nextval,
+INSERT INTO PERFIS VALUES (1,
                            'Operador',
                            'Operador de lixo');
 
-INSERT INTO PERFIS VALUES (SQ_PERFIS.nextval,
+INSERT INTO PERFIS VALUES (2,
                            'Gestor',
                            'Gestor do sistema');
 
@@ -292,7 +291,7 @@ INSERT INTO PREDIOS VALUES (SQ_PREDIOS.nextval,
                             3);
 
 INSERT INTO USUARIOS(ID, EMAIL, NOME, LOGIN, SENHA, DT_CADASTRO, ID_PERFIL)
-                        VALUES (SQ_USUARIOS.nextval,
+                        VALUES (1,
                                 'mario.araujo@edu.pucrs.br',
                                 'Mario Specht',
                                 'mario.araujo',
@@ -301,7 +300,7 @@ INSERT INTO USUARIOS(ID, EMAIL, NOME, LOGIN, SENHA, DT_CADASTRO, ID_PERFIL)
                                 1);
 
 INSERT INTO USUARIOS(ID, EMAIL, NOME, LOGIN, SENHA, DT_CADASTRO, ID_PERFIL)
-                        VALUES (SQ_USUARIOS.nextval,
+                        VALUES (2,
                                 'teste@pucrs.br',
                                 'Gestor Teste',
                                 'gestor.teste',
@@ -325,7 +324,7 @@ INSERT INTO LIXEIRAS VALUES (SQ_LIXEIRAS.nextval,
                              4,
                              1,
                              1,
-                             1);
+                             NULL);
 
 INSERT INTO LIXEIRAS VALUES (SQ_LIXEIRAS.nextval,
                              'Sanremo',
@@ -334,7 +333,7 @@ INSERT INTO LIXEIRAS VALUES (SQ_LIXEIRAS.nextval,
                              0.0,
                              2,
                              2,
-                             2,
+                             NULL,
                              2);
 
 INSERT INTO LIXEIRA_EVENTOS VALUES (SQ_LIXEIRA_EVENTOS.nextval,
@@ -364,3 +363,5 @@ INSERT INTO LIXEIRA_EVENTOS VALUES (SQ_LIXEIRA_EVENTOS.nextval,
                                     1,
                                     13.8,
                                     CURRENT_TIMESTAMP);
+
+COMMIT;

@@ -14,7 +14,7 @@ import javax.validation.constraints.NotEmpty;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name= "LIXEIRA")
+@Table(name= "LIXEIRAS")
 public class Lixeiras {
 
     @Id
