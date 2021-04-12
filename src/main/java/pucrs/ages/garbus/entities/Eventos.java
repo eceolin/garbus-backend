@@ -24,16 +24,15 @@ public class Eventos {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "DATA")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date data;
-
-    @NotEmpty
-    @Column(name = "TIPO")
-    private String tipo;
-
     @Column(name = "DESCRICAO")
     private String descricao;
+
+    @Column(name = "DATA_CRIACAO")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date dataCricao;
+
+    @Column(name = "STATUS_PROBLEMA")
+    private String statusProblema;
 
     @Autowired
     @OneToOne
