@@ -21,8 +21,8 @@ public class PrediosService {
 
 
     public List<Predios> findAll() {
-        List<Predios> sampleEntities = repository.findAll();
-        return sampleEntities;
+        List<Predios> prediosList = repository.findAll();
+        return prediosList;
     }
 
 }
