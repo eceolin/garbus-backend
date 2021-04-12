@@ -6,6 +6,8 @@ management:
 ## Server Properties
 server:
   port: 8080
+  servlet:
+    context-path: /api/garbus
 
 spring:
   application:
@@ -15,7 +17,8 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: none
+    #      ddl-auto: create-drop
     properties:
       hibernate:
         default_schema: 'PUBLIC'
