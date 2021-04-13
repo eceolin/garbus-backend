@@ -27,7 +27,7 @@ public class TrashesControllerImpl implements TrashesController {
     }
 
     @Override
-    @GetMapping("/{zoneId}")
+    @GetMapping("/zone/{zoneId}")
     public ResponseEntity<List<TrashesDTO>> findAllByZone(@PathVariable Long zoneId) {
         return new ResponseEntity<>(TrashesService.findAllByZonesId(zoneId), OK);
     }
