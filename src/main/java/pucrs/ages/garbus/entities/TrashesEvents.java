@@ -17,8 +17,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name= "LIXEIRA_EVENTOS")
-public class LixeiraEventos {
+@Table(name= "TRASHES_EVENTS")
+public class TrashesEvents {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,22 +26,22 @@ public class LixeiraEventos {
 
     @Autowired
     @OneToMany
-    @JoinColumn(name = "ID_EVENTO")
-    private List<Eventos> eventos;
+    @JoinColumn(name = "ID_EVENT")
+    private List<Events> events;
 
     @Autowired
     @OneToMany
-    @JoinColumn(name = "ID_LIXEIRA")
-    private List<Lixeiras> lixeiras;
+    @JoinColumn(name = "ID_TRASH")
+    private List<Trashes> trashes;
 
     @Autowired
     @OneToMany
-    @JoinColumn(name = "ID_USUARIO")
-    private List<Usuarios> usuarios;
+    @JoinColumn(name = "ID_USER")
+    private List<Users> users;
 
     @NotEmpty
-    @Column(name = "OCUPACAO")
-    private double ocupacao;
+    @Column(name = "OCCUPATION")
+    private double occupation;
 
     @Column(name = "DATA")
     @DateTimeFormat(pattern = "yyyy-MM-dd")

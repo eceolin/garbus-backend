@@ -14,44 +14,44 @@ import javax.validation.constraints.NotEmpty;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name= "LIXEIRAS")
-public class Lixeiras {
+@Table(name= "Trashes")
+public class Trashes {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @NotEmpty
-    @Column(name = "MARCA")
-    private String marca;
+    @Column(name = "BRAND")
+    private String brand;
 
-    @Column(name = "DESCRICAO")
-    private String descricao;
+    @Column(name = "DESCRIPTION")
+    private String description;
 
-    @Column(name = "CAPACIDADE")
-    private double capacidade;
+    @Column(name = "CAPACITY")
+    private double capacity;
 
-    @Column(name = "OCUPACAO")
-    private double ocupacao;
+    @Column(name = "OCCUPATION")
+    private double occupation;
 
     @Autowired
     @OneToOne
     @JoinColumn(name = "ID_STATUS")
-    private LixeiraStatus lixeiraStatus;
+    private TrashesStatus trashesStatus;
 
     @Autowired
     @OneToOne
-    @JoinColumn(name = "ID_TIPO")
-    private TipoLixeira tipoLixeira;
+    @JoinColumn(name = "ID_TYPE")
+    private TrashType trashType;
 
     @Autowired
     @OneToOne
-    @JoinColumn(name = "ID_PREDIO")
-    private Predios predios;
+    @JoinColumn(name = "ID_BUILDING")
+    private Buildings buildings;
 
     @Autowired
     @OneToOne
-    @JoinColumn(name = "ID_ZONA")
-    private Zonas zonas;
+    @JoinColumn(name = "ID_ZONE")
+    private Zones zones;
 
 }

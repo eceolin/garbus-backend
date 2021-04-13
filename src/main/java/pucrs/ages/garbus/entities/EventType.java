@@ -13,21 +13,17 @@ import javax.validation.constraints.NotEmpty;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name= "ZONAS")
-public class Zonas {
+@Table(name= "TYPES_EVENTS")
+public class EventType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @NotEmpty
-    @Column(name = "NOME")
-    private String nome;
+    @Column(name = "NAME")
+    private String name;
 
-    @Column(name = "DESCRICAO")
-    private String descricao;
-
-    @Column(name = "LOCAL")
-    private String local;
-
+    @Column(name = "DESCRIPTION")
+    private String description;
 }

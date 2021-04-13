@@ -17,9 +17,11 @@ public class SampleMapper {
 
     private final ModelMapper modelMapper;
 
+
     public SampleEntity dtoToEntity(SampleDTO sampleDTO) throws ParseException {
         return modelMapper.map(sampleDTO, SampleEntity.class);
     }
+
 
     public List<SampleEntity> dtoToEntity(List<SampleDTO> source) {
         return source

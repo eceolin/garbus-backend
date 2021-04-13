@@ -8,8 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -17,25 +15,25 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name= "EVENTOS")
-public class Eventos {
+@Table(name= "EVENTS")
+public class Events {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "DESCRICAO")
-    private String descricao;
+    @Column(name = "DESCRIPTION")
+    private String description;
 
     @Column(name = "DATA_CRIACAO")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date dataCricao;
+    private Date creationDate;
 
     @Column(name = "STATUS_PROBLEMA")
-    private String statusProblema;
+    private String statusProblem;
 
     @Autowired
     @OneToOne
-    @JoinColumn(name = "ID_TIPO_EVENTOS")
-    private TiposEventos tiposEventos;
+    @JoinColumn(name = "ID_TYPE_EVENTS")
+    private EventType eventType;
 }

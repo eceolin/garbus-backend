@@ -14,16 +14,16 @@ import javax.validation.constraints.NotEmpty;
 @NoArgsConstructor
 @Entity
 @Table(name= "PERFIS")
-public class Perfis {
+public class Profiles {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @NotEmpty
-    @Column(name = "NOME")
-    private String nome;
+    @Column(name = "NAME")
+    private String name;
 
-    @Column(name = "DESCRICAO")
-    private String descricao;
+    @Column(name = "DESCRIPTION")
+    private String description;
 }

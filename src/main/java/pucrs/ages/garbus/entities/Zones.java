@@ -1,29 +1,33 @@
 package pucrs.ages.garbus.entities;
 
+import javax.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name= "TIPOS_EVENTOS")
-public class TiposEventos {
+@Table(name= "ZONES")
+public class Zones {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @NotEmpty
-    @Column(name = "NOME")
-    private String nome;
+    @Column(name = "NAME")
+    private String name;
 
-    @Column(name = "DESCRICAO")
-    private String descricao;
+    @Column(name = "DESCRIPTION")
+    private String description;
+
+    @Column(name = "LOCAL")
+    private String local;
+
 }
