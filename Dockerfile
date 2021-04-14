@@ -1,0 +1,30 @@
+FROM gradle:jdk11 AS builder
+
+ARG VAULT_URI
+ARG VAULT_ROLE_ID
+ARG VAULT_SECRET_ID
+ARG VAULT_CONTEXT
+ARG VAULT_AUTH
+ARG SPRING_PROFILES_ACTIVE
+
+ENV VAULT_URI=${VAULT_URI}
+ENV VAULT_ROLE_ID=${VAULT_ROLE_ID}
+ENV VAULT_SECRET_ID=${VAULT_SECRET_ID}
+ENV VAULT_CONTEXT=${VAULT_CONTEXT}
+ENV VAULT_AUTH==${VAULT_AUTH}
+ENV SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
+
+WORKDIR /app
+COPY . .
+
+RUN /app/gradlew clean build
+
+
+FROM adoptopenjdk:11-jre-hotspot
+
+ENV TZ=America/Sao_Paulo
+WORKDIR /app
+COPY --from=builder /app/build/libs/garbus-backend.war /app/
+EXPOSE 8080
+
+CMD ["java", "-jar", "/app/garbus-backend.war"]
