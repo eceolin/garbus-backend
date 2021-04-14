@@ -27,7 +27,9 @@ public class Zones {
     @Column(name = "DESCRIPTION")
     private String description;
 
-    @Column(name = "LOCAL")
-    private String local;
+    @Column(name = "LONGITUDE")
+    private double longitude;
 
+    @Column(name = "LATITUDE")
+    private double latitude;
 }
