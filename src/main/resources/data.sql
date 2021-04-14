@@ -19,17 +19,20 @@ INSERT INTO TYPES_EVENTS VALUES (SQ_TYPES_EVENTS.nextval,
 INSERT INTO ZONES VALUES (1,
                           'Norte',
                           'Prédios lado Bento Gonçalves',
-                          'LTD; LGTD');
+                          0.0,
+                          0.0);
 
 INSERT INTO ZONES VALUES (2,
                           'Leste',
                           'Prédios lado Colégio',
-                          'LTD; LGTD');
+                          0.0,
+                          0.0);
 
 INSERT INTO ZONES VALUES (3,
                           'Sul',
                           'Prédios lado Ipiranga',
-                          'LTD; LGTD');
+                          0.0,
+                          0.0);
 
 INSERT INTO TRASH_STATUS VALUES (SQ_TRASHES_EVENTS.nextval,
                                    'Cheia',
