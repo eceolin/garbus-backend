@@ -19,6 +19,10 @@ ext {
 	set('springCloudVersion', "2020.0.1")
 }
 
+bootWar {
+	archiveName 'garbus-backend.war'
+}
+
 repositories {
 	mavenCentral()
 	maven { url "https://repo.spring.io/release" }
