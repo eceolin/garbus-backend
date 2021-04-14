@@ -123,7 +123,9 @@ CREATE TABLE TRASHES (
                          ID_STATUS NUMBER,
                          ID_TYPE NUMBER,
                          ID_BUILDING NUMBER,
-                         ID_ZONE NUMBER
+                         ID_ZONE NUMBER,
+                         LONGITUDE NUMERIC,
+                         LATITUDE NUMERIC
 );
 
 ALTER TABLE TRASHES ADD CONSTRAINT FK_TRASHES_BUILDINGS

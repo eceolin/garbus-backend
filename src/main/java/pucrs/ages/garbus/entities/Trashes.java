@@ -34,6 +34,12 @@ public class Trashes {
     @Column(name = "OCCUPATION")
     private double occupation;
 
+    @Column(name = "LONGITUDE")
+    private double longitude;
+
+    @Column(name = "LATITUDE")
+    private double latitude;
+
     @Autowired
     @OneToOne
     @JoinColumn(name = "ID_STATUS")

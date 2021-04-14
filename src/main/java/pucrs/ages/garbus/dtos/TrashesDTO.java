@@ -25,6 +25,10 @@ public class TrashesDTO {
 
     private double occupation;
 
+    private double longitude;
+
+    private double latitude;
+
     private TrashesStatus trashesStatus;
 
     private TrashType trashType;

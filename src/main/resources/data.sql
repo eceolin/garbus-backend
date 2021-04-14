@@ -141,7 +141,9 @@ INSERT INTO TRASHES VALUES (SQ_TRASHES.nextval,
                              4,
                              1,
                              1,
-                             NULL);
+                             NULL,
+                            -51.17444551817851,
+                            -30.059002933843015);
 
 INSERT INTO TRASHES VALUES (SQ_TRASHES.nextval,
                              'Sanremo',
@@ -151,7 +153,9 @@ INSERT INTO TRASHES VALUES (SQ_TRASHES.nextval,
                              2,
                              2,
                              NULL,
-                             2);
+                             2,
+                            -51.17338334743796,
+                            -30.058483917289433);
 
 INSERT INTO TRASHES VALUES (SQ_TRASHES.nextval,
                             'Sanremo',
@@ -161,7 +165,9 @@ INSERT INTO TRASHES VALUES (SQ_TRASHES.nextval,
                             2,
                             2,
                             NULL,
-                            2);
+                            2,
+                            -51.17533544501518,
+                            -30.058784836792906);
 
 INSERT INTO TRASHES VALUES (SQ_TRASHES.nextval,
                             'Sanremo',
@@ -171,7 +177,9 @@ INSERT INTO TRASHES VALUES (SQ_TRASHES.nextval,
                             4,
                             1,
                             2,
-                            NULL);
+                            NULL,
+                            -51.17573415775563,
+                            -30.059571640346782);
 
 INSERT INTO TRASHES VALUES (SQ_TRASHES.nextval,
                             'Sanremo',
@@ -181,7 +189,9 @@ INSERT INTO TRASHES VALUES (SQ_TRASHES.nextval,
                             4,
                             1,
                             NULL,
-                            NULL);
+                            NULL,
+                            -51.17483147211126,
+                            -30.058340359038915);
 
 INSERT INTO TRASHES_EVENTS VALUES (SQ_TRASHES_EVENTS.nextval,
                                     1,
