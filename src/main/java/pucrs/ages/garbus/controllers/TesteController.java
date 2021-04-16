@@ -3,7 +3,7 @@ package pucrs.ages.garbus.controllers;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pucrs.ages.garbus.entities.Predios;
+import pucrs.ages.garbus.dtos.BuildingsDTO;
 import pucrs.ages.garbus.sample.SampleDTO;
 
 import java.util.List;
@@ -17,7 +17,7 @@ public interface TesteController {
 
     @GetMapping
     @ApiOperation("Find all samples")
-    ResponseEntity<List<Predios>> findAll();
+    ResponseEntity<List<BuildingsDTO>> findAll();
 
     @GetMapping("/{id}")
     @ApiOperation("Find sample by id")

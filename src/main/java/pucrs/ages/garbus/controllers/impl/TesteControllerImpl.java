@@ -4,10 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pucrs.ages.garbus.controllers.TesteController;
-import pucrs.ages.garbus.entities.Predios;
+import pucrs.ages.garbus.dtos.BuildingsDTO;
 import pucrs.ages.garbus.sample.SampleDTO;
 import pucrs.ages.garbus.sample.SampleService;
-import pucrs.ages.garbus.services.PrediosService;
+import pucrs.ages.garbus.services.BuildingsService;
 
 import javax.annotation.Resource;
 import java.text.ParseException;
@@ -23,7 +23,7 @@ public class TesteControllerImpl implements TesteController {
     private SampleService service;
 
     @Resource
-    PrediosService prediosService;
+    BuildingsService buildingsService;
 
     @Override
     public ResponseEntity<Void> save(@RequestBody SampleDTO sampleDTO) {
@@ -37,8 +37,8 @@ public class TesteControllerImpl implements TesteController {
     }
 
     @Override
-    public ResponseEntity<List<Predios>> findAll() {
-        return new ResponseEntity<>(prediosService.findAll(), OK);
+    public ResponseEntity<List<BuildingsDTO>> findAll() {
+        return new ResponseEntity<>(buildingsService.findAll(), OK);
     }
 
     @Override

@@ -16,8 +16,8 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name= "USUARIOS")
-public class Usuarios {
+@Table(name= "USERS")
+public class Users {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,29 +28,29 @@ public class Usuarios {
     private String email;
 
     @NotEmpty
-    @Column(name = "NOME")
-    private String nome;
+    @Column(name = "NAME")
+    private String name;
 
     @NotEmpty
     @Column(name = "LOGIN")
     private String login;
 
     @NotEmpty
-    @Column(name = "SENHA")
-    private String senha;
+    @Column(name = "PASSWORD")
+    private String password;
 
     @NotEmpty
-    @Column(name = "BLOQUEADO")
-    private boolean bloqueado;
+    @Column(name = "BLOCKED")
+    private boolean blocked;
 
-    @Column(name = "DT_CADASTRO")
+    @Column(name = "DT_REGISTER")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date dataCadastro;
+    private Date registerDate;
 
     @Autowired
     @OneToOne
-    @JoinColumn(name = "ID_PERFIL")
-    private Perfis perfis;
+    @JoinColumn(name = "ID_PROFILE")
+    private Profiles profiles;
 
 //    @Setter
 //    public void setSenha(String senha) {

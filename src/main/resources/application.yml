@@ -10,6 +10,8 @@ server:
     context-path: /api/garbus
 
 spring:
+  banner:
+    location: ./banner.txt
   application:
     name: GARBUS
 
@@ -18,7 +20,7 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: none
-    #      ddl-auto: create-drop
+#          ddl-auto: create-drop
     properties:
       hibernate:
         default_schema: 'PUBLIC'

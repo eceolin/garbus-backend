@@ -7,28 +7,27 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
-import java.util.List;
+import javax.validation.constraints.NotEmpty;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name= "USUARIO_ZONA")
-public class UsuarioZona {
+@Table(name= "Buildings")
+public class Buildings {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Autowired
-    @OneToMany
-    @JoinColumn(name = "ID_USUARIO")
-    private List<Usuarios> usuarios;
+    @NotEmpty
+    @Column(name = "NAME")
+    private String name;
 
     @Autowired
-    @OneToMany
-    @JoinColumn(name = "ID_ZONA")
-    private List<Zonas> zonas;
+    @OneToOne
+    @JoinColumn(name = "ID_ZONE")
+    private Zones zones;
 
 }

@@ -1,296 +1,116 @@
-
-DROP TABLE IF EXISTS TIPOS_EVENTOS;
-DROP TABLE IF EXISTS USUARIO_ZONA CASCADE;
-DROP TABLE IF EXISTS TIPO_LIXEIRA CASCADE;
-DROP TABLE IF EXISTS PERFIS;
-DROP TABLE IF EXISTS EVENTOS;
-DROP TABLE IF EXISTS PREDIOS CASCADE;
-DROP TABLE IF EXISTS ZONAS CASCADE;
-DROP TABLE IF EXISTS USUARIOS CASCADE;
-DROP TABLE IF EXISTS LIXEIRA_STATUS CASCADE;
-DROP TABLE IF EXISTS LIXEIRA_EVENTOS;
-DROP TABLE IF EXISTS LIXEIRAS;
-
-DROP SEQUENCE IF EXISTS SQ_TIPOS_EVENTOS;
-DROP SEQUENCE IF EXISTS SQ_ZONAS;
-DROP SEQUENCE IF EXISTS SQ_LIXEIRA_STATUS;
-DROP SEQUENCE IF EXISTS SQ_TIPO_LIXEIRA;
-DROP SEQUENCE IF EXISTS SQ_PERFIS;
-DROP SEQUENCE IF EXISTS SQ_EVENTOS;
-DROP SEQUENCE IF EXISTS SQ_PREDIOS;
-DROP SEQUENCE IF EXISTS SQ_USUARIOS;
-DROP SEQUENCE IF EXISTS SQ_USUARIO_ZONA;
-DROP SEQUENCE IF EXISTS SQ_LIXEIRAS;
-DROP SEQUENCE IF EXISTS SQ_LIXEIRA_EVENTOS;
-
-/* CREATE TABLES */
-
-CREATE TABLE TIPOS_EVENTOS (
-                               ID NUMBER PRIMARY KEY,
-                               NOME VARCHAR NOT NULL,
-                               DESCRICAO VARCHAR
-);
-
-
-CREATE TABLE ZONAS (
-                       ID NUMBER PRIMARY KEY,
-                       NOME VARCHAR NOT NULL NOT NULL,
-                       DESCRICAO VARCHAR NOT NULL,
-                       LOCAL VARCHAR NOT NULL
-);
-
-
-CREATE TABLE LIXEIRA_STATUS (
-                                ID NUMBER PRIMARY KEY,
-                                NOME VARCHAR NOT NULL,
-                                DESCRICAO VARCHAR NOT NULL
-);
-
-
-CREATE TABLE TIPO_LIXEIRA (
-                              ID NUMBER PRIMARY KEY,
-                              NOME VARCHAR NOT NULL,
-                              DESCRICAO VARCHAR NOT NULL
-);
-
-
-CREATE TABLE PERFIS (
-                        ID NUMBER PRIMARY KEY,
-                        NOME VARCHAR NOT NULL,
-                        DESCRICAO VARCHAR NOT NULL
-);
-
-
-CREATE TABLE EVENTOS (
-                         ID NUMBER PRIMARY KEY,
-                         DESCRICAO VARCHAR,
-                         DATA_CRIACAO TIMESTAMP NOT NULL,
-                         STATUS_PROBLEMA VARCHAR NOT NULL,
-                         ID_TIPO_EVENTOS NUMBER
-);
-
-ALTER TABLE EVENTOS ADD CONSTRAINT FK_TIPO_EVENTOS
-    FOREIGN KEY (ID_TIPO_EVENTOS)
-        REFERENCES TIPOS_EVENTOS (ID);
-
-
-CREATE TABLE PREDIOS (
-                         ID NUMBER PRIMARY KEY,
-                         NOME VARCHAR NOT NULL,
-                         ID_ZONA NUMBER NOT NULL
-);
-
-ALTER TABLE PREDIOS ADD CONSTRAINT FK_PREDIOS_ZONAS
-    FOREIGN KEY (ID_ZONA)
-        REFERENCES ZONAS (ID);
-
-
-CREATE TABLE USUARIOS (
-                          ID NUMBER PRIMARY KEY,
-                          EMAIL VARCHAR,
-                          NOME VARCHAR NOT NULL,
-                          LOGIN VARCHAR NOT NULL,
-                          SENHA VARCHAR NOT NULL,
-                          BLOQUEADO BOOLEAN NOT NULL DEFAULT FALSE,
-                          DT_CADASTRO TIMESTAMP NOT NULL,
-                          ID_PERFIL NUMBER
-);
-
-ALTER TABLE USUARIOS ADD CONSTRAINT FK_USUARIOS_PERFIS
-    FOREIGN KEY (ID_PERFIL)
-        REFERENCES PERFIS (ID);
-
-
-CREATE TABLE USUARIO_ZONA (
-                              ID NUMBER PRIMARY KEY,
-                              ID_USUARIO NUMBER,
-                              ID_ZONA NUMBER
-);
-
-ALTER TABLE USUARIO_ZONA ADD CONSTRAINT FK_USUARIO_ZONA
-    FOREIGN KEY (ID_USUARIO)
-        REFERENCES USUARIOS (ID);
-
-ALTER TABLE USUARIO_ZONA ADD CONSTRAINT FK_ZONA_USUARIO
-    FOREIGN KEY (ID_ZONA)
-        REFERENCES USUARIOS (ID);
-
-CREATE TABLE LIXEIRAS (
-                          ID NUMBER PRIMARY KEY,
-                          MARCA VARCHAR NOT NULL,
-                          DESCRICAO VARCHAR NOT NULL,
-                          CAPACIDADE DOUBLE NOT NULL,
-                          OCUPACAO DOUBLE NOT NULL,
-                          ID_STATUS NUMBER,
-                          ID_TIPO NUMBER,
-                          ID_PREDIO NUMBER,
-                          ID_ZONA NUMBER
-);
-
-ALTER TABLE LIXEIRAS ADD CONSTRAINT FK_LIXEIRAS_PREDIOS
-    FOREIGN KEY (ID_PREDIO)
-        REFERENCES PREDIOS (ID);
-
-ALTER TABLE LIXEIRAS ADD CONSTRAINT FK_TIPO_LIV
-    FOREIGN KEY (ID_TIPO)
-        REFERENCES TIPO_LIXEIRA (ID);
-
-ALTER TABLE LIXEIRAS ADD CONSTRAINT FK_LIXEIRA_STATUS
-    FOREIGN KEY (ID_STATUS)
-        REFERENCES LIXEIRA_STATUS (ID);
-
-ALTER TABLE LIXEIRAS ADD CONSTRAINT FK_ZONAS_LIXEIRAS
-    FOREIGN KEY (ID_ZONA)
-        REFERENCES ZONAS (ID);
-
-ALTER TABLE LIXEIRAS ADD CONSTRAINT LIXEIRA_PREDIO_OR_ZONA
-    CHECK (ID_ZONA IS NULL OR ID_PREDIO IS NULL);
-
-
-CREATE TABLE LIXEIRA_EVENTOS (
-                                 ID NUMBER PRIMARY KEY,
-                                 ID_EVENTO NUMBER,
-                                 ID_LIXEIRA NUMBER,
-                                 ID_USUARIO NUMBER,
-                                 OCUPACAO DOUBLE,
-                                 DATA TIMESTAMP NOT NULL
-);
-
-ALTER TABLE LIXEIRA_EVENTOS ADD CONSTRAINT FK_LIXEIRA_EVENTOS_EVENTOS
-    FOREIGN KEY (ID_EVENTO)
-        REFERENCES EVENTOS (ID);
-
-ALTER TABLE LIXEIRA_EVENTOS ADD CONSTRAINT FK_LIXEIRA_EVENTOS_USUARIOS
-    FOREIGN KEY (ID_USUARIO)
-        REFERENCES USUARIOS (ID);
-
-ALTER TABLE LIXEIRA_EVENTOS ADD CONSTRAINT FK_LIXEIRA_EVENTOS_LIXEIRA
-    FOREIGN KEY (ID_LIXEIRA)
-        REFERENCES LIXEIRAS (ID);
-
-/* CREATE SEQUENCES */
-CREATE SEQUENCE SQ_TIPOS_EVENTOS START 0;
-CREATE SEQUENCE SQ_ZONAS START 0;
-CREATE SEQUENCE SQ_LIXEIRA_STATUS START 0;
-CREATE SEQUENCE SQ_TIPO_LIXEIRA START 0;
-CREATE SEQUENCE SQ_PERFIS START 0;
-CREATE SEQUENCE SQ_EVENTOS START 0;
-CREATE SEQUENCE SQ_PREDIOS START 0;
-CREATE SEQUENCE SQ_USUARIOS START 0;
-CREATE SEQUENCE SQ_USUARIO_ZONA START 0;
-CREATE SEQUENCE SQ_LIXEIRAS START 0;
-CREATE SEQUENCE SQ_LIXEIRA_EVENTOS START 0;
-
 /* INSERTS */
 
-INSERT INTO TIPOS_EVENTOS VALUES (SQ_TIPOS_EVENTOS.nextval,
+INSERT INTO TYPES_EVENTS VALUES (SQ_TYPES_EVENTS.nextval,
                                   'Report Lixeira',
                                   'Report de status da lixeira');
 
-INSERT INTO TIPOS_EVENTOS VALUES (SQ_TIPOS_EVENTOS.nextval,
+INSERT INTO TYPES_EVENTS VALUES (SQ_TYPES_EVENTS.nextval,
                                   'Manutenção',
                                   'Problemas no sensor');
 
-INSERT INTO TIPOS_EVENTOS VALUES (SQ_TIPOS_EVENTOS.nextval,
+INSERT INTO TYPES_EVENTS VALUES (SQ_TYPES_EVENTS.nextval,
                                   'Fogo',
                                   'Colocaram fogo na lixeira');
 
-INSERT INTO TIPOS_EVENTOS VALUES (SQ_TIPOS_EVENTOS.nextval,
+INSERT INTO TYPES_EVENTS VALUES (SQ_TYPES_EVENTS.nextval,
                                   'Outros',
                                   'Lixeira com infiltração');
 
-INSERT INTO ZONAS VALUES (1,
+INSERT INTO ZONES VALUES (1,
                           'Norte',
                           'Prédios lado Bento Gonçalves',
-                          'LTD; LGTD');
+                          0.0,
+                          0.0);
 
-INSERT INTO ZONAS VALUES (2,
+INSERT INTO ZONES VALUES (2,
                           'Leste',
                           'Prédios lado Colégio',
-                          'LTD; LGTD');
+                          0.0,
+                          0.0);
 
-INSERT INTO ZONAS VALUES (3,
+INSERT INTO ZONES VALUES (3,
                           'Sul',
                           'Prédios lado Ipiranga',
-                          'LTD; LGTD');
+                          0.0,
+                          0.0);
 
-INSERT INTO LIXEIRA_STATUS VALUES (SQ_LIXEIRA_EVENTOS.nextval,
+INSERT INTO TRASH_STATUS VALUES (SQ_TRASHES_EVENTS.nextval,
                                    'Cheia',
                                    'Lixeira esta com capacidade acima de 80%');
 
-INSERT INTO LIXEIRA_STATUS VALUES (SQ_LIXEIRA_EVENTOS.nextval,
+INSERT INTO TRASH_STATUS VALUES (SQ_TRASHES_EVENTS.nextval,
                                    'Vazia',
                                    'Lixeira esta com capacidade abaixo de 20%');
 
-INSERT INTO LIXEIRA_STATUS VALUES (SQ_LIXEIRA_EVENTOS.nextval,
+INSERT INTO TRASH_STATUS VALUES (SQ_TRASHES_EVENTS.nextval,
                                    'Manutenção',
                                    'A lixiera esta em manutenção');
 
-INSERT INTO LIXEIRA_STATUS VALUES (SQ_LIXEIRA_EVENTOS.nextval,
+INSERT INTO TRASH_STATUS VALUES (SQ_TRASHES_EVENTS.nextval,
                                    'Ativa',
                                    'A lixeira está em funcionamento');
 
-INSERT INTO LIXEIRA_STATUS VALUES (SQ_LIXEIRA_EVENTOS.nextval,
+INSERT INTO TRASH_STATUS VALUES (SQ_TRASHES_EVENTS.nextval,
                                    'Inativa',
                                    'A lixeira está forá de funcionamento');
 
-INSERT INTO LIXEIRA_STATUS VALUES (SQ_LIXEIRA_EVENTOS.nextval,
+INSERT INTO TRASH_STATUS VALUES (SQ_TRASHES_EVENTS.nextval,
                                    'Excluida',
                                    'A lixeira não existe');
 
-INSERT INTO TIPO_LIXEIRA VALUES (1,
+INSERT INTO TYPE_TRASH VALUES (1,
                                  'Orgânica',
                                  'Lixo Organico');
 
-INSERT INTO TIPO_LIXEIRA VALUES (2,
+INSERT INTO TYPE_TRASH VALUES (2,
                                  'Reciclavel',
                                  'Lixo Seco');
 
-INSERT INTO PERFIS VALUES (1,
+INSERT INTO PROFILES VALUES (1,
                            'Operador',
                            'Operador de lixo');
 
-INSERT INTO PERFIS VALUES (2,
+INSERT INTO PROFILES VALUES (2,
                            'Gestor',
                            'Gestor do sistema');
 
-INSERT INTO EVENTOS VALUES (SQ_EVENTOS.nextval,
+INSERT INTO EVENTS VALUES (SQ_EVENTS.nextval,
                             'REPORT',
                             CURRENT_TIMESTAMP,
                             'A',
                             1);
 
-INSERT INTO EVENTOS VALUES (SQ_EVENTOS.nextval,
+INSERT INTO EVENTS VALUES (SQ_EVENTS.nextval,
                             'Problema na lixeira',
                             CURRENT_TIMESTAMP,
                             'I',
                             2);
 
-INSERT INTO PREDIOS VALUES (SQ_PREDIOS.nextval,
+INSERT INTO BUILDINGS VALUES (SQ_BUILDINGS.nextval,
                             'Prédio 30',
                             1);
 
-INSERT INTO PREDIOS VALUES (SQ_PREDIOS.nextval,
+INSERT INTO BUILDINGS VALUES (SQ_BUILDINGS.nextval,
                             'Prédio 32',
                             1);
 
-INSERT INTO PREDIOS VALUES (SQ_PREDIOS.nextval,
+INSERT INTO BUILDINGS VALUES (SQ_BUILDINGS.nextval,
                             'Prédio 17',
                             2);
 
-INSERT INTO PREDIOS VALUES (SQ_PREDIOS.nextval,
+INSERT INTO BUILDINGS VALUES (SQ_BUILDINGS.nextval,
                             'Prédio 8',
                             3);
 
-INSERT INTO PREDIOS VALUES (SQ_PREDIOS.nextval,
+INSERT INTO BUILDINGS VALUES (SQ_BUILDINGS.nextval,
                             'Prédio 7',
                             3);
 
-INSERT INTO PREDIOS VALUES (SQ_PREDIOS.nextval,
+INSERT INTO BUILDINGS VALUES (SQ_BUILDINGS.nextval,
                             'Prédio 6',
                             3);
 
-INSERT INTO USUARIOS(ID, EMAIL, NOME, LOGIN, SENHA, DT_CADASTRO, ID_PERFIL)
+INSERT INTO USERS(ID, EMAIL, NAME, LOGIN, PASSWORD, DT_REGISTER, ID_PROFILE)
                         VALUES (1,
                                 'mario.araujo@edu.pucrs.br',
                                 'Mario Specht',
@@ -299,7 +119,7 @@ INSERT INTO USUARIOS(ID, EMAIL, NOME, LOGIN, SENHA, DT_CADASTRO, ID_PERFIL)
                                 CURRENT_TIMESTAMP,
                                 1);
 
-INSERT INTO USUARIOS(ID, EMAIL, NOME, LOGIN, SENHA, DT_CADASTRO, ID_PERFIL)
+INSERT INTO USERS(ID, EMAIL, NAME, LOGIN, PASSWORD, DT_REGISTER, ID_PROFILE)
                         VALUES (2,
                                 'teste@pucrs.br',
                                 'Gestor Teste',
@@ -308,15 +128,15 @@ INSERT INTO USUARIOS(ID, EMAIL, NOME, LOGIN, SENHA, DT_CADASTRO, ID_PERFIL)
                                 CURRENT_TIMESTAMP,
                                 2);
 
-INSERT INTO USUARIO_ZONA VALUES (SQ_USUARIO_ZONA.nextval,
+INSERT INTO USER_ZONE VALUES (SQ_USER_ZONE.nextval,
                                  1,
                                  1);
 
-INSERT INTO USUARIO_ZONA VALUES (SQ_USUARIO_ZONA.nextval,
+INSERT INTO USER_ZONE VALUES (SQ_USER_ZONE.nextval,
                                  2,
                                  1);
 
-INSERT INTO LIXEIRAS VALUES (SQ_LIXEIRAS.nextval,
+INSERT INTO TRASHES VALUES (SQ_TRASHES.nextval,
                              'Sanremo',
                              'Lixeira industrial sanremo',
                              50.0,
@@ -324,9 +144,11 @@ INSERT INTO LIXEIRAS VALUES (SQ_LIXEIRAS.nextval,
                              4,
                              1,
                              1,
-                             NULL);
+                             NULL,
+                            -51.17444551817851,
+                            -30.059002933843015);
 
-INSERT INTO LIXEIRAS VALUES (SQ_LIXEIRAS.nextval,
+INSERT INTO TRASHES VALUES (SQ_TRASHES.nextval,
                              'Sanremo',
                              'Lixeira industrial sanremo',
                              80.0,
@@ -334,30 +156,68 @@ INSERT INTO LIXEIRAS VALUES (SQ_LIXEIRAS.nextval,
                              2,
                              2,
                              NULL,
-                             2);
+                             2,
+                            -51.17338334743796,
+                            -30.058483917289433);
 
-INSERT INTO LIXEIRA_EVENTOS VALUES (SQ_LIXEIRA_EVENTOS.nextval,
+INSERT INTO TRASHES VALUES (SQ_TRASHES.nextval,
+                            'Sanremo',
+                            'Lixeira industrial sanremo',
+                            40.0,
+                            0.0,
+                            2,
+                            2,
+                            NULL,
+                            2,
+                            -51.17533544501518,
+                            -30.058784836792906);
+
+INSERT INTO TRASHES VALUES (SQ_TRASHES.nextval,
+                            'Sanremo',
+                            'Lixeira industrial sanremo',
+                            50.0,
+                            0.0,
+                            4,
+                            1,
+                            2,
+                            NULL,
+                            -51.17573415775563,
+                            -30.059571640346782);
+
+INSERT INTO TRASHES VALUES (SQ_TRASHES.nextval,
+                            'Sanremo',
+                            'Lixeira industrial sanremo',
+                            999.9,
+                            0.0,
+                            4,
+                            1,
+                            NULL,
+                            NULL,
+                            -51.17483147211126,
+                            -30.058340359038915);
+
+INSERT INTO TRASHES_EVENTS VALUES (SQ_TRASHES_EVENTS.nextval,
                                     1,
                                     1,
                                     1,
                                     21.2,
                                     CURRENT_TIMESTAMP);
 
-INSERT INTO LIXEIRA_EVENTOS VALUES (SQ_LIXEIRA_EVENTOS.nextval,
+INSERT INTO TRASHES_EVENTS VALUES (SQ_TRASHES_EVENTS.nextval,
                                     1,
                                     1,
                                     1,
                                     23.3,
                                     CURRENT_TIMESTAMP);
 
-INSERT INTO LIXEIRA_EVENTOS VALUES (SQ_LIXEIRA_EVENTOS.nextval,
+INSERT INTO TRASHES_EVENTS VALUES (SQ_TRASHES_EVENTS.nextval,
                                     1,
                                     1,
                                     1,
                                     53.2,
                                     CURRENT_TIMESTAMP);
 
-INSERT INTO LIXEIRA_EVENTOS VALUES (SQ_LIXEIRA_EVENTOS.nextval,
+INSERT INTO TRASHES_EVENTS VALUES (SQ_TRASHES_EVENTS.nextval,
                                     1,
                                     1,
                                     1,

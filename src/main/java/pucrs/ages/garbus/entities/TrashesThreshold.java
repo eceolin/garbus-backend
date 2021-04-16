@@ -5,29 +5,35 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.util.Date;
+import java.util.List;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name= "PREDIOS")
-public class Predios {
+@Table(name= "TRASHES_THRESHOLD")
+public class TrashesThreshold {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @NotEmpty
-    @Column(name = "NOME")
-    private String nome;
+    @Column(name = "MIN")
+    private String min;
 
-    @Autowired
-    @OneToOne
-    @JoinColumn(name = "ID_ZONA")
-    private Zonas Zonas;
+    @NotEmpty
+    @Column(name = "MED")
+    private String med;
+
+    @NotEmpty
+    @Column(name = "MAX")
+    private String max;
 
 }
