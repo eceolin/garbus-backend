@@ -22,4 +22,12 @@ public class TrashesService {
         return maptools.mapear(repository.findByZonesIdAndBuildingsInZonesId(zoneId));
     }
 
+    public List<TrashesDTO> findAllByBuildingId(Long buildingId) {
+        return maptools.mapear(repository.findByBuildingId(buildingId));
+    }
+
+
+    public List<TrashesDTO> findDetailsByTrashId(Long trashId) {
+        return maptools.mapear(repository.findDetailsByTrashId(trashId));
+    }
 }

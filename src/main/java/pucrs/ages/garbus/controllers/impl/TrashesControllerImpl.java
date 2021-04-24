@@ -32,4 +32,16 @@ public class TrashesControllerImpl implements TrashesController {
         return new ResponseEntity<>(TrashesService.findAllByZonesId(zoneId), OK);
     }
 
+    @Override
+    @GetMapping("/building/{buildingId}")
+    public ResponseEntity<List<TrashesDTO>> findAllByBuilding(@PathVariable Long buildingId){
+        return new ResponseEntity<>(TrashesService.findAllByBuildingId(buildingId), OK);
+    }
+
+    @Override
+    @GetMapping("/trash/{trashId}")
+    public ResponseEntity<List<TrashesDTO>> findDetailsByTrash(@PathVariable Long trashId){
+        return new ResponseEntity<>(TrashesService.findDetailsByTrashId(trashId), OK);
+    }
+
 }
