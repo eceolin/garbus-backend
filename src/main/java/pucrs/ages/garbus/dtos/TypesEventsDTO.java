@@ -1,19 +1,18 @@
 package pucrs.ages.garbus.dtos;
 
 import lombok.*;
-import pucrs.ages.garbus.entities.Zones;
 
-@Getter
-@Setter
+//Lombok
+@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class BuildingsDTO {
+public class TypesEventsDTO {
 
     private long id;
 
     private String name;
 
-    private Zones zones;
+    private String description;
 
 }
