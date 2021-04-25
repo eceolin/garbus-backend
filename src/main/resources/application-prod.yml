@@ -32,3 +32,7 @@ spring:
     username: ${DB_USR}
     password: ${DB_PSW}
     driverClassName: org.postgresql.Driver
+
+events:
+  problem_status:
+    error: I
