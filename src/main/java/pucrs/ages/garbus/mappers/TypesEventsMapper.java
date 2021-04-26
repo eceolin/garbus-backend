@@ -5,8 +5,10 @@ import org.mapstruct.Mapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import pucrs.ages.garbus.dtos.TrashesDTO;
-import pucrs.ages.garbus.dtos.TrashesEventsDTO;
+import pucrs.ages.garbus.dtos.TypesEventsDTO;
+import pucrs.ages.garbus.entities.Events;
 import pucrs.ages.garbus.entities.Trashes;
+import pucrs.ages.garbus.entities.TypesEvents;
 
 import java.text.ParseException;
 import java.util.List;
@@ -15,32 +17,22 @@ import java.util.stream.Collectors;
 @Component
 @AllArgsConstructor
 @Mapper(componentModel = "spring")
-public class TrashesMapper {
+public class TypesEventsMapper {
 
     private final ModelMapper modelMapper;
 
-    public Trashes mapearDTO(TrashesDTO TrashesDTO) throws ParseException {
-        return modelMapper.map(TrashesDTO, Trashes.class);
-    }
-
-    public List<Trashes> mapearDTO(List<TrashesDTO> source) {
+    public List<TypesEventsDTO> mapearEventsToTypeEvents(List<Events> source) {
         return source
                 .stream()
-                .map(entity -> modelMapper.map(entity, Trashes.class))
+                .map(entity -> modelMapper.map(entity.getTypesEvents(), TypesEventsDTO.class))
                 .collect(Collectors.toList());
     }
 
-
-    public TrashesDTO mapear(Trashes Trashes) {
-        return modelMapper.map(Trashes, TrashesDTO.class);
-    }
-
-    public List<TrashesDTO> mapear(List<Trashes> source) {
+    public List<TypesEventsDTO> mapearTypeEvents(List<TypesEvents> source) {
         return source
                 .stream()
-                .map(entity -> modelMapper.map(entity, TrashesDTO.class))
+                .map(entity -> modelMapper.map(entity, TypesEventsDTO.class))
                 .collect(Collectors.toList());
     }
-
 }
 

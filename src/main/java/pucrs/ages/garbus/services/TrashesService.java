@@ -1,10 +1,14 @@
 package pucrs.ages.garbus.services;
 
+import pucrs.ages.garbus.dtos.TypesEventsDTO;
+import pucrs.ages.garbus.mappers.TypesEventsMapper;
+import pucrs.ages.garbus.repositories.EventsRepository;
 import pucrs.ages.garbus.repositories.TrashesRepository;
 import pucrs.ages.garbus.mappers.TrashesMapper;
 import org.springframework.stereotype.Service;
 import pucrs.ages.garbus.dtos.TrashesDTO;
 import lombok.RequiredArgsConstructor;
+
 import java.util.List;
 
 @Service
