@@ -25,25 +25,24 @@ public class TrashesEvents {
     private long id;
 
     @Autowired
-    @OneToMany
+    @OneToOne
     @JoinColumn(name = "ID_EVENT")
-    private List<Events> events;
+    private Events events;
 
     @Autowired
-    @OneToMany
+    @OneToOne
     @JoinColumn(name = "ID_TRASH")
-    private List<Trashes> trashes;
+    private Trashes trashes;
 
     @Autowired
-    @OneToMany
+    @OneToOne
     @JoinColumn(name = "ID_USER")
-    private List<Users> users;
+    private Users users;
 
-    @NotEmpty
     @Column(name = "OCCUPATION")
     private double occupation;
 
-    @Column(name = "DATA")
+    @Column(name = "DATE")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date data;
 

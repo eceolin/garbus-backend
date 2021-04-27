@@ -5,11 +5,11 @@ import org.mapstruct.Mapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import pucrs.ages.garbus.dtos.TrashesDTO;
-import pucrs.ages.garbus.dtos.TrashesEventsDTO;
 import pucrs.ages.garbus.entities.Trashes;
 
 import java.text.ParseException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -19,7 +19,7 @@ public class TrashesMapper {
 
     private final ModelMapper modelMapper;
 
-    public Trashes mapearDTO(TrashesDTO TrashesDTO) throws ParseException {
+    public Trashes mapearDTO(TrashesDTO TrashesDTO) {
         return modelMapper.map(TrashesDTO, Trashes.class);
     }
 
@@ -31,7 +31,7 @@ public class TrashesMapper {
     }
 
 
-    public TrashesDTO mapear(Trashes Trashes) {
+    public TrashesDTO mapear(Optional<Trashes> Trashes) {
         return modelMapper.map(Trashes, TrashesDTO.class);
     }
 

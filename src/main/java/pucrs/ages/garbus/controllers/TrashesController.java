@@ -25,8 +25,10 @@ public interface TrashesController {
     @ApiOperation("Find errors by trash id")
     ResponseEntity<List<TrashesDTO>> findErrorsByTrashId(@NotNull @PathVariable("trashId") String trashId);
 
-    @PostMapping(path = "{trashId}/errors")
+    @PostMapping(path = "{trashId}/errors/{typeEventId}/users/{login:.+}")
     @ApiOperation("Find errors by trash id")
-    ResponseEntity<List<TrashesDTO>> insertErrorOnTrash(@NotNull @PathVariable("trashId") String trashId);
+    ResponseEntity<?> insertErrorOnTrash(@NotNull @PathVariable("trashId") Long trashId,
+                                                        @NotNull @PathVariable("typeEventId") Long typeEventId,
+                                                        @NotNull @PathVariable("login") String userId);
 
 }

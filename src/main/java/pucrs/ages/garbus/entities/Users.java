@@ -52,14 +52,4 @@ public class Users {
     @JoinColumn(name = "ID_PROFILE")
     private Profiles profiles;
 
-//    @Setter
-//    public void setSenha(String senha) {
-//        this.senha = passwordEncoder().encode(senha);
-//    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
 }

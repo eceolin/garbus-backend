@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import javax.annotation.Resource;
 import java.util.List;
 
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.OK;
 
 
@@ -36,7 +37,13 @@ public class TrashesControllerImpl implements TrashesController {
     }
 
     @Override
-    public ResponseEntity<List<TrashesDTO>> insertErrorOnTrash(String trashId) {
+    public ResponseEntity<?> insertErrorOnTrash(Long trashId, Long typeEventId, String login) {
+        try {
+            trashesService.insertErrorOnTrash(trashId, typeEventId, login);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("", BAD_REQUEST);
+        }
         return null;
     }
 

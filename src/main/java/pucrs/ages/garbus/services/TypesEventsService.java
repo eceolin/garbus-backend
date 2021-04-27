@@ -3,14 +3,11 @@ package pucrs.ages.garbus.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import pucrs.ages.garbus.dtos.EventsDTO;
 import pucrs.ages.garbus.dtos.TypesEventsDTO;
-import pucrs.ages.garbus.mappers.EventsMapper;
 import pucrs.ages.garbus.mappers.TypesEventsMapper;
 import pucrs.ages.garbus.repositories.EventsRepository;
 import pucrs.ages.garbus.repositories.TypesEventsRepository;
 
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Service
@@ -28,7 +25,19 @@ public class TypesEventsService {
         return typesEventsMapper.mapearTypeEvents(typesEventsRepository.findAll());
     }
 
+    public TypesEventsDTO findById(Long id) {
+        return typesEventsMapper.mapearTypeEvents(typesEventsRepository.findById(id));
+    }
+
     public List<TypesEventsDTO> findAllErrorTypeEvent() {
-        return typesEventsMapper.mapearEventsToTypeEvents(eventsRepository.findEventsByProblemStatusEquals(STATUS_ERROR));
+        return typesEventsMapper.mapearEventsToTypeEvents(eventsRepository.findEventsByProblemStatusEquals(statusError()));
+    }
+
+    public void save(TypesEventsDTO typesEventsDTO) throws Exception {
+        typesEventsRepository.save(typesEventsMapper.mapDtoToEntity(typesEventsDTO));
+    }
+
+    public char statusError() {
+        return STATUS_ERROR;
     }
 }

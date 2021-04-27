@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pucrs.ages.garbus.dtos.EventsDTO;
 import pucrs.ages.garbus.dtos.TypesEventsDTO;
+import pucrs.ages.garbus.entities.Events;
 import pucrs.ages.garbus.mappers.EventsMapper;
 import pucrs.ages.garbus.repositories.EventsRepository;
 
@@ -25,6 +26,10 @@ public class EventsService {
 
     public List<TypesEventsDTO> findAllErrorTypeEvent() {
         return typesEventsService.findAllErrorTypeEvent();
+    }
+
+    public Events findEventsByTypeEventsId(Long id) {
+        return eventsRepository.findEventsByProblemStatusEqualsAndTypesEventsId(typesEventsService.statusError(), id);
     }
 
 }
