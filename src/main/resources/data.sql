@@ -1,6 +1,4 @@
 
-BEGIN;
-
 /* INSERTS */
 INSERT INTO TYPES_EVENTS (NAME, DESCRIPTION)
 VALUES ('Report Lixeira', 'Report de status da lixeira');
