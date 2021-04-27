@@ -2,18 +2,14 @@ package pucrs.ages.garbus.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pucrs.ages.garbus.dtos.TrashesDTO;
 import pucrs.ages.garbus.entities.Events;
 import pucrs.ages.garbus.entities.Trashes;
 import pucrs.ages.garbus.entities.TrashesEvents;
 import pucrs.ages.garbus.entities.Users;
-import pucrs.ages.garbus.mappers.TrashesMapper;
 import pucrs.ages.garbus.repositories.TrashesEventsRepository;
-import pucrs.ages.garbus.repositories.TrashesRepository;
 
 import javax.annotation.Resource;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -29,7 +25,7 @@ public class TrashesEventsService {
     private final TrashesEventsRepository trashesEventsRepository;
 
     public void insertErrorOnTrash(Long trashId, Long typeEventId, String login) throws Exception {
-        Optional<Trashes> trashes = Optional.ofNullable(trashesService.findById(trashId));
+        Optional<Trashes> trashes = trashesService.findById(trashId);
         Events events = eventsService.findEventsByTypeEventsId(typeEventId);
         Users users = usersService.findByLogin(login);
         if(trashes.isPresent()) {

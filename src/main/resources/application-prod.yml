@@ -34,4 +34,4 @@ spring:
 
 events:
   problem_status:
-    error: I
+    error: E
