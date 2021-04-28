@@ -23,4 +23,10 @@ public class TrashesSql {
                 +" 	) a "
                 +" ) c "
             +" WHERE ZONE = :zoneId";
+
+    public final static String findByBuildingIdSQL =
+            "SELECT * FROM TRASHES WHERE TRASHES.ID_BUILDING = :buildingId";
+
+    public final static String findTrashByTrashIdSql =
+            "SELECT * FROM TRASHES WHERE TRASHES.ID = :trashId";
 }

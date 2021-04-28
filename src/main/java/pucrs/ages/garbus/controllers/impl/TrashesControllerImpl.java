@@ -1,12 +1,15 @@
 package pucrs.ages.garbus.controllers.impl;
 
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.PathVariable;
-import pucrs.ages.garbus.controllers.TrashesController;
-import pucrs.ages.garbus.services.TrashesService;
-import org.springframework.http.ResponseEntity;
-import pucrs.ages.garbus.dtos.TrashesDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+import pucrs.ages.garbus.controllers.TrashesController;
+import pucrs.ages.garbus.dtos.SimplifiedTrashesWithThresholdsDTO;
+import pucrs.ages.garbus.dtos.TrashDetailsDTO;
+import pucrs.ages.garbus.dtos.TrashesDTO;
+import pucrs.ages.garbus.services.TrashesService;
+
 import javax.annotation.Resource;
 import java.util.List;
 
@@ -47,4 +50,15 @@ public class TrashesControllerImpl implements TrashesController {
         return null;
     }
 
+    @Override
+    public ResponseEntity<List<SimplifiedTrashesWithThresholdsDTO>> findAllByBuilding(@PathVariable Long buildingId) {
+        return new ResponseEntity<>(trashesService.findAllByBuildingId(buildingId), OK);
+    }
+
+    @Override
+    public ResponseEntity<TrashDetailsDTO> findTrashById(@PathVariable Long trashId) {
+        return new ResponseEntity<>(trashesService.findTrashById(trashId), OK);
+    }
 }
+
+

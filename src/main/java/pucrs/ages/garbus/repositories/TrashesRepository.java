@@ -15,8 +15,20 @@ public interface TrashesRepository extends JpaRepository<Trashes, Long> {
     List<Trashes> findByZonesId(Long zoneId);
 
     @Query(
-        value = TrashesSql.findByZonesIdAndBuildingsInZonesIdSQL,
-        nativeQuery = true
+            value = TrashesSql.findByZonesIdAndBuildingsInZonesIdSQL,
+            nativeQuery = true
     )
     List<Trashes> findByZonesIdAndBuildingsInZonesId(@Param("zoneId") Long zoneId);
+
+    @Query(
+            value = TrashesSql.findByBuildingIdSQL,
+            nativeQuery = true
+    )
+    List<Trashes> findByBuildingId(@Param("buildingId") Long buildingId);
+
+    @Query(
+            value = TrashesSql.findTrashByTrashIdSql,
+            nativeQuery = true
+    )
+    Trashes findTrashByTrashId(@Param("trashId") Long trashId);
 }
