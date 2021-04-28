@@ -31,6 +31,9 @@ repositories {
 }
 
 dependencies {
+	def activeProfile = System.getenv('SPRING_PROFILES_ACTIVE')
+	logger.quiet('Active profile: ' + activeProfile)
+
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -39,11 +42,13 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
-	// LocalHost Dev database
-	runtimeOnly 'com.h2database:h2'
+	if (activeProfile == 'prod') {
+		runtimeOnly 'org.postgresql:postgresql'
+	} else {
+		runtimeOnly 'com.h2database:h2'
+	}
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc', version: '2.4.2'
 
-	runtimeOnly 'org.postgresql:postgresql'
 
 	// Adding Java Persistence API
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
@@ -59,9 +64,12 @@ dependencies {
 	// Adding Entity DTO Mapper
 	implementation 'org.modelmapper:modelmapper:2.3.5'
 
+	implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap'
+
 	// Adding Vault
-//	implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap'
-//	implementation 'org.springframework.cloud:spring-cloud-starter-vault-config'
+	if (activeProfile == 'prod') {
+		implementation 'org.springframework.cloud:spring-cloud-starter-vault-config'
+	}
 }
 
 test {

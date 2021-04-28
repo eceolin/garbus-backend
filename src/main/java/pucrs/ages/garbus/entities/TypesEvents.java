@@ -14,7 +14,7 @@ import javax.validation.constraints.NotEmpty;
 @NoArgsConstructor
 @Entity
 @Table(name= "TYPES_EVENTS")
-public class EventType {
+public class TypesEvents {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -25,15 +25,15 @@ public class Events {
     @Column(name = "DESCRIPTION")
     private String description;
 
-    @Column(name = "DATA_CRIACAO")
+    @Column(name = "CREATION_DATE")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date creationDate;
 
-    @Column(name = "STATUS_PROBLEMA")
-    private String statusProblem;
+    @Column(name = "PROBLEM_STATUS")
+    private char problemStatus;
 
     @Autowired
     @OneToOne
     @JoinColumn(name = "ID_TYPE_EVENTS")
-    private EventType eventType;
+    private TypesEvents typesEvents;
 }

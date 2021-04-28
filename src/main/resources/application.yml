@@ -20,7 +20,6 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: none
-#          ddl-auto: create-drop
     properties:
       hibernate:
         default_schema: 'PUBLIC'
@@ -33,8 +32,15 @@ spring:
 
   # DB Connection Configuration
   datasource:
-    initialization-mode: always
-    url: ${DB_URL}
-    username: ${DB_USR}
-    password: ${DB_PSW}
+    initialization-mode: embedded
+    url: jdbc:h2:mem:garbus
+    username: sa
+    password:
     driverClassName: org.h2.Driver
+
+events:
+  problem_status:
+    error: E
+
+id-status:
+  inativo: 5
