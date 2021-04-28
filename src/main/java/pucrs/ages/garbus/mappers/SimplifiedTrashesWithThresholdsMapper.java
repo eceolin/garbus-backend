@@ -25,6 +25,7 @@ public class SimplifiedTrashesWithThresholdsMapper {
             getTrashThresholds(trashesThresholds, trash, tempTrashesThresholds);
             simplifiedTrashesWithThresholds = SimplifiedTrashesWithThresholdsDTO.builder()
                     .buildingName(trash.getBuildings().getName())
+                    .occupation(trash.getOccupation())
                     .trashDescription(trash.getDescription())
                     .trashesThreshold(tempTrashesThresholds)
                     .build();

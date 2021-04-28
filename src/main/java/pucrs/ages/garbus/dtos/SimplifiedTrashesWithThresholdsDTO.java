@@ -11,6 +11,8 @@ import java.util.List;
 @NoArgsConstructor
 public class SimplifiedTrashesWithThresholdsDTO {
 
+    private double occupation;
+
     private String buildingName;
 
     private String trashDescription;
