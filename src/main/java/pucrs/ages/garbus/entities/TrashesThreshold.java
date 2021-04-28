@@ -33,5 +33,5 @@ public class TrashesThreshold {
     @Autowired
     @OneToOne
     @JoinColumn(name = "ID_TRASH")
-    private TrashType trashType;
+    private Trashes trashes;
 }

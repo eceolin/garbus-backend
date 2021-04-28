@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 import pucrs.ages.garbus.dtos.TrashesDTO;
 import pucrs.ages.garbus.entities.Trashes;
 
-import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -41,6 +40,5 @@ public class TrashesMapper {
                 .map(entity -> modelMapper.map(entity, TrashesDTO.class))
                 .collect(Collectors.toList());
     }
-
 }
 
