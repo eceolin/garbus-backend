@@ -1,6 +1,10 @@
 package pucrs.ages.garbus.services;
 
 import org.springframework.beans.factory.annotation.Value;
+import pucrs.ages.garbus.dtos.BuildingsReduceDTO;
+import pucrs.ages.garbus.dtos.TrashesListDTO;
+import pucrs.ages.garbus.dtos.TrashesReduceDTO;
+import pucrs.ages.garbus.entities.Buildings;
 import pucrs.ages.garbus.entities.Trashes;
 import pucrs.ages.garbus.repositories.TrashesRepository;
 import pucrs.ages.garbus.mappers.TrashesMapper;
@@ -9,8 +13,10 @@ import pucrs.ages.garbus.dtos.TrashesDTO;
 import lombok.RequiredArgsConstructor;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -25,8 +31,33 @@ public class TrashesService {
     private final TrashesMapper maptools;
     private final TrashesRepository repository;
 
-    public List<TrashesDTO> findAll() {
-        return maptools.mapear(repository.findAll());
+    public TrashesListDTO findAll() {
+        List<BuildingsReduceDTO> buildingsReduceDTOS = new ArrayList<>();
+
+        List<Trashes> trashesList = repository.findAll()
+                .stream()
+                .collect(Collectors.toList());
+
+        trashesList.stream()
+                .filter(building -> building.getBuildings() != null)
+                .map(b -> b.getBuildings())
+                .forEach(b -> buildingsReduceDTOS.add(
+                        BuildingsReduceDTO.builder()
+                                .id(b.getId())
+                                .name(b.getName())
+                                .build()
+                ));
+
+        List<TrashesReduceDTO> trashesOutBuildings = maptools.mapearToReduce(trashesList.stream()
+                .filter(building -> building.getBuildings() == null)
+                .collect(Collectors.toList()));
+
+        return TrashesListDTO.builder()
+                .trashes(trashesOutBuildings)
+                .buildings(buildingsReduceDTOS)
+                .build();
+
+//        return maptools.mapearTrashesList(repository.findAll());
     }
 
     public TrashesDTO findByIdDTO(Long id) {

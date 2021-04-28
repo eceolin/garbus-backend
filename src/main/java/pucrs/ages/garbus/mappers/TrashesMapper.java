@@ -5,6 +5,8 @@ import org.mapstruct.Mapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import pucrs.ages.garbus.dtos.TrashesDTO;
+import pucrs.ages.garbus.dtos.TrashesListDTO;
+import pucrs.ages.garbus.dtos.TrashesReduceDTO;
 import pucrs.ages.garbus.entities.Trashes;
 
 import java.text.ParseException;
@@ -19,18 +21,6 @@ public class TrashesMapper {
 
     private final ModelMapper modelMapper;
 
-    public Trashes mapearDTO(TrashesDTO TrashesDTO) {
-        return modelMapper.map(TrashesDTO, Trashes.class);
-    }
-
-    public List<Trashes> mapearDTO(List<TrashesDTO> source) {
-        return source
-                .stream()
-                .map(entity -> modelMapper.map(entity, Trashes.class))
-                .collect(Collectors.toList());
-    }
-
-
     public TrashesDTO mapear(Optional<Trashes> Trashes) {
         return modelMapper.map(Trashes, TrashesDTO.class);
     }
@@ -42,5 +32,18 @@ public class TrashesMapper {
                 .collect(Collectors.toList());
     }
 
+    public List<TrashesListDTO> mapearTrashesList(List<Trashes> source) {
+        return source
+                .stream()
+                .map(entity -> modelMapper.map(entity, TrashesListDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    public List<TrashesReduceDTO> mapearToReduce(List<Trashes> source) {
+        return source
+                .stream()
+                .map(entity -> modelMapper.map(entity, TrashesReduceDTO.class))
+                .collect(Collectors.toList());
+    }
 }
 

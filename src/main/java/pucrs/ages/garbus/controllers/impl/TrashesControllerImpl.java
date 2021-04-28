@@ -3,6 +3,7 @@ package pucrs.ages.garbus.controllers.impl;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PathVariable;
 import pucrs.ages.garbus.controllers.TrashesController;
+import pucrs.ages.garbus.dtos.TrashesListDTO;
 import pucrs.ages.garbus.services.TrashesService;
 import org.springframework.http.ResponseEntity;
 import pucrs.ages.garbus.dtos.TrashesDTO;
@@ -22,7 +23,7 @@ public class TrashesControllerImpl implements TrashesController {
     private TrashesService trashesService;
 
     @Override
-    public ResponseEntity<List<TrashesDTO>> findAll() {
+    public ResponseEntity<TrashesListDTO> findAll() {
         return new ResponseEntity<>(trashesService.findAll(), OK);
     }
 
