@@ -60,8 +60,8 @@ dependencies {
 	implementation 'org.modelmapper:modelmapper:2.3.5'
 
 	// Adding Vault
-	implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap'
-	implementation 'org.springframework.cloud:spring-cloud-starter-vault-config'
+//	implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap'
+//	implementation 'org.springframework.cloud:spring-cloud-starter-vault-config'
 }
 
 test {

@@ -174,9 +174,9 @@ ALTER TABLE TRASHES_EVENTS ADD CONSTRAINT FK_TRASHES_EVENTS_TRASH
 
 CREATE TABLE IF NOT EXISTS TRASHES_THRESHOLD (
                                  ID SERIAL PRIMARY KEY,
-                                 MIN FLOAT NOT NULL,
-                                 MED FLOAT NOT NULL,
-                                 MAX FLOAT NOT NULL
+                                 GREEN FLOAT NOT NULL,
+                                 YELLOW FLOAT NOT NULL,
+                                 RED FLOAT NOT NULL
 );
 
 /* CREATE SEQUENCES */
