@@ -86,10 +86,10 @@ VALUES ('Prédio 6', 3);
 
 
 INSERT INTO USERS (EMAIL, NAME, LOGIN, PASSWORD, DT_REGISTER, ID_PROFILE)
-VALUES ('mario.araujo@edu.pucrs.br', 'Mario Specht', 'mario.araujo', '102030', CURRENT_TIMESTAMP, 1);
+VALUES ('garbus@garbus.com.br', 'Usuario Default Operador', 'garbus', 'garbus', CURRENT_TIMESTAMP, 1);
 
 INSERT INTO USERS (EMAIL, NAME, LOGIN, PASSWORD, DT_REGISTER, ID_PROFILE)
-VALUES ('teste@pucrs.br', 'Gestor Teste', 'gestor.teste', '102030', CURRENT_TIMESTAMP, 2);
+VALUES ('admin@admin.com.br', 'Usuario Gestor Admin', 'admin', 'admin', CURRENT_TIMESTAMP, 2);
 
 INSERT INTO USER_ZONE (ID_USER, ID_ZONE)
 VALUES (1, 1);
