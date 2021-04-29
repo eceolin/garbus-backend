@@ -14,6 +14,6 @@ public class BuildingsReduceDTO {
 
     private String name;
 
-    private int trashesCount;
+    private Long trashesCount;
 
 }

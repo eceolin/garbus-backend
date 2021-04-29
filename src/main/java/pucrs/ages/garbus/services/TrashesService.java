@@ -13,9 +13,7 @@ import pucrs.ages.garbus.dtos.TrashesDTO;
 import lombok.RequiredArgsConstructor;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,32 +30,14 @@ public class TrashesService {
     private final TrashesRepository repository;
 
     public TrashesListDTO findAll() {
-        List<BuildingsReduceDTO> buildingsReduceDTOS = new ArrayList<>();
-
         List<Trashes> trashesList = repository.findAll()
                 .stream()
                 .collect(Collectors.toList());
 
-        trashesList.stream()
-                .filter(building -> building.getBuildings() != null)
-                .map(b -> b.getBuildings())
-                .forEach(b -> buildingsReduceDTOS.add(
-                        BuildingsReduceDTO.builder()
-                                .id(b.getId())
-                                .name(b.getName())
-                                .build()
-                ));
-
-        List<TrashesReduceDTO> trashesOutBuildings = maptools.mapearToReduce(trashesList.stream()
-                .filter(building -> building.getBuildings() == null)
-                .collect(Collectors.toList()));
-
         return TrashesListDTO.builder()
-                .trashes(trashesOutBuildings)
-                .buildings(buildingsReduceDTOS)
+                .trashes(trashesOutBuildings(trashesList))
+                .buildings(buildingsReduceDTOS(countAndTrashesInBuildings(trashesList)))
                 .build();
-
-//        return maptools.mapearTrashesList(repository.findAll());
     }
 
     public TrashesDTO findByIdDTO(Long id) {
@@ -84,6 +64,32 @@ public class TrashesService {
                     .setTrashesStatus(trashesStatusService.findById(ID_STATUS_INATIVO).get());
             updateStatus(trashes.get());
         }
+    }
+
+    private Map<Buildings, Long> countAndTrashesInBuildings(List<Trashes> trashesList) {
+        return trashesList.stream()
+                .filter(building -> building.getBuildings() != null)
+                .collect(Collectors.groupingBy(b -> b.getBuildings(),
+                        Collectors.counting()));
+    }
+
+    private List<BuildingsReduceDTO> buildingsReduceDTOS(Map<Buildings, Long> map) {
+        List<BuildingsReduceDTO> buildingsReduceDTOS = new ArrayList<>();
+        map.entrySet().stream()
+                .forEach(b -> buildingsReduceDTOS.add(
+                        BuildingsReduceDTO.builder()
+                                .id(b.getKey().getId())
+                                .name(b.getKey().getName())
+                                .trashesCount(b.getValue())
+                                .build()
+                ));
+        return buildingsReduceDTOS;
+    }
+
+    private List<TrashesReduceDTO> trashesOutBuildings(List<Trashes> trashesList) {
+        return maptools.mapearToReduce(trashesList.stream()
+                .filter(building -> building.getBuildings() == null)
+                .collect(Collectors.toList()));
     }
 
 }
