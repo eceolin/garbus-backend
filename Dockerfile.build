@@ -1,22 +1,11 @@
-FROM gradle:jdk11 AS builder
+FROM gradle:6.8.3-jdk11
 
-ARG VAULT_URI
-ARG VAULT_ROLE_ID
-ARG VAULT_SECRET_ID
-ARG VAULT_CONTEXT
-ARG VAULT_AUTH
 ARG SPRING_PROFILES_ACTIVE
-
-ENV VAULT_URI=${VAULT_URI}
-ENV VAULT_ROLE_ID=${VAULT_ROLE_ID}
-ENV VAULT_SECRET_ID=${VAULT_SECRET_ID}
-ENV VAULT_CONTEXT=${VAULT_CONTEXT}
-ENV VAULT_AUTH==${VAULT_AUTH}
 ENV SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
 
 WORKDIR /app
 COPY . .
 
-RUN /app/gradlew clean build
+RUN gradle build -x test
 
-CMD ["cp", "/app/build/libs/garbus-backend.war", "/build"]
+CMD ["echo", "Copie os arquivos deste container com 'docker cp garbus-backend-build:/app/build/libs/garbus-backend.war .docker-build/garbus-backend/build'"]
