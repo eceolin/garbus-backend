@@ -3,9 +3,8 @@ package pucrs.ages.garbus.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import pucrs.ages.garbus.dtos.SimplifiedTrashesWithThresholdsDTO;
-import pucrs.ages.garbus.dtos.TrashDetailsDTO;
-import pucrs.ages.garbus.dtos.TrashesDTO;
+import pucrs.ages.garbus.dtos.*;
+import pucrs.ages.garbus.entities.Buildings;
 import pucrs.ages.garbus.entities.Trashes;
 import pucrs.ages.garbus.mappers.SimplifiedTrashesWithThresholdsMapper;
 import pucrs.ages.garbus.mappers.TrashDetailsMapper;
@@ -16,8 +15,11 @@ import pucrs.ages.garbus.repositories.TrashesThresholdsRepository;
 import pucrs.ages.garbus.repositories.ZonesRepository;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -37,8 +39,13 @@ public class TrashesService {
     private final TrashDetailsMapper trashDetailsMapper;
     private final SimplifiedTrashesWithThresholdsMapper simplifiedTrashesWithThresholdsMapper;
 
-    public List<TrashesDTO> findAll() {
-        return trashMapper.mapear(trashesRepository.findAll());
+
+    public TrashesListDTO findAll() {
+        List<Trashes> trashesList = new ArrayList<>(trashesRepository.findAll());
+         return TrashesListDTO.builder()
+                .trashes(trashesOutBuildings(trashesList))
+                .buildings(buildingsReduceDTOS(countAndTrashesInBuildings(trashesList)))
+                .build();
     }
 
     public TrashesDTO findByIdDTO(Long id) {
@@ -67,7 +74,7 @@ public class TrashesService {
         }
     }
 
-    public List<SimplifiedTrashesWithThresholdsDTO> findAllByBuildingId(Long buildingId) {
+    public List<TrashesReduceDTO> findAllByBuildingId(Long buildingId) {
         return simplifiedTrashesWithThresholdsMapper.mapToDTO(trashesRepository.findByBuildingId(buildingId), trashesThresholdsRepository.findAllThresholds());
     }
 
@@ -80,5 +87,32 @@ public class TrashesService {
             localDescription = buildingsRepository.findBuildingNameByTrashId(trash.getBuildings().getId());
         }
         return trashDetailsMapper.mapToDTO(trash, localDescription, trashesThresholdsRepository.findThresholdsByTrashId(trashId));
+    }
+
+    private Map<Buildings, Long> countAndTrashesInBuildings(List<Trashes> trashesList) {
+        return trashesList.stream()
+                .filter(building -> building.getBuildings() != null)
+                .collect(Collectors.groupingBy(b -> b.getBuildings(),
+                        Collectors.counting()));
+    }
+
+    private List<BuildingsReduceDTO> buildingsReduceDTOS(Map<Buildings, Long> map) {
+        List<BuildingsReduceDTO> buildingsReduceDTOS = new ArrayList<>();
+        map.entrySet().stream()
+                .forEach(b -> buildingsReduceDTOS.add(
+                        BuildingsReduceDTO.builder()
+                                .id(b.getKey().getId())
+                                .name(b.getKey().getName())
+                                .trashesCount(b.getValue())
+                                .build()
+                ));
+        return buildingsReduceDTOS;
+    }
+
+    private List<TrashesReduceDTO> trashesOutBuildings(List<Trashes> trashesList) {
+        trashesList = trashesList.stream()
+                .filter(building -> building.getBuildings() == null)
+                .collect(Collectors.toList());
+        return simplifiedTrashesWithThresholdsMapper.mapToDTO(trashesList, trashesThresholdsRepository.findAllThresholds());
     }
 }

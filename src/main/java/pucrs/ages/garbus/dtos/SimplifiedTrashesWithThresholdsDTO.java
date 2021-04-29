@@ -1,6 +1,7 @@
 package pucrs.ages.garbus.dtos;
 
 import lombok.*;
+import pucrs.ages.garbus.entities.TrashesThreshold;
 
 import java.util.List;
 
@@ -19,5 +20,5 @@ public class SimplifiedTrashesWithThresholdsDTO {
 
     private String trashDescription;
 
-    private List<TrashesThresholdDTO> trashesThreshold;
+    private List<TrashesThreshold> trashesThreshold;
 }

@@ -6,9 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import pucrs.ages.garbus.dtos.SimplifiedTrashesWithThresholdsDTO;
-import pucrs.ages.garbus.dtos.TrashDetailsDTO;
-import pucrs.ages.garbus.dtos.TrashesDTO;
+import pucrs.ages.garbus.dtos.*;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -18,7 +16,7 @@ public interface TrashesController {
 
     @GetMapping
     @ApiOperation("Find all trashes")
-    ResponseEntity<List<TrashesDTO>> findAll();
+    ResponseEntity<TrashesListDTO> findAll();
 
     @GetMapping("/zone/{zoneId}")
     @ApiOperation("Find all on zone")
@@ -36,7 +34,7 @@ public interface TrashesController {
 
     @GetMapping("/building/{buildingId}")
     @ApiOperation("Find trashes by building")
-    ResponseEntity<List<SimplifiedTrashesWithThresholdsDTO>> findAllByBuilding(Long id);
+    ResponseEntity<List<TrashesReduceDTO>> findAllByBuilding(Long id);
 
     @GetMapping("/trash/{trashId}")
     @ApiOperation("Find trash by trashId")

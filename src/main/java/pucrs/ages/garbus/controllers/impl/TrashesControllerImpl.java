@@ -5,9 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import pucrs.ages.garbus.controllers.TrashesController;
-import pucrs.ages.garbus.dtos.SimplifiedTrashesWithThresholdsDTO;
-import pucrs.ages.garbus.dtos.TrashDetailsDTO;
-import pucrs.ages.garbus.dtos.TrashesDTO;
+import pucrs.ages.garbus.dtos.*;
 import pucrs.ages.garbus.services.TrashesService;
 
 import javax.annotation.Resource;
@@ -25,7 +23,7 @@ public class TrashesControllerImpl implements TrashesController {
     private TrashesService trashesService;
 
     @Override
-    public ResponseEntity<List<TrashesDTO>> findAll() {
+    public ResponseEntity<TrashesListDTO> findAll() {
         return new ResponseEntity<>(trashesService.findAll(), OK);
     }
 
@@ -51,7 +49,7 @@ public class TrashesControllerImpl implements TrashesController {
     }
 
     @Override
-    public ResponseEntity<List<SimplifiedTrashesWithThresholdsDTO>> findAllByBuilding(@PathVariable Long buildingId) {
+    public ResponseEntity<List<TrashesReduceDTO>> findAllByBuilding(@PathVariable Long buildingId) {
         return new ResponseEntity<>(trashesService.findAllByBuildingId(buildingId), OK);
     }
 

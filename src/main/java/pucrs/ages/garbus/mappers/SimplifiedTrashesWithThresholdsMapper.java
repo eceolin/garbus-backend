@@ -4,12 +4,14 @@ import lombok.AllArgsConstructor;
 import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
 import pucrs.ages.garbus.dtos.SimplifiedTrashesWithThresholdsDTO;
+import pucrs.ages.garbus.dtos.TrashesReduceDTO;
 import pucrs.ages.garbus.dtos.TrashesThresholdDTO;
 import pucrs.ages.garbus.entities.Trashes;
 import pucrs.ages.garbus.entities.TrashesThreshold;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Component
 @AllArgsConstructor
@@ -17,22 +19,25 @@ import java.util.List;
 public class SimplifiedTrashesWithThresholdsMapper {
     private final TrashesThresholdMapper trashesThresholdMapper;
 
-    public List<SimplifiedTrashesWithThresholdsDTO> mapToDTO(List<Trashes> trashes, List<TrashesThreshold> trashesThresholds) {
-        List<SimplifiedTrashesWithThresholdsDTO> simplifiedTrashesWithThresholdsList = new ArrayList<>();
-        SimplifiedTrashesWithThresholdsDTO simplifiedTrashesWithThresholds = new SimplifiedTrashesWithThresholdsDTO();
+
+    public List<TrashesReduceDTO> mapToDTO(List<Trashes> trashes, List<TrashesThreshold> trashesThresholds) {
+        List<TrashesReduceDTO> trashesReduceDTOS = new ArrayList<>();
+        TrashesReduceDTO trashesReduceDTO = new TrashesReduceDTO();
         for (Trashes trash : trashes) {
             List<TrashesThresholdDTO> tempTrashesThresholds = new ArrayList<>();
             getTrashThresholds(trashesThresholds, trash, tempTrashesThresholds);
-            simplifiedTrashesWithThresholds = SimplifiedTrashesWithThresholdsDTO.builder()
+            trashesReduceDTO = TrashesReduceDTO.builder()
                     .trashId(trash.getId())
-                    .buildingName(trash.getBuildings().getName())
+                    .capacity(trash.getCapacity())
                     .occupation(trash.getOccupation())
-                    .trashDescription(trash.getDescription())
+                    .longitude(trash.getLongitude())
+                    .latitude(trash.getLatitude())
+                    .buildingName(Objects.nonNull(trash.getBuildings()) ? trash.getBuildings().getName() : null)
                     .trashesThreshold(tempTrashesThresholds)
                     .build();
-            simplifiedTrashesWithThresholdsList.add(simplifiedTrashesWithThresholds);
+            trashesReduceDTOS.add(trashesReduceDTO);
         }
-        return simplifiedTrashesWithThresholdsList;
+        return trashesReduceDTOS;
     }
 
     private void getTrashThresholds(List<TrashesThreshold> trashesThresholds, Trashes trash, List<TrashesThresholdDTO> tempTrashesThresholds) {
