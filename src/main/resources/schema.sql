@@ -79,6 +79,8 @@ ALTER TABLE EVENTS ADD CONSTRAINT FK_TYPE_EVENTS
 CREATE TABLE IF NOT EXISTS BUILDINGS (
                          ID SERIAL PRIMARY KEY,
                          NAME VARCHAR NOT NULL,
+                         LONGITUDE NUMERIC NOT NULL,
+                         LATITUDE NUMERIC NOT NULL,
                          ID_ZONE INTEGER NOT NULL
 );
 
@@ -157,6 +159,7 @@ CREATE TABLE IF NOT EXISTS TRASHES_EVENTS (
                                  ID_TRASH INTEGER,
                                  ID_USER INTEGER,
                                  OCCUPATION FLOAT,
+                                 OTHERS VARCHAR,
                                  DATE TIMESTAMP NOT NULL
 );
 
@@ -173,11 +176,12 @@ ALTER TABLE TRASHES_EVENTS ADD CONSTRAINT FK_TRASHES_EVENTS_TRASH
         REFERENCES TRASHES (ID);
 
 CREATE TABLE IF NOT EXISTS TRASHES_THRESHOLD (
-                                 ID SERIAL PRIMARY KEY,
-                                 MIN FLOAT NOT NULL,
-                                 MED FLOAT NOT NULL,
-                                 MAX FLOAT NOT NULL
+        ID SERIAL PRIMARY KEY,
+        MAX_OCCUPATION FLOAT,
+        COLOR VARCHAR NOT NULL,
+        ID_TRASH INTEGER NOT NULL
 );
+
 
 /* CREATE SEQUENCES */
 -- CREATE SEQUENCE SQ_TYPES_EVENTS START 0;

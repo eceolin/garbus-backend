@@ -24,16 +24,14 @@ public class TrashesThreshold {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NotEmpty
-    @Column(name = "MIN")
-    private String min;
+    @Column(name = "MAX_OCCUPATION")
+    private double maxOcuppation;
 
-    @NotEmpty
-    @Column(name = "MED")
-    private String med;
+    @Column(name = "COLOR")
+    private String color;
 
-    @NotEmpty
-    @Column(name = "MAX")
-    private String max;
-
+    @Autowired
+    @OneToOne
+    @JoinColumn(name = "ID_TRASH")
+    private Trashes trashes;
 }

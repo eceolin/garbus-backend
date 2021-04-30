@@ -8,16 +8,16 @@ import pucrs.ages.garbus.entities.Zones;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class BuildingsDTO {
+public class BuildingsReduceDTO {
 
     private long id;
 
     private String name;
 
-    private Zones zones;
-
     private double longitude;
 
     private double latitude;
+
+    private Long trashesCount;
 
 }
