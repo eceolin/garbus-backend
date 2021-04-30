@@ -32,6 +32,7 @@ public class SimplifiedTrashesWithThresholdsMapper {
                     .occupation(trash.getOccupation())
                     .longitude(trash.getLongitude())
                     .latitude(trash.getLatitude())
+                    .trashDescription(trash.getDescription())
                     .buildingName(Objects.nonNull(trash.getBuildings()) ? trash.getBuildings().getName() : null)
                     .trashesThreshold(tempTrashesThresholds)
                     .build();
