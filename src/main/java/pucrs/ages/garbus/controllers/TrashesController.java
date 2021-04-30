@@ -2,10 +2,7 @@ package pucrs.ages.garbus.controllers;
 
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import pucrs.ages.garbus.dtos.*;
 
 import javax.validation.constraints.NotNull;
@@ -30,7 +27,8 @@ public interface TrashesController {
     @ApiOperation("Find errors by trash id")
     ResponseEntity<?> insertErrorOnTrash(@NotNull @PathVariable("trashId") Long trashId,
                                          @NotNull @PathVariable("typeEventId") Long typeEventId,
-                                         @NotNull @PathVariable("login") String userId);
+                                         @NotNull @PathVariable("login") String userId,
+                                         @RequestBody ErrorRequest errorRequest);
 
     @GetMapping("/building/{buildingId}")
     @ApiOperation("Find trashes by building")

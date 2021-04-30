@@ -6,13 +6,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import pucrs.ages.garbus.controllers.TrashesController;
 import pucrs.ages.garbus.dtos.*;
+import pucrs.ages.garbus.excpetion.BadRequestException;
+import pucrs.ages.garbus.excpetion.NotFoundException;
 import pucrs.ages.garbus.services.TrashesService;
 
 import javax.annotation.Resource;
 import java.util.List;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.*;
 
 
 @RestController
@@ -38,14 +39,20 @@ public class TrashesControllerImpl implements TrashesController {
     }
 
     @Override
-    public ResponseEntity<?> insertErrorOnTrash(Long trashId, Long typeEventId, String login) {
+    public ResponseEntity<?> insertErrorOnTrash(Long trashId, Long typeEventId, String login, ErrorRequest errorRequest) {
         try {
-            trashesService.insertErrorOnTrash(trashId, typeEventId, login);
+            trashesService.insertErrorOnTrash(trashId, typeEventId, login, errorRequest);
+            return new ResponseEntity<>("Evento criado!", CREATED);
+        } catch (BadRequestException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), BAD_REQUEST);
+        } catch (NotFoundException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), NOT_FOUND);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>("", BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), INTERNAL_SERVER_ERROR);
         }
-        return null;
     }
 
     @Override

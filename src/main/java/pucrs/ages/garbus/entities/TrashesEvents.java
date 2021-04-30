@@ -42,6 +42,9 @@ public class TrashesEvents {
     @Column(name = "OCCUPATION")
     private double occupation;
 
+    @Column(name = "OTHERS")
+    private String others;
+
     @Column(name = "DATE")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date data;

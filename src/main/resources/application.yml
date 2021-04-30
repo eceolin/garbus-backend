@@ -41,6 +41,3 @@ spring:
 events:
   problem_status:
     error: E
-
-id-status:
-  inativo: 5
