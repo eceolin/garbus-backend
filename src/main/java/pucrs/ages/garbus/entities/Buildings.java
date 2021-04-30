@@ -25,6 +25,12 @@ public class Buildings {
     @Column(name = "NAME")
     private String name;
 
+    @Column(name = "LONGITUDE")
+    private double longitude;
+
+    @Column(name = "LATITUDE")
+    private double latitude;
+
     @Autowired
     @OneToOne
     @JoinColumn(name = "ID_ZONE")

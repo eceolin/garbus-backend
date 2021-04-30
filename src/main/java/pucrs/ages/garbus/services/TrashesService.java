@@ -103,6 +103,8 @@ public class TrashesService {
                         BuildingsReduceDTO.builder()
                                 .id(b.getKey().getId())
                                 .name(b.getKey().getName())
+                                .longitude(b.getKey().getLongitude())
+                                .latitude(b.getKey().getLatitude())
                                 .trashesCount(b.getValue())
                                 .build()
                 ));
