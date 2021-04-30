@@ -39,16 +39,16 @@ public class TrashesControllerImpl implements TrashesController {
     }
 
     @Override
-    public ResponseEntity<?> insertErrorOnTrash(Long trashId, Long typeEventId, String login, ErrorRequest errorRequest) {
+    public ResponseEntity<?> insertErrorOnTrash(ErrorRequest errorRequest) {
         try {
-            trashesService.insertErrorOnTrash(trashId, typeEventId, login, errorRequest);
+            trashesService.insertErrorOnTrash(errorRequest);
             return new ResponseEntity<>("Evento criado!", CREATED);
         } catch (BadRequestException e) {
             e.printStackTrace();
-            return new ResponseEntity<>(e.getMessage(), BAD_REQUEST);
+            return new ResponseEntity<>(e.getError(), BAD_REQUEST);
         } catch (NotFoundException e) {
             e.printStackTrace();
-            return new ResponseEntity<>(e.getMessage(), NOT_FOUND);
+            return new ResponseEntity<>(e.getError(), NOT_FOUND);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(), INTERNAL_SERVER_ERROR);
