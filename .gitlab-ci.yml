@@ -16,7 +16,7 @@ build:
     - cp build/libs/garbus-backend.war $SOURCE_FOLDER/build
     - ls $SOURCE_FOLDER/build/garbus-backend.war
   rules:
-    - if: '$CI_COMMIT_BRANCH == "dev" || $CI_COMMIT_BRANCH == "master"'
+    - if: '$CI_COMMIT_REF_NAME == "dev" || $CI_COMMIT_REF_NAME == "master"'
 
 test:
   stage: test
@@ -24,7 +24,7 @@ test:
   script:
     - SPRING_PROFILES_ACTIVE=dev gradle test
   rules:
-    - if: '$CI_COMMIT_BRANCH == "dev" || $CI_COMMIT_BRANCH == "master"'
+    - if: '$CI_COMMIT_REF_NAME == "dev" || $CI_COMMIT_REF_NAME == "master"'
 
 deploy:
   stage: deploy
@@ -40,4 +40,4 @@ deploy:
     - scp -pr $SOURCE_FOLDER/* $USER@$HOST:$TARGET_FOLDER/
     - ssh $USER@$HOST "cd $ORCHESTRATION_FOLDER && docker-compose --profile backend up --build -d"
   rules:
-    - if: '$CI_COMMIT_BRANCH == "master"'
+    - if: '$CI_COMMIT_REF_NAME == "master"'
