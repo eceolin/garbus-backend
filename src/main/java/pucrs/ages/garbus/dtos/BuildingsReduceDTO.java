@@ -14,6 +14,10 @@ public class BuildingsReduceDTO {
 
     private String name;
 
+    private double longitude;
+
+    private double latitude;
+
     private Long trashesCount;
 
 }

@@ -79,6 +79,8 @@ ALTER TABLE EVENTS ADD CONSTRAINT FK_TYPE_EVENTS
 CREATE TABLE IF NOT EXISTS BUILDINGS (
                          ID SERIAL PRIMARY KEY,
                          NAME VARCHAR NOT NULL,
+                         LONGITUDE NUMERIC NOT NULL,
+                         LATITUDE NUMERIC NOT NULL,
                          ID_ZONE INTEGER NOT NULL
 );
 
