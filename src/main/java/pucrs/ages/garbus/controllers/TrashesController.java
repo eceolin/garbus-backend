@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pucrs.ages.garbus.dtos.*;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -23,12 +24,9 @@ public interface TrashesController {
     @ApiOperation("Find errors by trash id")
     ResponseEntity<List<TrashesDTO>> findErrorsByTrashId(@NotNull @PathVariable("trashId") String trashId);
 
-    @PostMapping(path = "{trashId}/errors/{typeEventId}/users/{login:.+}")
+    @PostMapping(path = "/send-problem-report")
     @ApiOperation("Find errors by trash id")
-    ResponseEntity<?> insertErrorOnTrash(@NotNull @PathVariable("trashId") Long trashId,
-                                         @NotNull @PathVariable("typeEventId") Long typeEventId,
-                                         @NotNull @PathVariable("login") String userId,
-                                         @RequestBody ErrorRequest errorRequest);
+    ResponseEntity<?> insertErrorOnTrash(@RequestBody @Valid ErrorRequest errorRequest);
 
     @GetMapping("/building/{buildingId}")
     @ApiOperation("Find trashes by building")

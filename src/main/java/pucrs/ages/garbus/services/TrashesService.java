@@ -61,10 +61,10 @@ public class TrashesService {
         trashesRepository.saveAndFlush(trashes);
     }
 
-    public void insertErrorOnTrash(Long trashId, Long typeEventId, String login, ErrorRequest errorRequest) throws Exception {
-        validateInput(typeEventId, errorRequest.getOthers());
-        trashesEventsService.insertErrorOnTrash(trashId, typeEventId, login, errorRequest.getOthers());
-        Optional<Trashes> trashes = findById(trashId);
+    public void insertErrorOnTrash(ErrorRequest errorRequest) {
+        validateInput(errorRequest);
+        trashesEventsService.insertErrorOnTrash(errorRequest.getTrashId(), errorRequest.getTypeEventId(), errorRequest.getLogin(), errorRequest.getOthers());
+        Optional<Trashes> trashes = findById(errorRequest.getTrashId());
         if (trashes.isPresent()) {
             trashes.get()
                     .setTrashesStatus(trashesStatusService.findById(TrashStatusEnum.MANUTENCAO.getId()).get());
@@ -73,9 +73,10 @@ public class TrashesService {
 
     }
 
-    private void validateInput(Long typeEventId, String others) {
-        if((typeEventId == 0 && Objects.isNull(others)) || (typeEventId != 0 && !Objects.isNull(others))) {
-            throw new BadRequestException("Deve ser informado ou tipo do evento, ou texto com descrição do problema 'others', exclusivamente");
+    private void validateInput(ErrorRequest errorRequest) {
+        if(Objects.isNull(errorRequest.getTypeEventId()) && Objects.isNull(errorRequest.getOthers()) ||
+           (!Objects.isNull(errorRequest.getTypeEventId()) && !Objects.isNull(errorRequest.getOthers()))) {
+            throw new BadRequestException(new ErrorResponse("Deve ser informado ou tipo do evento, ou texto com descrição do problema 'others', exclusivamente"));
         }
     }
 
