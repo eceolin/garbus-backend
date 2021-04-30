@@ -159,6 +159,7 @@ CREATE TABLE IF NOT EXISTS TRASHES_EVENTS (
                                  ID_TRASH INTEGER,
                                  ID_USER INTEGER,
                                  OCCUPATION FLOAT,
+                                 OTHERS VARCHAR,
                                  DATE TIMESTAMP NOT NULL
 );
 

@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import pucrs.ages.garbus.dtos.*;
 import pucrs.ages.garbus.entities.Buildings;
 import pucrs.ages.garbus.entities.Trashes;
+import pucrs.ages.garbus.enuns.TrashStatusEnum;
+import pucrs.ages.garbus.excpetion.BadRequestException;
 import pucrs.ages.garbus.mappers.SimplifiedTrashesWithThresholdsMapper;
 import pucrs.ages.garbus.mappers.TrashDetailsMapper;
 import pucrs.ages.garbus.mappers.TrashesMapper;
@@ -15,10 +17,7 @@ import pucrs.ages.garbus.repositories.TrashesThresholdsRepository;
 import pucrs.ages.garbus.repositories.ZonesRepository;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,8 +28,6 @@ public class TrashesService {
     private TrashesEventsService trashesEventsService;
     @Resource
     private TrashesStatusService trashesStatusService;
-    @Value("${id-status.inativo}")
-    private Long ID_STATUS_INATIVO;
     private final TrashesMapper trashMapper;
     private final TrashesRepository trashesRepository;
     private final TrashesThresholdsRepository trashesThresholdsRepository;
@@ -64,13 +61,21 @@ public class TrashesService {
         trashesRepository.saveAndFlush(trashes);
     }
 
-    public void insertErrorOnTrash(Long trashId, Long typeEventId, String login) throws Exception {
-        trashesEventsService.insertErrorOnTrash(trashId, typeEventId, login);
+    public void insertErrorOnTrash(Long trashId, Long typeEventId, String login, ErrorRequest errorRequest) throws Exception {
+        validateInput(typeEventId, errorRequest.getOthers());
+        trashesEventsService.insertErrorOnTrash(trashId, typeEventId, login, errorRequest.getOthers());
         Optional<Trashes> trashes = findById(trashId);
-        if (!trashes.isEmpty()) {
+        if (trashes.isPresent()) {
             trashes.get()
-                    .setTrashesStatus(trashesStatusService.findById(ID_STATUS_INATIVO).get());
+                    .setTrashesStatus(trashesStatusService.findById(TrashStatusEnum.MANUTENCAO.getId()).get());
             updateStatus(trashes.get());
+        }
+
+    }
+
+    private void validateInput(Long typeEventId, String others) {
+        if((typeEventId == 0 && Objects.isNull(others)) || (typeEventId != 0 && !Objects.isNull(others))) {
+            throw new BadRequestException("Deve ser informado ou tipo do evento, ou texto com descrição do problema 'others', exclusivamente");
         }
     }
 
