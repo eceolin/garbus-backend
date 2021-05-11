@@ -52,6 +52,9 @@ public class ZonesControllerImpl implements ZonesController {
         } catch (ParseException e) {
             e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(), NO_CONTENT);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), INTERNAL_SERVER_ERROR);
         }
     }
 
