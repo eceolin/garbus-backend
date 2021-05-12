@@ -36,4 +36,8 @@ public interface TrashesController {
     @ApiOperation("Find trash by trashId")
     ResponseEntity<TrashDetailsDTO> findTrashById(Long id);
 
+    @GetMapping("/status/{statusId}")
+    @ApiOperation("Find all trashes by status id")
+    ResponseEntity<TrashesListDTO> findAllByStatus(@NotNull @PathVariable("statusId") Long statusId);
+
 }
