@@ -64,6 +64,12 @@ public class TrashesControllerImpl implements TrashesController {
     public ResponseEntity<TrashDetailsDTO> findTrashById(@PathVariable Long trashId) {
         return new ResponseEntity<>(trashesService.findTrashById(trashId), OK);
     }
+
+    @Override
+    public ResponseEntity<TrashesListDTO> findAllByStatus(Long statusId) {
+        return new ResponseEntity<>(trashesService.findAllByStatusId(statusId), OK);
+    }
+
 }
 
 

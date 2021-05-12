@@ -29,4 +29,9 @@ public class TrashesSql {
 
     public final static String findTrashByTrashIdSql =
             "SELECT * FROM TRASHES WHERE TRASHES.ID = :trashId";
+
+    public final static String findTrashByStatusId =
+            "SELECT T.ID, T.BRAND, T.DESCRIPTION, T.CAPACITY, T.OCCUPATION, T.LONGITUDE, T.LATITUDE, T.ID_STATUS, T.ID_TYPE, T.ID_BUILDING, T.ID_ZONE "
+                    + "FROM TRASHES T "
+                    + "WHERE T.ID_STATUS = :statusId";
 }

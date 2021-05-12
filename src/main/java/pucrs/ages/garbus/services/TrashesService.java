@@ -38,11 +38,7 @@ public class TrashesService {
 
 
     public TrashesListDTO findAll() {
-        List<Trashes> trashesList = new ArrayList<>(trashesRepository.findAll());
-         return TrashesListDTO.builder()
-                .trashes(trashesOutBuildings(trashesList))
-                .buildings(buildingsReduceDTOS(countAndTrashesInBuildings(trashesList)))
-                .build();
+        return trasheInsideBuildingsAndZones(trashesRepository.findAll());
     }
 
     public TrashesDTO findByIdDTO(Long id) {
@@ -95,6 +91,10 @@ public class TrashesService {
         return trashDetailsMapper.mapToDTO(trash, localDescription, trashesThresholdsRepository.findThresholdsByTrashId(trashId));
     }
 
+    public TrashesListDTO findAllByStatusId(Long statusId) {
+        return trasheInsideBuildingsAndZones(trashesRepository.findTrashByStatusId(statusId));
+    }
+
     private Map<Buildings, Long> countAndTrashesInBuildings(List<Trashes> trashesList) {
         return trashesList.stream()
                 .filter(building -> building.getBuildings() != null)
@@ -122,5 +122,12 @@ public class TrashesService {
                 .filter(building -> building.getBuildings() == null)
                 .collect(Collectors.toList());
         return simplifiedTrashesWithThresholdsMapper.mapToDTO(trashesList, trashesThresholdsRepository.findAllThresholds());
+    }
+
+    private TrashesListDTO trasheInsideBuildingsAndZones(List<Trashes> trashesList) {
+        return TrashesListDTO.builder()
+                .trashes(trashesOutBuildings(trashesList))
+                .buildings(buildingsReduceDTOS(countAndTrashesInBuildings(trashesList)))
+                .build();
     }
 }
