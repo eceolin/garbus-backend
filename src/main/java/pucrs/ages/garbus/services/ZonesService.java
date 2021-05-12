@@ -35,5 +35,5 @@ public class ZonesService {
     public void deleteById(Long id) throws ParseException {
         repository.deleteById(id);
     }
-
+    
 }

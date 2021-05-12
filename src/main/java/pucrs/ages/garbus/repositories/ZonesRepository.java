@@ -15,4 +15,16 @@ public interface ZonesRepository extends JpaRepository<Zones, Long> {
             nativeQuery = true
     )
     String findZoneDescriptionByTrashId(@Param("zoneIdFromTrash") Long zoneIdFromTrash);
+
+    @Query(
+            value = ZonesSql.countTrashesByIdZone,
+            nativeQuery = true
+    )
+    int countTrashesByIdZone(@Param("zoneId") Long zoneId);
+
+    @Query(
+            value = ZonesSql.countBuildingsByIdZone,
+            nativeQuery = true
+    )
+    int countBuildingsByIdZone(@Param("zoneId") Long zoneId);
 }
