@@ -11,6 +11,7 @@ server:
 
 jwt:
   secret: secretkey123
+  token-validity: 18000
 
 spring:
   banner:
