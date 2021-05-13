@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import pucrs.ages.garbus.Utils.JWTUtility;
 import pucrs.ages.garbus.dtos.JwtRequest;
 import pucrs.ages.garbus.dtos.JwtResponse;
+import pucrs.ages.garbus.dtos.PasswordRecoveryResponse;
 import pucrs.ages.garbus.entities.Users;
 import pucrs.ages.garbus.repositories.UsersRepository;
 
@@ -50,5 +51,10 @@ public class UsersAuthenticationService {
         final String token = jwtUtility.generateToken(userDetails, user);
 
         return new JwtResponse(token);
+    }
+
+    public PasswordRecoveryResponse recoveryPassword(String login) {
+
+        return null;
     }
 }
