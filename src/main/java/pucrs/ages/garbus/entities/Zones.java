@@ -33,7 +33,4 @@ public class Zones {
     @Column(name = "LATITUDE")
     private double latitude;
 
-    private int buildingsCount;
-
-    private int trashesCount;
 }

@@ -4,15 +4,17 @@ public class ZonesSql {
     public final static String findZoneDescriptionByTrashIdSql =
             "SELECT DESCRIPTION FROM ZONES WHERE ZONES.ID = :zoneIdFromTrash";
 
-    public final static String countTrashesByIdZone = "" +
-            "SELECT COUNT(T.*)\n" +
-            "FROM TRASHES T\n" +
-            "JOIN ZONES Z\n" +
-            "WHERE Z.ID = :zoneId";
+    public final static String countTrashesByIdZone = ""
+            + "SELECT COUNT(T.*) "
+            + "FROM TRASHES T "
+            + "JOIN ZONES Z "
+            + "ON Z.ID = T.ID_ZONE "
+            + "WHERE T.ID_ZONE = :zoneId";
 
-    public final static String countBuildingsByIdZone = "" +
-            "SELECT COUNT(B.*)\n" +
-            "FROM BUILDINGS B\n" +
-            "JOIN ZONES Z\n" +
-            "WHERE Z.ID = :zoneId";
+    public final static String countBuildingsByIdZone = ""
+            + "SELECT COUNT(B.*) "
+            + "FROM BUILDINGS B "
+            + "JOIN ZONES Z "
+            + "ON Z.ID = B.ID_ZONE "
+            + "WHERE B.ID_ZONE = :zoneId";
 }

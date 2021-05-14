@@ -19,17 +19,21 @@ public class ZonesService {
 
     public List<ZonesDTO> findAll() {
         List<Zones> zones = repository.findAll();
-        zones.stream()
+        List<ZonesDTO> zonesDTOS = mapper.entityToDTO(zones);
+        zonesDTOS.stream()
                 .forEach(zone -> {
-                    zone.setTrashesCount(countTrashesByIdZone(zone.getId()));
-                    zone.setBuildingsCount(countBuildingsByIdZone(zone.getId()));
+                    insertCounts(zone);
                 });
-        return mapper.entityToDTO(zones);
+        return zonesDTOS;
     }
 
     public ZonesDTO findById(Long id) {
         Zones source = repository.findById(id).orElse(null);
-        return mapper.entityToDTO(source);
+        ZonesDTO zonesDTO = mapper.entityToDTO(source);
+        if (source != null) {
+            zonesDTO = insertCounts(zonesDTO);
+        }
+        return zonesDTO;
     }
 
     public void save(final ZonesDTO zonesDTO) throws ParseException {
@@ -47,6 +51,12 @@ public class ZonesService {
 
     private int countTrashesByIdZone(Long zoneId) {
         return repository.countTrashesByIdZone(zoneId);
+    }
+
+    private ZonesDTO insertCounts(ZonesDTO zones) {
+        zones.setBuildingsCount(countBuildingsByIdZone(zones.getId()));
+        zones.setTrashesCount(countTrashesByIdZone(zones.getId()));
+        return zones;
     }
     
 }
