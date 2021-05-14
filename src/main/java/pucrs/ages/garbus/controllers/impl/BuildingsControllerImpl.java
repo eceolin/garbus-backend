@@ -60,7 +60,7 @@ public class BuildingsControllerImpl implements BuildingsController {
 
     private ResponseEntity getResponseEntity(BuildingsDTO buildingsDTO) {
         try {
-            buildingsService.save(buildingsDTO);
+            buildingsDTO = buildingsService.save(buildingsDTO);
             return new ResponseEntity<>(buildingsDTO, CREATED);
         } catch (ParseException e) {
             e.printStackTrace();

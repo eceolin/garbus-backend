@@ -34,10 +34,10 @@ public class BuildingsService {
         return buildingsDTO;
     }
 
-    public void save(final BuildingsDTO buildingsDTO) throws ParseException {
+    public BuildingsDTO save(final BuildingsDTO buildingsDTO) throws ParseException {
         Buildings buildings = maptools.mapearDTO(buildingsDTO);
         buildings.setZones(zonesMapper.dtoToEntity(zonesService.findById(buildingsDTO.getZones().getId())));
-        repository.saveAndFlush(buildings);
+        return maptools.mapear(repository.saveAndFlush(buildings));
     }
 
     public void deleteById(Long id) throws ParseException {
