@@ -74,6 +74,9 @@ dependencies {
 	if (activeProfile == 'prod') {
 		implementation 'org.springframework.cloud:spring-cloud-starter-vault-config'
 	}
+
+	//Adding Email
+	compile 'javax.mail:mail:1.4.7'
 }
 
 test {

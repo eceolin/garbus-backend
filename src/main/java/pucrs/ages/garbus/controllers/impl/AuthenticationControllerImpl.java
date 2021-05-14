@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import pucrs.ages.garbus.controllers.AuthenticationController;
 import pucrs.ages.garbus.dtos.JwtRequest;
 import pucrs.ages.garbus.dtos.JwtResponse;
+import pucrs.ages.garbus.dtos.PasswordRecoveryRequest;
 import pucrs.ages.garbus.dtos.PasswordRecoveryResponse;
 import pucrs.ages.garbus.services.UsersAuthenticationService;
 
@@ -26,7 +27,7 @@ public class AuthenticationControllerImpl implements AuthenticationController {
     }
 
     @Override
-    public ResponseEntity<PasswordRecoveryResponse> recovery(String login) throws Exception {
+    public ResponseEntity<PasswordRecoveryResponse> recovery(PasswordRecoveryRequest login) throws Exception {
         return new ResponseEntity<>(usersAuthenticationService.recoveryPassword(login), OK);
     }
 }

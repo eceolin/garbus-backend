@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import pucrs.ages.garbus.Utils.JWTUtility;
 import pucrs.ages.garbus.dtos.JwtRequest;
 import pucrs.ages.garbus.dtos.JwtResponse;
+import pucrs.ages.garbus.dtos.PasswordRecoveryRequest;
 import pucrs.ages.garbus.dtos.PasswordRecoveryResponse;
 import pucrs.ages.garbus.entities.Users;
 import pucrs.ages.garbus.repositories.UsersRepository;
@@ -27,7 +28,10 @@ public class UsersAuthenticationService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    private final UsersRepository usersRepository;
+    @Autowired
+    private EmailService emailService;
+
+        private final UsersRepository usersRepository;
 
     public JwtResponse authenticateUser(JwtRequest jwtRequest) throws Exception {
 
@@ -53,8 +57,17 @@ public class UsersAuthenticationService {
         return new JwtResponse(token);
     }
 
-    public PasswordRecoveryResponse recoveryPassword(String login) {
-
-        return null;
+    public PasswordRecoveryResponse recoveryPassword(PasswordRecoveryRequest login) {
+        Users recovery = usersRepository.findByLoginEquals(login.getLogin());
+        PasswordRecoveryResponse passwordRecoveryResponse = new PasswordRecoveryResponse();
+        if (recovery != null && !recovery.getEmail().isEmpty()) {
+            passwordRecoveryResponse.setHasEmail(true);
+            emailService.sendTo(recovery.getEmail(),"Recuperação Senha", "Favor efetuar reset de senha utilizando link abaixo.");
+            passwordRecoveryResponse.setEmailSent(true);
+            return passwordRecoveryResponse;
+        }
+        passwordRecoveryResponse.setHasEmail(false);
+        passwordRecoveryResponse.setEmailSent(false);
+        return passwordRecoveryResponse;
     }
 }
