@@ -19,6 +19,11 @@ public class ZonesService {
 
     public List<ZonesDTO> findAll() {
         List<Zones> zones = repository.findAll();
+        zones.stream()
+                .forEach(zone -> {
+                    zone.setTrashesCount(countTrashesByIdZone(zone.getId()));
+                    zone.setBuildingsCount(countBuildingsByIdZone(zone.getId()));
+                });
         return mapper.entityToDTO(zones);
     }
 
@@ -34,6 +39,14 @@ public class ZonesService {
 
     public void deleteById(Long id) throws ParseException {
         repository.deleteById(id);
+    }
+
+    private int countBuildingsByIdZone(Long zoneId) {
+        return repository.countBuildingsByIdZone(zoneId);
+    }
+
+    private int countTrashesByIdZone(Long zoneId) {
+        return repository.countTrashesByIdZone(zoneId);
     }
     
 }
