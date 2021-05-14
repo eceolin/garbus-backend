@@ -18,12 +18,8 @@ public class ZonesService {
     private final ZonesRepository repository;
 
     public List<ZonesDTO> findAll() {
-        List<Zones> zones = repository.findAll();
-        List<ZonesDTO> zonesDTOS = mapper.entityToDTO(zones);
-        zonesDTOS.stream()
-                .forEach(zone -> {
-                    insertCounts(zone);
-                });
+        List<ZonesDTO> zonesDTOS = mapper.entityToDTO(repository.findAll());
+        zonesDTOS.forEach(this::insertCounts);
         return zonesDTOS;
     }
 
@@ -31,7 +27,7 @@ public class ZonesService {
         Zones source = repository.findById(id).orElse(null);
         ZonesDTO zonesDTO = mapper.entityToDTO(source);
         if (source != null) {
-            zonesDTO = insertCounts(zonesDTO);
+            insertCounts(zonesDTO);
         }
         return zonesDTO;
     }
@@ -53,10 +49,9 @@ public class ZonesService {
         return repository.countTrashesByIdZone(zoneId);
     }
 
-    private ZonesDTO insertCounts(ZonesDTO zones) {
+    private void insertCounts(ZonesDTO zones) {
         zones.setBuildingsCount(countBuildingsByIdZone(zones.getId()));
         zones.setTrashesCount(countTrashesByIdZone(zones.getId()));
-        return zones;
     }
     
 }
