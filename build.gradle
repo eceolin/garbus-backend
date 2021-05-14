@@ -49,6 +49,10 @@ dependencies {
 	}
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc', version: '2.4.2'
 
+	//Adding JWT
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'io.jsonwebtoken:jjwt:0.9.1'
+	implementation 'javax.xml.bind:jaxb-api'
 
 	// Adding Java Persistence API
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'

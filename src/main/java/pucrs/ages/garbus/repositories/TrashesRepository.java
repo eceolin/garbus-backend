@@ -31,4 +31,11 @@ public interface TrashesRepository extends JpaRepository<Trashes, Long> {
             nativeQuery = true
     )
     Trashes findTrashByTrashId(@Param("trashId") Long trashId);
+
+    @Query(
+            value = TrashesSql.findTrashByStatusId,
+            nativeQuery = true
+    )
+    List<Trashes> findTrashByStatusId(@Param("statusId") Long statusId);
+
 }

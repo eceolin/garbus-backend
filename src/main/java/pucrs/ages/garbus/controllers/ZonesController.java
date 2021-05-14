@@ -18,7 +18,7 @@ public interface ZonesController {
 
     @GetMapping("/{id}")
     @ApiOperation("Find zone by id")
-    ResponseEntity<ZonesDTO> findAllById(@PathParam("id") Long id);
+    ResponseEntity<ZonesDTO> findAllById(@PathVariable("id") @NotNull Long id);
 
     @PostMapping
     @ApiOperation("Create Zone")
@@ -30,6 +30,6 @@ public interface ZonesController {
 
     @DeleteMapping("/{id}")
     @ApiOperation("Delete Zone By Id")
-    ResponseEntity deleteZone(@PathParam("id") Long id);
+    ResponseEntity deleteZone(@PathVariable("id") @NotNull Long id);
 
 }
