@@ -9,6 +9,9 @@ server:
   servlet:
     context-path: /api/garbus
 
+jwt:
+  secret: ${JWT_SECRET_KEY}
+
 spring:
   banner:
     location: ./banner.txt

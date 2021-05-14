@@ -1,22 +1,23 @@
 package pucrs.ages.garbus.dtos;
 
 import lombok.*;
-import pucrs.ages.garbus.entities.Zones;
 
+import javax.validation.constraints.NotEmpty;
+
+//Lombok
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class BuildingsDTO {
+public class ZonesDTO {
 
     private long id;
 
+    @NotEmpty
     private String name;
 
-    private Zones zones;
-
-    private Long trashesCount;
+    private String description;
 
     private double longitude;
 
