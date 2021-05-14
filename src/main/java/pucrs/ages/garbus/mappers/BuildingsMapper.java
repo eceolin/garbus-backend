@@ -41,5 +41,12 @@ public class BuildingsMapper {
                 .map(entity -> modelMapper.map(entity, BuildingsDTO.class))
                 .collect(Collectors.toList());
     }
+
+
+    public BuildingsDTO entityToDTO(Buildings buildings) {
+        return modelMapper.map(buildings, BuildingsDTO.class);
+    }
+
+    
 }
 
