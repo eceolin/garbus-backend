@@ -36,15 +36,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-//        http.csrf().disable().authorizeRequests()
-//                .antMatchers("/login", "/h2/**", "/csrf", "/v2/api-docs", "/configuration/ui",
-//                        "/configuration/security", "/swagger-resources", "/swagger-resources/configuration/**",
-//                        "/swagger-ui.html", "/webjars/springfox-swagger-ui/**", "/swagger-ui.html")
-//                .permitAll().anyRequest().authenticated().and().sessionManagement()
-//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-//        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-//        http.headers().frameOptions().sameOrigin();
-
-        http.authorizeRequests().anyRequest().permitAll();
+        http.csrf().disable().authorizeRequests()
+                .antMatchers("/login", "/h2/**", "/csrf", "/v2/api-docs", "/configuration/ui",
+                        "/configuration/security", "/swagger-resources", "/swagger-resources/configuration/**",
+                        "/swagger-ui.html", "/webjars/springfox-swagger-ui/**", "/swagger-ui.html")
+                .permitAll().anyRequest().authenticated().and().sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+        http.headers().frameOptions().sameOrigin();
     }
 }
