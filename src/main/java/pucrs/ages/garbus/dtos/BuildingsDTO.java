@@ -16,6 +16,8 @@ public class BuildingsDTO {
 
     private Zones zones;
 
+    private Long trashesCount;
+
     private double longitude;
 
     private double latitude;

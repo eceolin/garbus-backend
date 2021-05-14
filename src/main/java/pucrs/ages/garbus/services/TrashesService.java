@@ -1,7 +1,6 @@
 package pucrs.ages.garbus.services;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import pucrs.ages.garbus.dtos.*;
 import pucrs.ages.garbus.entities.Buildings;
@@ -78,6 +77,10 @@ public class TrashesService {
 
     public List<TrashesReduceDTO> findAllByBuildingId(Long buildingId) {
         return simplifiedTrashesWithThresholdsMapper.mapToDTO(trashesRepository.findByBuildingId(buildingId), trashesThresholdsRepository.findAllThresholds());
+    }
+
+    public Long getTrashesCountByBuilding(Long buildingId) {
+        return (long) trashesRepository.findByBuildingId(buildingId).size();
     }
 
     public TrashDetailsDTO findTrashById(Long trashId) {
