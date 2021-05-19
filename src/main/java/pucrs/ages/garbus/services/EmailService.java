@@ -45,7 +45,7 @@ public class EmailService {
             message.setText(text);
             Transport.send(message);
         } catch (MessagingException e) {
-            log.error("Erro ao enviar e-mail para " + recipient + ". Assunto do email: " + subject);
+            log.error("Erro ao enviar e-mail para " + recipient + ". Assunto do email: " + subject, e);
         }
     }
 
