@@ -77,6 +77,9 @@ dependencies {
 
 	//Adding Email
 	compile 'javax.mail:mail:1.4.7'
+
+	implementation group: 'org.passay', name: 'passay', version: '1.6.0'
+
 }
 
 test {

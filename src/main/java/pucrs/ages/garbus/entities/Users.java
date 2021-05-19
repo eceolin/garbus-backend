@@ -39,7 +39,6 @@ public class Users {
     @Column(name = "PASSWORD")
     private String password;
 
-    @NotEmpty
     @Column(name = "BLOCKED")
     private boolean blocked;
 

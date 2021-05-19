@@ -1,6 +1,7 @@
 package pucrs.ages.garbus.services;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -12,13 +13,12 @@ import pucrs.ages.garbus.Utils.JWTUtility;
 import pucrs.ages.garbus.dtos.*;
 import pucrs.ages.garbus.entities.Users;
 import pucrs.ages.garbus.excpetion.NotFoundException;
-import pucrs.ages.garbus.repositories.UsersRepository;
 
-import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UsersAuthenticationService {
@@ -32,11 +32,11 @@ public class UsersAuthenticationService {
     @Autowired
     private EmailService emailService;
 
-        private final UsersRepository usersRepository;
+    private final UsersService usersService;
 
     public JwtResponse authenticateUser(JwtRequest jwtRequest) throws Exception {
 
-        Users user = usersRepository.findByLogin(jwtRequest.getLogin());
+        Users user = usersService.findByLogin(jwtRequest.getLogin());
         if (user == null || !user.getPassword().equals(jwtRequest.getPassword())) {
             throw new BadCredentialsException("Invalid credentials");
         }
@@ -59,12 +59,13 @@ public class UsersAuthenticationService {
     }
 
     public PasswordRecoveryResponse recoveryPassword(String login) {
-        Users user = Optional.ofNullable(usersRepository.findByLoginEquals(login))
+        Users user = Optional.ofNullable(usersService.findByLoginEquals(login))
                 .orElseThrow(() -> new NotFoundException(new ErrorResponse(String.format("Usuário com Login %s não encontrado.", login))));
         PasswordRecoveryResponse passwordRecoveryResponse = new PasswordRecoveryResponse();
-        if (! Objects.isNull(user) && !Objects.isNull(user.getEmail()) && !user.getEmail().isBlank()) {
+        if (!Objects.isNull(user.getEmail()) && !user.getEmail().isBlank()) {
             passwordRecoveryResponse.setHasEmail(true);
-            passwordRecoveryResponse.setEmailSent(emailService.sendTo(user.getEmail(),"Recuperação Senha", "Favor efetuar reset de senha utilizando link abaixo."));
+            String newPassword = usersService.redefinePassword(login);
+            passwordRecoveryResponse.setEmailSent(emailService.sendTo(user.getEmail(),"Recuperação Senha", "Sua nova senha temporária é: " + newPassword));
             return passwordRecoveryResponse;
         }
         passwordRecoveryResponse.setHasEmail(false);
