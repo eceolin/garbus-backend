@@ -33,10 +33,10 @@ public class EmailService {
     @Value("${mail.server.port}")
     private String serverPort;
 
-    @Async
-    public void sendTo(String recipient, String subject, String text) {
-        if (isNull(this.session)) this.initializeSession();
+
+    public boolean sendTo(String recipient, String subject, String text) {
         try {
+            if (isNull(this.session)) this.initializeSession();
             Message message = new MimeMessage(this.session);
             message.setFrom(new InternetAddress(this.username));
             message.setRecipients(Message.RecipientType.TO,
@@ -44,14 +44,11 @@ public class EmailService {
             message.setSubject(subject);
             message.setText(text);
             Transport.send(message);
-        } catch (MessagingException e) {
+            return true;
+        } catch (Exception e) {
             log.error("Erro ao enviar e-mail para " + recipient + ". Assunto do email: " + subject, e);
+            return false;
         }
-    }
-
-    @Async
-    public void sendTo(List<String> recipients, String subject, String text) {
-        recipients.forEach(recipient -> this.sendTo(recipient, subject, text));
     }
 
     private void initializeSession() {

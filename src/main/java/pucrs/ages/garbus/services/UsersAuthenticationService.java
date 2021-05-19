@@ -17,6 +17,7 @@ import pucrs.ages.garbus.entities.Users;
 import pucrs.ages.garbus.repositories.UsersRepository;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -58,12 +59,11 @@ public class UsersAuthenticationService {
     }
 
     public PasswordRecoveryResponse recoveryPassword(PasswordRecoveryRequest login) {
-        Users recovery = usersRepository.findByLoginEquals(login.getLogin());
+        Users user = usersRepository.findByLoginEquals(login.getLogin());
         PasswordRecoveryResponse passwordRecoveryResponse = new PasswordRecoveryResponse();
-        if (recovery != null && !recovery.getEmail().isEmpty()) {
+        if (! Objects.isNull(user) && !Objects.isNull(user.getEmail()) && !user.getEmail().isBlank()) {
             passwordRecoveryResponse.setHasEmail(true);
-            emailService.sendTo(recovery.getEmail(),"Recuperação Senha", "Favor efetuar reset de senha utilizando link abaixo.");
-            passwordRecoveryResponse.setEmailSent(true);
+            passwordRecoveryResponse.setEmailSent(emailService.sendTo(user.getEmail(),"Recuperação Senha", "Favor efetuar reset de senha utilizando link abaixo."));
             return passwordRecoveryResponse;
         }
         passwordRecoveryResponse.setHasEmail(false);
