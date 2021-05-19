@@ -9,15 +9,15 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import pucrs.ages.garbus.Utils.JWTUtility;
-import pucrs.ages.garbus.dtos.JwtRequest;
-import pucrs.ages.garbus.dtos.JwtResponse;
-import pucrs.ages.garbus.dtos.PasswordRecoveryRequest;
-import pucrs.ages.garbus.dtos.PasswordRecoveryResponse;
+import pucrs.ages.garbus.dtos.*;
 import pucrs.ages.garbus.entities.Users;
+import pucrs.ages.garbus.excpetion.NotFoundException;
 import pucrs.ages.garbus.repositories.UsersRepository;
 
+import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -58,8 +58,9 @@ public class UsersAuthenticationService {
         return new JwtResponse(token);
     }
 
-    public PasswordRecoveryResponse recoveryPassword(PasswordRecoveryRequest login) {
-        Users user = usersRepository.findByLoginEquals(login.getLogin());
+    public PasswordRecoveryResponse recoveryPassword(String login) {
+        Users user = Optional.ofNullable(usersRepository.findByLoginEquals(login))
+                .orElseThrow(() -> new NotFoundException(new ErrorResponse(String.format("Usuário com Login %s não encontrado.", login))));
         PasswordRecoveryResponse passwordRecoveryResponse = new PasswordRecoveryResponse();
         if (! Objects.isNull(user) && !Objects.isNull(user.getEmail()) && !user.getEmail().isBlank()) {
             passwordRecoveryResponse.setHasEmail(true);

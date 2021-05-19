@@ -8,11 +8,12 @@ import pucrs.ages.garbus.dtos.JwtRequest;
 import pucrs.ages.garbus.dtos.JwtResponse;
 import pucrs.ages.garbus.dtos.PasswordRecoveryRequest;
 import pucrs.ages.garbus.dtos.PasswordRecoveryResponse;
+import pucrs.ages.garbus.excpetion.NotFoundException;
 import pucrs.ages.garbus.services.UsersAuthenticationService;
 
 import javax.annotation.Resource;
 
-import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,7 +28,13 @@ public class AuthenticationControllerImpl implements AuthenticationController {
     }
 
     @Override
-    public ResponseEntity<PasswordRecoveryResponse> recovery(PasswordRecoveryRequest login) throws Exception {
-        return new ResponseEntity<>(usersAuthenticationService.recoveryPassword(login), OK);
+    public ResponseEntity recovery(PasswordRecoveryRequest login) throws Exception {
+        try {
+            return new ResponseEntity<>(usersAuthenticationService.recoveryPassword(login.getLogin()), OK);
+        } catch (NotFoundException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getError(), NOT_FOUND);
+        }
+
     }
 }
