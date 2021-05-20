@@ -18,7 +18,7 @@ public class TrashDetailsDTO {
 
     private double occupation;
 
-    private TrashesStatus status;
+    private TrashesStatus trashesStatus;
 
     private List<TrashesThresholdDTO> trashesThreshold;
 
