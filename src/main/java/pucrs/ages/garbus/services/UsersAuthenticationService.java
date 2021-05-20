@@ -8,8 +8,10 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pucrs.ages.garbus.Utils.JWTUtility;
+import pucrs.ages.garbus.Utils.PasswordUtil;
 import pucrs.ages.garbus.dtos.*;
 import pucrs.ages.garbus.entities.Users;
 import pucrs.ages.garbus.excpetion.NotFoundException;
@@ -32,7 +34,11 @@ public class UsersAuthenticationService {
     @Autowired
     private EmailService emailService;
 
-    private final UsersService usersService;
+    @Autowired
+    private UsersService usersService;
+
+    @Autowired
+    private PasswordUtil passwordUtil;
 
     public JwtResponse authenticateUser(JwtRequest jwtRequest) throws Exception {
 
@@ -64,12 +70,21 @@ public class UsersAuthenticationService {
         PasswordRecoveryResponse passwordRecoveryResponse = new PasswordRecoveryResponse();
         if (!Objects.isNull(user.getEmail()) && !user.getEmail().isBlank()) {
             passwordRecoveryResponse.setHasEmail(true);
-            String newPassword = usersService.redefinePassword(login);
+            String newPassword = redefinePassword(login);
             passwordRecoveryResponse.setEmailSent(emailService.sendTo(user.getEmail(),"Recuperação Senha", "Sua nova senha temporária é: " + newPassword));
             return passwordRecoveryResponse;
         }
         passwordRecoveryResponse.setHasEmail(false);
         passwordRecoveryResponse.setEmailSent(false);
         return passwordRecoveryResponse;
+    }
+
+    public String redefinePassword(String login) {
+        Users user = usersService.findByLogin(login);
+        String newPassword = passwordUtil.generatePassayPassword();
+        user.setPassword(passwordUtil.encode(newPassword));
+        usersService.save(user);
+
+        return newPassword;
     }
 }

@@ -4,12 +4,21 @@ import org.passay.CharacterData;
 import org.passay.CharacterRule;
 import org.passay.EnglishCharacterData;
 import org.passay.PasswordGenerator;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import static org.passay.RepeatCharactersRule.ERROR_CODE;
 
 @Component
-public class PasswordGeneratorUtil {
+public class PasswordUtil {
+
+    private final PasswordEncoder passwordEncoder;
+
+    public PasswordUtil(@Qualifier("encoder") PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
+
     public String generatePassayPassword() {
         PasswordGenerator gen = new PasswordGenerator();
         CharacterData lowerCaseChars = EnglishCharacterData.LowerCase;
@@ -39,5 +48,9 @@ public class PasswordGeneratorUtil {
         String password = gen.generatePassword(8, splCharRule, lowerCaseRule,
                 upperCaseRule, digitRule);
         return password;
+    }
+
+    public String encode(String password) {
+        return passwordEncoder.encode(password);
     }
 }
