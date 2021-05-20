@@ -9,7 +9,6 @@ import pucrs.ages.garbus.dtos.*;
 import javax.validation.Valid;
 
 public interface AuthenticationController {
-
     @PostMapping("/login")
     @ApiOperation("User authentication")
     ResponseEntity<JwtResponse> authenticate(@RequestBody @Valid JwtRequest jwtRequest) throws Exception;

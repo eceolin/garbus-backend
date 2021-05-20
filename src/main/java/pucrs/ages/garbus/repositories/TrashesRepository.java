@@ -11,9 +11,6 @@ import java.util.List;
 
 @Repository
 public interface TrashesRepository extends JpaRepository<Trashes, Long> {
-
-    List<Trashes> findByZonesId(Long zoneId);
-
     @Query(
             value = TrashesSql.findByZonesIdAndBuildingsInZonesIdSQL,
             nativeQuery = true
@@ -30,12 +27,12 @@ public interface TrashesRepository extends JpaRepository<Trashes, Long> {
             value = TrashesSql.findTrashByTrashIdSql,
             nativeQuery = true
     )
-    Trashes findTrashByTrashId(@Param("trashId") Long trashId);
+    Trashes findByTrashId(@Param("trashId") Long trashId);
 
     @Query(
             value = TrashesSql.findTrashByStatusId,
             nativeQuery = true
     )
-    List<Trashes> findTrashByStatusId(@Param("statusId") Long statusId);
+    List<Trashes> findByStatusId(@Param("statusId") Long statusId);
 
 }
