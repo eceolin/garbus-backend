@@ -1,6 +1,7 @@
 package pucrs.ages.garbus.dtos;
 
 import lombok.*;
+import pucrs.ages.garbus.entities.TrashesStatus;
 
 import java.util.List;
 
@@ -16,6 +17,8 @@ public class TrashDetailsDTO {
     private double capacity;
 
     private double occupation;
+
+    private TrashesStatus status;
 
     private List<TrashesThresholdDTO> trashesThreshold;
 
