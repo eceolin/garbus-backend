@@ -17,7 +17,7 @@ public interface TrashesController {
     ResponseEntity<TrashesListDTO> findAll();
 
     @GetMapping("/zone/{zoneId}")
-    @ApiOperation("Find all on zone")
+    @ApiOperation("Find all trashes on zone")
     ResponseEntity<List<TrashesDTO>> findAllByZone(Long id);
 
     @GetMapping(path = "{trashId}/errors")
@@ -25,14 +25,14 @@ public interface TrashesController {
     ResponseEntity<List<TrashesDTO>> findErrorsByTrashId(@NotNull @PathVariable("trashId") String trashId);
 
     @PostMapping(path = "/send-problem-report")
-    @ApiOperation("Find errors by trash id")
-    ResponseEntity<?> insertErrorOnTrash(@RequestBody @Valid ErrorRequest errorRequest);
+    @ApiOperation("Send problem report")
+    ResponseEntity<?> insertErrorInTrash(@RequestBody @Valid ErrorRequest errorRequest);
 
     @GetMapping("/building/{buildingId}")
     @ApiOperation("Find trashes by building")
     ResponseEntity<List<TrashesReduceDTO>> findAllByBuilding(Long id);
 
-    @GetMapping("/trash/{trashId}")
+    @GetMapping("/{trashId}")
     @ApiOperation("Find trash by trashId")
     ResponseEntity<TrashDetailsDTO> findTrashById(Long id);
 
