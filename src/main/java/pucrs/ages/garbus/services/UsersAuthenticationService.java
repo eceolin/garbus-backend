@@ -8,7 +8,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pucrs.ages.garbus.Utils.JWTUtility;
 import pucrs.ages.garbus.Utils.PasswordUtil;
@@ -71,12 +70,18 @@ public class UsersAuthenticationService {
         if (!Objects.isNull(user.getEmail()) && !user.getEmail().isBlank()) {
             passwordRecoveryResponse.setHasEmail(true);
             String newPassword = redefinePassword(login);
-            passwordRecoveryResponse.setEmailSent(emailService.sendTo(user.getEmail(),"Recuperação Senha", "Sua nova senha temporária é: " + newPassword));
+            sendPasswordRecoveryMail(user, newPassword);
+            passwordRecoveryResponse.setEmailSent(true);
             return passwordRecoveryResponse;
         }
         passwordRecoveryResponse.setHasEmail(false);
         passwordRecoveryResponse.setEmailSent(false);
         return passwordRecoveryResponse;
+    }
+
+
+    private void sendPasswordRecoveryMail(Users user, String newPassword) {
+        emailService.sendTo(user.getEmail(),"Recuperação Senha", "Sua nova senha temporária é: " + newPassword);
     }
 
     public String redefinePassword(String login) {

@@ -33,8 +33,8 @@ public class EmailService {
     @Value("${mail.server.port}")
     private String serverPort;
 
-
-    public boolean sendTo(String recipient, String subject, String text) {
+    @Async
+    public void sendTo(String recipient, String subject, String text) {
         try {
             if (isNull(this.session)) this.initializeSession();
             Message message = new MimeMessage(this.session);
@@ -44,10 +44,8 @@ public class EmailService {
             message.setSubject(subject);
             message.setText(text);
             Transport.send(message);
-            return true;
         } catch (Exception e) {
             log.error("Erro ao enviar e-mail para " + recipient + ". Assunto do email: " + subject, e);
-            return false;
         }
     }
 
