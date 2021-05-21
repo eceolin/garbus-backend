@@ -85,10 +85,10 @@ INSERT INTO BUILDINGS (NAME, ID_ZONE, LONGITUDE, LATITUDE)
 VALUES ('Prédio 6', 3, -51.17442317645368, -30.05816308937127);
 
 INSERT INTO USERS (EMAIL, NAME, LOGIN, PASSWORD, DT_REGISTER, ID_PROFILE)
-VALUES ('ggfdo7@gmail.com', 'Usuario Default Operador', 'garbus', 'garbus', CURRENT_TIMESTAMP, 1);
+VALUES ('projetogarbus@gmail.com', 'Usuario Default Operador', 'garbus', 'garbus', CURRENT_TIMESTAMP, 1);
 
 INSERT INTO USERS (EMAIL, NAME, LOGIN, PASSWORD, DT_REGISTER, ID_PROFILE)
-VALUES ('admin@admin.com.br', 'Usuario Gestor Admin', 'admin', 'admin', CURRENT_TIMESTAMP, 2);
+VALUES ('projetogarbus@gmail.com', 'Usuario Gestor Admin', 'admin', 'admin', CURRENT_TIMESTAMP, 2);
 
 INSERT INTO USER_ZONE (ID_USER, ID_ZONE)
 VALUES (1, 1);
