@@ -40,4 +40,8 @@ public class TypesEventsService {
     public char statusError() {
         return STATUS_ERROR;
     }
+
+    public char statusActive() {
+        return STATUS_ERROR;
+    }
 }

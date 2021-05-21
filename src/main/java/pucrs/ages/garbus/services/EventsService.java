@@ -32,4 +32,8 @@ public class EventsService {
         return eventsRepository.findEventsByProblemStatusEqualsAndTypesEventsId(typesEventsService.statusError(), id);
     }
 
+    public Events teste(Long id) {
+        return eventsRepository.findEventsByTypesEventsId(id);
+    }
+
 }

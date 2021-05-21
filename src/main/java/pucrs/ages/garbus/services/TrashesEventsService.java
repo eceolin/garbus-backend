@@ -4,14 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import pucrs.ages.garbus.dtos.ErrorResponse;
-import pucrs.ages.garbus.entities.Events;
-import pucrs.ages.garbus.entities.Trashes;
-import pucrs.ages.garbus.entities.TrashesEvents;
-import pucrs.ages.garbus.entities.Users;
+import pucrs.ages.garbus.entities.*;
 import pucrs.ages.garbus.enuns.TrashStatusEnum;
 import pucrs.ages.garbus.excpetion.BadRequestException;
 import pucrs.ages.garbus.excpetion.NotFoundException;
 import pucrs.ages.garbus.repositories.TrashesEventsRepository;
+import pucrs.ages.garbus.repositories.TrashesRepository;
+import pucrs.ages.garbus.repositories.TrashesStatusRepository;
 
 import javax.annotation.Resource;
 import java.util.Calendar;
@@ -52,5 +51,7 @@ public class TrashesEventsService {
                 .build());
 
     }
+
+
 
 }

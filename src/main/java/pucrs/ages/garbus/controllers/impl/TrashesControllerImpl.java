@@ -11,6 +11,7 @@ import pucrs.ages.garbus.excpetion.NotFoundException;
 import pucrs.ages.garbus.services.TrashesService;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.*;
@@ -53,6 +54,12 @@ public class TrashesControllerImpl implements TrashesController {
             e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(), INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @Override
+    public ResponseEntity<?> updateStatus(@Valid ErrorRequest errorRequest) {
+        trashesService.updateStatusToActive(errorRequest);
+        return new ResponseEntity<>("Lixeira agora está ativa!", CREATED);
     }
 
     @Override

@@ -5,15 +5,15 @@ import org.springframework.stereotype.Service;
 import pucrs.ages.garbus.dtos.*;
 import pucrs.ages.garbus.entities.Buildings;
 import pucrs.ages.garbus.entities.Trashes;
+import pucrs.ages.garbus.entities.TrashesStatus;
+import pucrs.ages.garbus.entities.Users;
 import pucrs.ages.garbus.enuns.TrashStatusEnum;
 import pucrs.ages.garbus.excpetion.BadRequestException;
+import pucrs.ages.garbus.excpetion.NotFoundException;
 import pucrs.ages.garbus.mappers.SimplifiedTrashesWithThresholdsMapper;
 import pucrs.ages.garbus.mappers.TrashDetailsMapper;
 import pucrs.ages.garbus.mappers.TrashesMapper;
-import pucrs.ages.garbus.repositories.BuildingsRepository;
-import pucrs.ages.garbus.repositories.TrashesRepository;
-import pucrs.ages.garbus.repositories.TrashesThresholdsRepository;
-import pucrs.ages.garbus.repositories.ZonesRepository;
+import pucrs.ages.garbus.repositories.*;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -29,6 +29,7 @@ public class TrashesService {
     private TrashesStatusService trashesStatusService;
     private final TrashesMapper trashMapper;
     private final TrashesRepository trashesRepository;
+    private final TrashesStatusRepository trashesStatusRepository;
     private final TrashesThresholdsRepository trashesThresholdsRepository;
     private final ZonesRepository zonesRepository;
     private final BuildingsRepository buildingsRepository;
@@ -132,5 +133,14 @@ public class TrashesService {
                 .trashes(trashesOutBuildings(trashesList))
                 .buildings(buildingsReduceDTOS(countAndTrashesInBuildings(trashesList)))
                 .build();
+    }
+
+    public void updateStatusToActive(ErrorRequest errorRequest) throws NotFoundException {
+        Trashes trashes = this.findById(errorRequest.getTrashId())
+                .orElseThrow(() -> new NotFoundException(new ErrorResponse("Lixeira não encontrada para o id " + errorRequest.getTrashId())));
+        TrashesStatus trashesStatus = trashesStatusRepository.findById(errorRequest.getTypeEventId())
+                .orElseThrow(() -> new NotFoundException(new ErrorResponse("Evento não encontrado para o id " + errorRequest.getTypeEventId())));
+        trashes.setTrashesStatus(trashesStatus);
+        trashesRepository.save(trashes);
     }
 }
