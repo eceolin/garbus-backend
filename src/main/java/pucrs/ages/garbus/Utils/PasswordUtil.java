@@ -13,12 +13,6 @@ import static org.passay.RepeatCharactersRule.ERROR_CODE;
 @Component
 public class PasswordUtil {
 
-    private final PasswordEncoder passwordEncoder;
-
-    public PasswordUtil(@Qualifier("encoder") PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
-    }
-
     public String generatePassayPassword() {
         PasswordGenerator gen = new PasswordGenerator();
         CharacterData lowerCaseChars = EnglishCharacterData.LowerCase;
@@ -48,9 +42,5 @@ public class PasswordUtil {
         String password = gen.generatePassword(8, splCharRule, lowerCaseRule,
                 upperCaseRule, digitRule);
         return password;
-    }
-
-    public String encode(String password) {
-        return passwordEncoder.encode(password);
     }
 }

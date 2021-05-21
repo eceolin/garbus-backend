@@ -33,7 +33,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(usersService).passwordEncoder(encoder());
+        auth.userDetailsService(usersService);
     }
 
     @Override
@@ -56,10 +56,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //        http.authorizeRequests().anyRequest().permitAll();
     }
 
-    @Bean("encoder")
-    public PasswordEncoder encoder() {
-        return new BCryptPasswordEncoder(12);
-    }
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {

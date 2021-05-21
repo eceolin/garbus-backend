@@ -87,7 +87,7 @@ public class UsersAuthenticationService {
     public String redefinePassword(String login) {
         Users user = usersService.findByLogin(login);
         String newPassword = passwordUtil.generatePassayPassword();
-        user.setPassword(passwordUtil.encode(newPassword));
+        user.setPassword(newPassword);
         usersService.save(user);
 
         return newPassword;
