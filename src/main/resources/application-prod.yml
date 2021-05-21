@@ -38,3 +38,11 @@ spring:
 events:
   problem_status:
     error: E
+
+mail:
+  sender:
+    username: ${JWT_SECRET_KEY}
+    password: ${MAIL_PASSWORD}
+  server:
+    host: ${MAIL_HOST}
+    port: ${PORT_HOST}
