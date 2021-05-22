@@ -41,7 +41,7 @@ events:
 
 mail:
   sender:
-    username: ${JWT_SECRET_KEY}
+    username: ${MAIL_USERNAME}
     password: ${MAIL_PASSWORD}
   server:
     host: ${MAIL_HOST}
