@@ -45,3 +45,11 @@ spring:
 events:
   problem_status:
     error: E
+
+mail:
+  sender:
+    username: projetogarbus@gmail.com
+    password:
+  server:
+    host: smtp.gmail.com
+    port: 587

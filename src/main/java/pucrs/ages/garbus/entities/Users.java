@@ -1,11 +1,11 @@
 package pucrs.ages.garbus.entities;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -39,7 +39,6 @@ public class Users {
     @Column(name = "PASSWORD")
     private String password;
 
-    @NotEmpty
     @Column(name = "BLOCKED")
     private boolean blocked;
 
