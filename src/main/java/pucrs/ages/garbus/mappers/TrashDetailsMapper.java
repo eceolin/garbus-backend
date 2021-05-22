@@ -21,6 +21,7 @@ public class TrashDetailsMapper {
                 .capacity(trash.getCapacity())
                 .occupation(trash.getOccupation())
                 .trashDescription(trash.getDescription())
+                .trashesStatus(trash.getTrashesStatus())
                 .localDescription(zoneDescription)
                 .trashesThreshold(trashesThresholdMapper.mapToDTO(trashesThresholds))
                 .build();

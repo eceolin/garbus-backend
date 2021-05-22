@@ -16,6 +16,4 @@ public class TrashesThresholdDTO {
 
     private String color;
 
-    private Trashes trashes;
-
 }

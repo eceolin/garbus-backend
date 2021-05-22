@@ -40,9 +40,9 @@ public class TrashesControllerImpl implements TrashesController {
     }
 
     @Override
-    public ResponseEntity<?> insertErrorOnTrash(ErrorRequest errorRequest) {
+    public ResponseEntity<?> insertErrorInTrash(ErrorRequest errorRequest) {
         try {
-            trashesService.insertErrorOnTrash(errorRequest);
+            trashesService.insertErrorInTrash(errorRequest);
             return new ResponseEntity<>("Evento criado!", CREATED);
         } catch (BadRequestException e) {
             e.printStackTrace();

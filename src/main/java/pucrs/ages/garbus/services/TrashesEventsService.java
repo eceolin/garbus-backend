@@ -2,7 +2,6 @@ package pucrs.ages.garbus.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
 import pucrs.ages.garbus.dtos.ErrorResponse;
 import pucrs.ages.garbus.entities.*;
 import pucrs.ages.garbus.enuns.TrashStatusEnum;
@@ -30,7 +29,7 @@ public class TrashesEventsService {
     private final TrashesEventsRepository trashesEventsRepository;
 
     public void insertErrorOnTrash(Long trashId, Long typeEventId, String login, String others) throws NotFoundException {
-        Users users = Optional.ofNullable(usersService.findByLogin(login))
+        Users users = Optional.ofNullable(usersService.findByLoginEquals(login))
                 .orElseThrow(() -> new NotFoundException(new ErrorResponse("Não foi possível encontrar usuário logado para o id " + login)));
         Trashes trashes = trashesService.findById(trashId)
                 .orElseThrow(() -> new NotFoundException(new ErrorResponse("Lixeira não encontrada para o id " + trashId)));

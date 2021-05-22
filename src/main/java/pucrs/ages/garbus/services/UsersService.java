@@ -34,8 +34,16 @@ public class UsersService implements UserDetailsService {
 //        return maptools.mapear(usersRepository.findByLoginEquals(login));
 //    }
 
-    public Users findByLogin(String login) {
+    public Users findByLoginEquals(String login) {
         return usersRepository.findByLoginEquals(login);
+    }
+
+    public Users findByLogin(String login) {
+        return usersRepository.findByLogin(login);
+    }
+
+    public Users save(Users user) {
+        return usersRepository.save(user);
     }
 
     @Override

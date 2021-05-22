@@ -38,7 +38,7 @@ public class TrashesService {
 
 
     public TrashesListDTO findAll() {
-        return trasheInsideBuildingsAndZones(trashesRepository.findAll());
+        return trashesInsideBuildingsAndZones(trashesRepository.findAll());
     }
 
     public TrashesDTO findByIdDTO(Long id) {
@@ -57,7 +57,7 @@ public class TrashesService {
         trashesRepository.saveAndFlush(trashes);
     }
 
-    public void insertErrorOnTrash(ErrorRequest errorRequest) {
+    public void insertErrorInTrash(ErrorRequest errorRequest) {
         validateInput(errorRequest);
         trashesEventsService.insertErrorOnTrash(errorRequest.getTrashId(), errorRequest.getTypeEventId(), errorRequest.getLogin(), errorRequest.getOthers());
         Optional<Trashes> trashes = findById(errorRequest.getTrashId());
@@ -85,7 +85,7 @@ public class TrashesService {
     }
 
     public TrashDetailsDTO findTrashById(Long trashId) {
-        Trashes trash = trashesRepository.findTrashByTrashId(trashId);
+        Trashes trash = trashesRepository.findByTrashId(trashId);
         String localDescription;
         if (trash.getZones() != null) {
             localDescription = zonesRepository.findZoneDescriptionByTrashId(trash.getZones().getId());
@@ -96,7 +96,7 @@ public class TrashesService {
     }
 
     public TrashesListDTO findAllByStatusId(Long statusId) {
-        return trasheInsideBuildingsAndZones(trashesRepository.findTrashByStatusId(statusId));
+        return trashesInsideBuildingsAndZones(trashesRepository.findByStatusId(statusId));
     }
 
     private Map<Buildings, Long> countAndTrashesInBuildings(List<Trashes> trashesList) {
@@ -128,7 +128,7 @@ public class TrashesService {
         return simplifiedTrashesWithThresholdsMapper.mapToDTO(trashesList, trashesThresholdsRepository.findAllThresholds());
     }
 
-    private TrashesListDTO trasheInsideBuildingsAndZones(List<Trashes> trashesList) {
+    private TrashesListDTO trashesInsideBuildingsAndZones(List<Trashes> trashesList) {
         return TrashesListDTO.builder()
                 .trashes(trashesOutBuildings(trashesList))
                 .buildings(buildingsReduceDTOS(countAndTrashesInBuildings(trashesList)))
