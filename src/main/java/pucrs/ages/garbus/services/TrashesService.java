@@ -158,17 +158,19 @@ public class TrashesService {
         return trashMapper.mapear(trash);
     }
 
+    @Transactional
     public TrashesDTO updateTrashById(Long trashId, TrashesDTO trashesDTO) throws ParseException {
         validateTrash(trashId);
 
         trashesDTO.setId(trashId);
+
+        trashesThresholdsRepository.deleteTrashesThresholdsByTrashesId(trashId);
         trashesThresholdsRepository.saveAll(
                 trashesThresholdMapper.mapToEntity(
                         trashMapper.mapearToEntity(trashesDTO),
                         trashesDTO.getTrashesThreshold()
                 )
         );
-
 
         return save(trashesDTO);
     }
