@@ -21,7 +21,7 @@ public class TrashesDTO {
 
     private String brand;
 
-    private String description;
+    private String trashDescription;
 
     private double capacity;
 
