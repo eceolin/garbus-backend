@@ -40,6 +40,9 @@ public class Trashes {
     @Column(name = "LATITUDE")
     private double latitude;
 
+    @Column(name = "LOCAL_DESCRIPTION")
+    private String localDescription;
+
     @Autowired
     @OneToOne
     @JoinColumn(name = "ID_STATUS")

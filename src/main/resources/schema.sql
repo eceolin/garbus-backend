@@ -129,6 +129,7 @@ CREATE TABLE IF NOT EXISTS TRASHES (
                          ID_TYPE INTEGER,
                          ID_BUILDING INTEGER,
                          ID_ZONE INTEGER,
+                         LOCAL_DESCRIPTION VARCHAR,
                          LONGITUDE NUMERIC,
                          LATITUDE NUMERIC
 );
