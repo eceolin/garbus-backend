@@ -3,6 +3,7 @@ package pucrs.ages.garbus.controllers.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import pucrs.ages.garbus.controllers.TrashesController;
 import pucrs.ages.garbus.dtos.*;
@@ -96,6 +97,22 @@ public class TrashesControllerImpl implements TrashesController {
     public ResponseEntity<TrashesDTO> saveTrashes(TrashesDTO trashesDTO) {
         trashesDTO.setId(0L);
         return getResponseEntity(trashesDTO);
+    }
+
+    @Override
+    public ResponseEntity updateTrashById(Long trashId, TrashesDTO trashesDTO ){
+        try {
+            return new ResponseEntity<>(trashesService.updateTrashById(trashId, trashesDTO), OK);
+        } catch (ParseException | BadRequestException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), BAD_REQUEST);
+        } catch (NotFoundException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getError(), NOT_FOUND);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), INTERNAL_SERVER_ERROR);
+        }
     }
 
     private ResponseEntity getResponseEntity(TrashesDTO trashesDTO) {

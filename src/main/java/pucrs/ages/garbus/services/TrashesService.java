@@ -9,6 +9,7 @@ import pucrs.ages.garbus.entities.Buildings;
 import pucrs.ages.garbus.entities.Trashes;
 import pucrs.ages.garbus.enuns.TrashStatusEnum;
 import pucrs.ages.garbus.excpetion.BadRequestException;
+import pucrs.ages.garbus.excpetion.NotFoundException;
 import pucrs.ages.garbus.mappers.SimplifiedTrashesWithThresholdsMapper;
 import pucrs.ages.garbus.mappers.TrashDetailsMapper;
 import pucrs.ages.garbus.mappers.TrashesMapper;
@@ -146,10 +147,23 @@ public class TrashesService {
 
     @Transactional
     public TrashesDTO deleteTrashById(Long trashId) {
+        validateTrash(trashId);
         trashesEventsService.deleteByTrashId(trashId);
         trashesThresholdsRepository.deleteTrashesThresholdsByTrashesId(trashId);
         Trashes trash = trashesRepository.findByTrashId(trashId);
         trashesRepository.delete(trash);
         return trashMapper.mapear(trash);
+    }
+
+    public TrashesDTO updateTrashById(Long trashId, TrashesDTO trashesDTO) throws ParseException {
+        validateTrash(trashId);
+        trashesDTO.setId(trashId);
+        return save(trashesDTO);
+    }
+
+
+    public void validateTrash(Long trashId) {
+        findById(trashId)
+                .orElseThrow(() -> new NotFoundException(new ErrorResponse("Lixeira não encontrada para o id " + trashId)));
     }
 }
