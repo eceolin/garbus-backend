@@ -31,6 +31,8 @@ public class TrashesDTO {
 
     private double latitude;
 
+    private String localDescription;
+
     private TrashesStatus trashesStatus;
 
     private TrashType trashType;
