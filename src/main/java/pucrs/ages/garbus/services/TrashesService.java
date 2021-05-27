@@ -7,12 +7,14 @@ import org.springframework.transaction.annotation.Transactional;
 import pucrs.ages.garbus.dtos.*;
 import pucrs.ages.garbus.entities.Buildings;
 import pucrs.ages.garbus.entities.Trashes;
+import pucrs.ages.garbus.entities.TrashesThreshold;
 import pucrs.ages.garbus.enuns.TrashStatusEnum;
 import pucrs.ages.garbus.excpetion.BadRequestException;
 import pucrs.ages.garbus.excpetion.NotFoundException;
 import pucrs.ages.garbus.mappers.SimplifiedTrashesWithThresholdsMapper;
 import pucrs.ages.garbus.mappers.TrashDetailsMapper;
 import pucrs.ages.garbus.mappers.TrashesMapper;
+import pucrs.ages.garbus.mappers.TrashesThresholdMapper;
 import pucrs.ages.garbus.repositories.BuildingsRepository;
 import pucrs.ages.garbus.repositories.TrashesRepository;
 import pucrs.ages.garbus.repositories.TrashesThresholdsRepository;
@@ -37,6 +39,7 @@ public class TrashesService {
     private final ZonesRepository zonesRepository;
     private final BuildingsRepository buildingsRepository;
     private final TrashDetailsMapper trashDetailsMapper;
+    private final TrashesThresholdMapper trashesThresholdMapper;
     private final SimplifiedTrashesWithThresholdsMapper simplifiedTrashesWithThresholdsMapper;
 
 
@@ -157,7 +160,16 @@ public class TrashesService {
 
     public TrashesDTO updateTrashById(Long trashId, TrashesDTO trashesDTO) throws ParseException {
         validateTrash(trashId);
+
         trashesDTO.setId(trashId);
+        trashesThresholdsRepository.saveAll(
+                trashesThresholdMapper.mapToEntity(
+                        trashMapper.mapearToEntity(trashesDTO),
+                        trashesDTO.getTrashesThreshold()
+                )
+        );
+
+
         return save(trashesDTO);
     }
 
