@@ -16,6 +16,7 @@ import pucrs.ages.garbus.repositories.TrashesThresholdsRepository;
 import pucrs.ages.garbus.repositories.ZonesRepository;
 
 import javax.annotation.Resource;
+import java.text.ParseException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -134,5 +135,10 @@ public class TrashesService {
     public List<TrashesDTO> findListOfTrashes() {
         List<Trashes> trashes = trashesRepository.findAll();
         return simplifiedTrashesWithThresholdsMapper.mapToTrashesDTOWithThresholds(trashes, trashesThresholdsRepository.findAllThresholds());
+    }
+
+    public TrashesDTO save(final TrashesDTO trashesDTO)  throws ParseException {
+        Trashes trashes = trashMapper.mapearToEntity(trashesDTO);
+        return trashMapper.mapear(trashesRepository.saveAndFlush(trashes));
     }
 }

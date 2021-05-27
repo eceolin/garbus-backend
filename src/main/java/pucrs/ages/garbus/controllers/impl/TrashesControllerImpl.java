@@ -11,6 +11,7 @@ import pucrs.ages.garbus.excpetion.NotFoundException;
 import pucrs.ages.garbus.services.TrashesService;
 
 import javax.annotation.Resource;
+import java.text.ParseException;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.*;
@@ -73,6 +74,28 @@ public class TrashesControllerImpl implements TrashesController {
     @Override
     public ResponseEntity<TrashesAndBuildingsOnMapDTO> findAllByStatus(Long statusId) {
         return new ResponseEntity<>(trashesService.findAllByStatusId(statusId), OK);
+    }
+
+    @Override
+    public ResponseEntity<TrashesDTO> saveTrashes(TrashesDTO trashesDTO) {
+        trashesDTO.setId(0L);
+        return getResponseEntity(trashesDTO);
+    }
+
+    private ResponseEntity getResponseEntity(TrashesDTO trashesDTO) {
+        try {
+            trashesDTO = trashesService.save(trashesDTO);
+            return new ResponseEntity<>(trashesDTO, CREATED);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), BAD_REQUEST);
+        } catch (BadRequestException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), BAD_REQUEST);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), INTERNAL_SERVER_ERROR);
+        }
     }
 
 }

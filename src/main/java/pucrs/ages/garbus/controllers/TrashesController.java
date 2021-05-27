@@ -44,4 +44,8 @@ public interface TrashesController {
     @ApiOperation("Find all trashes by status id")
     ResponseEntity<TrashesAndBuildingsOnMapDTO> findAllByStatus(@NotNull @PathVariable("statusId") Long statusId);
 
+    @PostMapping
+    @ApiOperation("Save trashes")
+    ResponseEntity<TrashesDTO> saveTrashes(@RequestBody @Valid TrashesDTO trashesDTO);
+
 }

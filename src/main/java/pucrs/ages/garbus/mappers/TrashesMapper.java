@@ -3,6 +3,7 @@ package pucrs.ages.garbus.mappers;
 import lombok.AllArgsConstructor;
 import org.mapstruct.Mapper;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.stereotype.Component;
 import pucrs.ages.garbus.dtos.TrashesDTO;
 import pucrs.ages.garbus.dtos.TrashesAndBuildingsOnMapDTO;
@@ -49,5 +50,17 @@ public class TrashesMapper {
                 .map(entity -> modelMapper.map(entity, TrashesReduceDTO.class))
                 .collect(Collectors.toList());
     }
+
+    public Trashes mapearToEntity(TrashesDTO trashDTO) {
+
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        Trashes trashes = modelMapper.map(trashDTO, Trashes.class);
+        trashes.setDescription(trashDTO.getTrashDescription());
+        trashes.setBuildings(trashDTO.getBuilding());
+        trashes.setZones(trashDTO.getZone());
+
+        return trashes;
+    }
+
 }
 
