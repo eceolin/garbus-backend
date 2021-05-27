@@ -1,10 +1,12 @@
 package pucrs.ages.garbus.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import pucrs.ages.garbus.entities.TrashesThreshold;
+import pucrs.ages.garbus.repositories.sql.TrashesEventsSql;
 import pucrs.ages.garbus.repositories.sql.TrashesThresholdsSql;
 
 import java.util.List;
@@ -22,5 +24,9 @@ public interface TrashesThresholdsRepository extends JpaRepository<TrashesThresh
             nativeQuery = true
     )
     List<TrashesThreshold> findThresholdsByTrashId(@Param("trashId") Long trashId);
+
+
+    @Modifying
+    void deleteTrashesThresholdsByTrashesId(@Param("trashId") Long trashId);
 
 }

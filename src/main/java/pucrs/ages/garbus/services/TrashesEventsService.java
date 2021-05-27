@@ -52,4 +52,9 @@ public class TrashesEventsService {
 
     }
 
+
+    public void deleteByTrashId(Long trashId) {
+        trashesEventsRepository.deleteTrashesEventsByTrashesId(trashId);
+    }
+
 }

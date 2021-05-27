@@ -45,6 +45,22 @@ public class TrashesControllerImpl implements TrashesController {
     }
 
     @Override
+    public ResponseEntity deleteTrashById(@PathVariable Long trashId) {
+        try {
+            return new ResponseEntity<>(trashesService.deleteTrashById(trashId), OK);
+        } catch (BadRequestException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getError(), BAD_REQUEST);
+        } catch (NotFoundException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getError(), NOT_FOUND);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
     public ResponseEntity<?> insertErrorInTrash(ErrorRequest errorRequest) {
         try {
             trashesService.insertErrorInTrash(errorRequest);

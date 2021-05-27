@@ -40,6 +40,10 @@ public interface TrashesController {
     @ApiOperation("Find trash by trashId")
     ResponseEntity<TrashDetailsDTO> findTrashById(Long id);
 
+    @DeleteMapping("/{trashId}")
+    @ApiOperation("Delete trash by trashId")
+    ResponseEntity<TrashesDTO> deleteTrashById(@NotNull @PathVariable Long id);
+
     @GetMapping("/status/{statusId}")
     @ApiOperation("Find all trashes by status id")
     ResponseEntity<TrashesAndBuildingsOnMapDTO> findAllByStatus(@NotNull @PathVariable("statusId") Long statusId);

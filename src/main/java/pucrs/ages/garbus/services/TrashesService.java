@@ -1,7 +1,9 @@
 package pucrs.ages.garbus.services;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pucrs.ages.garbus.dtos.*;
 import pucrs.ages.garbus.entities.Buildings;
 import pucrs.ages.garbus.entities.Trashes;
@@ -140,5 +142,14 @@ public class TrashesService {
     public TrashesDTO save(final TrashesDTO trashesDTO)  throws ParseException {
         Trashes trashes = trashMapper.mapearToEntity(trashesDTO);
         return trashMapper.mapear(trashesRepository.saveAndFlush(trashes));
+    }
+
+    @Transactional
+    public TrashesDTO deleteTrashById(Long trashId) {
+        trashesEventsService.deleteByTrashId(trashId);
+        trashesThresholdsRepository.deleteTrashesThresholdsByTrashesId(trashId);
+        Trashes trash = trashesRepository.findByTrashId(trashId);
+        trashesRepository.delete(trash);
+        return trashMapper.mapear(trash);
     }
 }
