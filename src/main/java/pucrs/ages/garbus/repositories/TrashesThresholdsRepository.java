@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import pucrs.ages.garbus.entities.TrashesThreshold;
-import pucrs.ages.garbus.repositories.sql.TrashesEventsSql;
 import pucrs.ages.garbus.repositories.sql.TrashesThresholdsSql;
 
 import java.util.List;
