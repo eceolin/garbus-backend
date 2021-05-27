@@ -20,7 +20,7 @@ import java.util.Objects;
 @Mapper(componentModel = "spring")
 public class SimplifiedTrashesWithThresholdsMapper {
     private final TrashesThresholdMapper trashesThresholdMapper;
-    private final ModelMapper modelMapper;
+    private final TrashesMapper trashesMapper;
 
     public List<TrashesReduceDTO> mapToDTO(List<Trashes> trashes, List<TrashesThreshold> trashesThresholds) {
         List<TrashesReduceDTO> trashesReduceDTOS = new ArrayList<>();
@@ -50,7 +50,7 @@ public class SimplifiedTrashesWithThresholdsMapper {
         for (Trashes trash : trashes) {
             List<TrashesThresholdDTO> tempTrashesThresholds = new ArrayList<>();
             getTrashThresholds(trashesThresholds, trash, tempTrashesThresholds);
-            trashesDTO = modelMapper.map(trash, TrashesDTO.class);
+            trashesDTO = trashesMapper.mapear(trash);
             trashesDTO.setTrashesThreshold(tempTrashesThresholds);
             trashesDTOS.add(trashesDTO);
         }

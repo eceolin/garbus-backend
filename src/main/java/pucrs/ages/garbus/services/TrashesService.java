@@ -40,9 +40,6 @@ public class TrashesService {
         return trashesInsideBuildingsAndZones(trashesRepository.findAll());
     }
 
-    public TrashesDTO findByIdDTO(Long id) {
-        return trashMapper.mapear(trashesRepository.findById(id));
-    }
 
     public Optional<Trashes> findById(Long id) {
         return trashesRepository.findById(id);

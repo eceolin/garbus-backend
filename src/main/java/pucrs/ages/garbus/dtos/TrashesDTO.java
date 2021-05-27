@@ -37,9 +37,9 @@ public class TrashesDTO {
 
     private List<TrashesThresholdDTO> trashesThreshold;
 
-    private Buildings buildings;
+    private Buildings building;
 
-    private Zones zones;
+    private Zones zone;
 
 }
 //    t.id, t.brand, t.description, t.capacity, t.occupation, t.trashesStatus, t.trashType, t.buildings, t.zones

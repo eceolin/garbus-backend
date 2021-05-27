@@ -20,14 +20,19 @@ public class TrashesMapper {
 
     private final ModelMapper modelMapper;
 
-    public TrashesDTO mapear(Optional<Trashes> Trashes) {
-        return modelMapper.map(Trashes, TrashesDTO.class);
+    public TrashesDTO mapear(Trashes trash) {
+        TrashesDTO trashesDTO = modelMapper.map(trash, TrashesDTO.class);
+        trashesDTO.setTrashDescription(trash.getDescription());
+        trashesDTO.setBuilding(trash.getBuildings());
+        trashesDTO.setZone(trash.getZones());
+
+        return trashesDTO;
     }
 
     public List<TrashesDTO> mapear(List<Trashes> source) {
         return source
                 .stream()
-                .map(entity -> modelMapper.map(entity, TrashesDTO.class))
+                .map(this::mapear)
                 .collect(Collectors.toList());
     }
 
