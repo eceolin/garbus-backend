@@ -36,6 +36,7 @@ public class BuildingsControllerImpl implements BuildingsController {
 
     @Override
     public ResponseEntity saveBuilding (BuildingsDTO buildingsDTO) {
+        buildingsDTO.setId(0L);
         return getResponseEntity(buildingsDTO);
     }
 
