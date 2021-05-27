@@ -24,13 +24,18 @@ public class TrashesControllerImpl implements TrashesController {
     private TrashesService trashesService;
 
     @Override
-    public ResponseEntity<TrashesListDTO> findAll() {
+    public ResponseEntity<TrashesAndBuildingsOnMapDTO> findAll() {
         return new ResponseEntity<>(trashesService.findAll(), OK);
     }
 
     @Override
     public ResponseEntity<List<TrashesDTO>> findAllByZone(@PathVariable Long zoneId) {
         return new ResponseEntity<>(trashesService.findAllByZonesId(zoneId), OK);
+    }
+
+    @Override
+    public ResponseEntity<List<TrashesDTO>> findListOfTrashes() {
+        return new ResponseEntity<>(trashesService.findListOfTrashes(), OK);
     }
 
     @Override
@@ -66,7 +71,7 @@ public class TrashesControllerImpl implements TrashesController {
     }
 
     @Override
-    public ResponseEntity<TrashesListDTO> findAllByStatus(Long statusId) {
+    public ResponseEntity<TrashesAndBuildingsOnMapDTO> findAllByStatus(Long statusId) {
         return new ResponseEntity<>(trashesService.findAllByStatusId(statusId), OK);
     }
 

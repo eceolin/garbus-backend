@@ -6,6 +6,8 @@ import pucrs.ages.garbus.entities.Buildings;
 import pucrs.ages.garbus.entities.TrashType;
 import pucrs.ages.garbus.entities.Zones;
 
+import java.util.List;
+
 
 //Lombok
 @Getter
@@ -32,6 +34,8 @@ public class TrashesDTO {
     private TrashesStatus trashesStatus;
 
     private TrashType trashType;
+
+    private List<TrashesThresholdDTO> trashesThreshold;
 
     private Buildings buildings;
 

@@ -12,7 +12,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class TrashesListDTO {
+public class TrashesAndBuildingsOnMapDTO {
 
     private List<TrashesReduceDTO> trashes;
 

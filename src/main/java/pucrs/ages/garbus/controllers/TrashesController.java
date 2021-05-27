@@ -13,8 +13,12 @@ import java.util.List;
 public interface TrashesController {
 
     @GetMapping
+    @ApiOperation("Find all trashes and buildings on map")
+    ResponseEntity<TrashesAndBuildingsOnMapDTO> findAll();
+
+    @GetMapping("/list")
     @ApiOperation("Find all trashes")
-    ResponseEntity<TrashesListDTO> findAll();
+    ResponseEntity<List<TrashesDTO>> findListOfTrashes();
 
     @GetMapping("/zone/{zoneId}")
     @ApiOperation("Find all trashes on zone")
@@ -38,6 +42,6 @@ public interface TrashesController {
 
     @GetMapping("/status/{statusId}")
     @ApiOperation("Find all trashes by status id")
-    ResponseEntity<TrashesListDTO> findAllByStatus(@NotNull @PathVariable("statusId") Long statusId);
+    ResponseEntity<TrashesAndBuildingsOnMapDTO> findAllByStatus(@NotNull @PathVariable("statusId") Long statusId);
 
 }

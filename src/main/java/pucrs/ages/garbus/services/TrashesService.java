@@ -36,7 +36,7 @@ public class TrashesService {
     private final SimplifiedTrashesWithThresholdsMapper simplifiedTrashesWithThresholdsMapper;
 
 
-    public TrashesListDTO findAll() {
+    public TrashesAndBuildingsOnMapDTO findAll() {
         return trashesInsideBuildingsAndZones(trashesRepository.findAll());
     }
 
@@ -94,7 +94,7 @@ public class TrashesService {
         return trashDetailsMapper.mapToDTO(trash, localDescription, trashesThresholdsRepository.findThresholdsByTrashId(trashId));
     }
 
-    public TrashesListDTO findAllByStatusId(Long statusId) {
+    public TrashesAndBuildingsOnMapDTO findAllByStatusId(Long statusId) {
         return trashesInsideBuildingsAndZones(trashesRepository.findByStatusId(statusId));
     }
 
@@ -127,10 +127,15 @@ public class TrashesService {
         return simplifiedTrashesWithThresholdsMapper.mapToDTO(trashesList, trashesThresholdsRepository.findAllThresholds());
     }
 
-    private TrashesListDTO trashesInsideBuildingsAndZones(List<Trashes> trashesList) {
-        return TrashesListDTO.builder()
+    private TrashesAndBuildingsOnMapDTO trashesInsideBuildingsAndZones(List<Trashes> trashesList) {
+        return TrashesAndBuildingsOnMapDTO.builder()
                 .trashes(trashesOutBuildings(trashesList))
                 .buildings(buildingsReduceDTOS(countAndTrashesInBuildings(trashesList)))
                 .build();
+    }
+
+    public List<TrashesDTO> findListOfTrashes() {
+        List<Trashes> trashes = trashesRepository.findAll();
+        return simplifiedTrashesWithThresholdsMapper.mapToTrashesDTOWithThresholds(trashes, trashesThresholdsRepository.findAllThresholds());
     }
 }

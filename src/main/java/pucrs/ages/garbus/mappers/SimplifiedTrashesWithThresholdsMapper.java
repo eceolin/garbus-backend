@@ -2,8 +2,10 @@ package pucrs.ages.garbus.mappers;
 
 import lombok.AllArgsConstructor;
 import org.mapstruct.Mapper;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import pucrs.ages.garbus.dtos.SimplifiedTrashesWithThresholdsDTO;
+import pucrs.ages.garbus.dtos.TrashesDTO;
 import pucrs.ages.garbus.dtos.TrashesReduceDTO;
 import pucrs.ages.garbus.dtos.TrashesThresholdDTO;
 import pucrs.ages.garbus.entities.Trashes;
@@ -18,7 +20,7 @@ import java.util.Objects;
 @Mapper(componentModel = "spring")
 public class SimplifiedTrashesWithThresholdsMapper {
     private final TrashesThresholdMapper trashesThresholdMapper;
-
+    private final ModelMapper modelMapper;
 
     public List<TrashesReduceDTO> mapToDTO(List<Trashes> trashes, List<TrashesThreshold> trashesThresholds) {
         List<TrashesReduceDTO> trashesReduceDTOS = new ArrayList<>();
@@ -40,6 +42,19 @@ public class SimplifiedTrashesWithThresholdsMapper {
             trashesReduceDTOS.add(trashesReduceDTO);
         }
         return trashesReduceDTOS;
+    }
+
+    public List<TrashesDTO> mapToTrashesDTOWithThresholds(List<Trashes> trashes, List<TrashesThreshold> trashesThresholds) {
+        List<TrashesDTO> trashesDTOS = new ArrayList<>();
+        TrashesDTO trashesDTO = new TrashesDTO();
+        for (Trashes trash : trashes) {
+            List<TrashesThresholdDTO> tempTrashesThresholds = new ArrayList<>();
+            getTrashThresholds(trashesThresholds, trash, tempTrashesThresholds);
+            trashesDTO = modelMapper.map(trash, TrashesDTO.class);
+            trashesDTO.setTrashesThreshold(tempTrashesThresholds);
+            trashesDTOS.add(trashesDTO);
+        }
+        return trashesDTOS;
     }
 
     private void getTrashThresholds(List<TrashesThreshold> trashesThresholds, Trashes trash, List<TrashesThresholdDTO> tempTrashesThresholds) {

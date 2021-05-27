@@ -5,7 +5,7 @@ import org.mapstruct.Mapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import pucrs.ages.garbus.dtos.TrashesDTO;
-import pucrs.ages.garbus.dtos.TrashesListDTO;
+import pucrs.ages.garbus.dtos.TrashesAndBuildingsOnMapDTO;
 import pucrs.ages.garbus.dtos.TrashesReduceDTO;
 import pucrs.ages.garbus.entities.Trashes;
 
@@ -31,10 +31,10 @@ public class TrashesMapper {
                 .collect(Collectors.toList());
     }
 
-    public List<TrashesListDTO> mapearTrashesList(List<Trashes> source) {
+    public List<TrashesAndBuildingsOnMapDTO> mapearTrashesList(List<Trashes> source) {
         return source
                 .stream()
-                .map(entity -> modelMapper.map(entity, TrashesListDTO.class))
+                .map(entity -> modelMapper.map(entity, TrashesAndBuildingsOnMapDTO.class))
                 .collect(Collectors.toList());
     }
 
