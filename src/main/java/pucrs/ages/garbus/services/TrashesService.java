@@ -145,7 +145,10 @@ public class TrashesService {
 
     public TrashesDTO save(final TrashesDTO trashesDTO)  throws ParseException {
         Trashes trashes = trashMapper.mapearToEntity(trashesDTO);
-        return trashMapper.mapear(trashesRepository.saveAndFlush(trashes));
+        trashes = trashesRepository.saveAndFlush(trashes);
+        trashesDTO.setTrashId(trashes.getId());
+        saveThreshold(trashesDTO);
+        return trashMapper.mapear(trashes);
     }
 
     @Transactional
@@ -165,12 +168,6 @@ public class TrashesService {
         trashesDTO.setTrashId(trashId);
 
         trashesThresholdsRepository.deleteTrashesThresholdsByTrashesId(trashId);
-        trashesThresholdsRepository.saveAll(
-                trashesThresholdMapper.mapToEntity(
-                        trashMapper.mapearToEntity(trashesDTO),
-                        trashesDTO.getTrashesThreshold()
-                )
-        );
 
         return save(trashesDTO);
     }
@@ -179,5 +176,15 @@ public class TrashesService {
     public void validateTrash(Long trashId) {
         findById(trashId)
                 .orElseThrow(() -> new NotFoundException(new ErrorResponse("Lixeira não encontrada para o id " + trashId)));
+    }
+
+
+    private void saveThreshold (TrashesDTO trashesDTO) {
+        trashesThresholdsRepository.saveAll(
+                trashesThresholdMapper.mapToEntity(
+                        trashMapper.mapearToEntity(trashesDTO),
+                        trashesDTO.getTrashesThreshold()
+                )
+        );
     }
 }
