@@ -6,6 +6,8 @@ import pucrs.ages.garbus.entities.Buildings;
 import pucrs.ages.garbus.entities.TrashType;
 import pucrs.ages.garbus.entities.Zones;
 
+import java.util.List;
+
 
 //Lombok
 @Getter
@@ -15,11 +17,11 @@ import pucrs.ages.garbus.entities.Zones;
 @NoArgsConstructor
 public class TrashesDTO {
 
-    private long id;
+    private long trashId;
 
     private String brand;
 
-    private String description;
+    private String trashDescription;
 
     private double capacity;
 
@@ -29,13 +31,17 @@ public class TrashesDTO {
 
     private double latitude;
 
+    private String localDescription;
+
     private TrashesStatus trashesStatus;
 
     private TrashType trashType;
 
-    private Buildings buildings;
+    private List<TrashesThresholdDTO> trashesThreshold;
 
-    private Zones zones;
+    private Buildings building;
+
+    private Zones zone;
 
 }
 //    t.id, t.brand, t.description, t.capacity, t.occupation, t.trashesStatus, t.trashType, t.buildings, t.zones

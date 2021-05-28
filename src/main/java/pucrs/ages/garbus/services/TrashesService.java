@@ -1,20 +1,25 @@
 package pucrs.ages.garbus.services;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pucrs.ages.garbus.dtos.*;
 import pucrs.ages.garbus.entities.Buildings;
 import pucrs.ages.garbus.entities.Trashes;
 import pucrs.ages.garbus.entities.TrashesStatus;
+import pucrs.ages.garbus.entities.TrashesThreshold;
 import pucrs.ages.garbus.enuns.TrashStatusEnum;
 import pucrs.ages.garbus.excpetion.BadRequestException;
 import pucrs.ages.garbus.excpetion.NotFoundException;
 import pucrs.ages.garbus.mappers.SimplifiedTrashesWithThresholdsMapper;
 import pucrs.ages.garbus.mappers.TrashDetailsMapper;
 import pucrs.ages.garbus.mappers.TrashesMapper;
+import pucrs.ages.garbus.mappers.TrashesThresholdMapper;
 import pucrs.ages.garbus.repositories.*;
 
 import javax.annotation.Resource;
+import java.text.ParseException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -33,16 +38,14 @@ public class TrashesService {
     private final ZonesRepository zonesRepository;
     private final BuildingsRepository buildingsRepository;
     private final TrashDetailsMapper trashDetailsMapper;
+    private final TrashesThresholdMapper trashesThresholdMapper;
     private final SimplifiedTrashesWithThresholdsMapper simplifiedTrashesWithThresholdsMapper;
 
 
-    public TrashesListDTO findAll() {
+    public TrashesAndBuildingsOnMapDTO findAll() {
         return trashesInsideBuildingsAndZones(trashesRepository.findAll());
     }
 
-    public TrashesDTO findByIdDTO(Long id) {
-        return trashMapper.mapear(trashesRepository.findById(id));
-    }
 
     public Optional<Trashes> findById(Long id) {
         return trashesRepository.findById(id);
@@ -135,7 +138,7 @@ public class TrashesService {
         return trashDetailsMapper.mapToDTO(trash, localDescription, trashesThresholdsRepository.findThresholdsByTrashId(trashId));
     }
 
-    public TrashesListDTO findAllByStatusId(Long statusId) {
+    public TrashesAndBuildingsOnMapDTO findAllByStatusId(Long statusId) {
         return trashesInsideBuildingsAndZones(trashesRepository.findByStatusId(statusId));
     }
 
@@ -168,10 +171,60 @@ public class TrashesService {
         return simplifiedTrashesWithThresholdsMapper.mapToDTO(trashesList, trashesThresholdsRepository.findAllThresholds());
     }
 
-    private TrashesListDTO trashesInsideBuildingsAndZones(List<Trashes> trashesList) {
-        return TrashesListDTO.builder()
+    private TrashesAndBuildingsOnMapDTO trashesInsideBuildingsAndZones(List<Trashes> trashesList) {
+        return TrashesAndBuildingsOnMapDTO.builder()
                 .trashes(trashesOutBuildings(trashesList))
                 .buildings(buildingsReduceDTOS(countAndTrashesInBuildings(trashesList)))
                 .build();
+    }
+
+    public List<TrashesDTO> findListOfTrashes() {
+        List<Trashes> trashes = trashesRepository.findAll();
+        return simplifiedTrashesWithThresholdsMapper.mapToTrashesDTOWithThresholds(trashes, trashesThresholdsRepository.findAllThresholds());
+    }
+
+    public TrashesDTO save(final TrashesDTO trashesDTO)  throws ParseException {
+        Trashes trashes = trashMapper.mapearToEntity(trashesDTO);
+        trashes = trashesRepository.saveAndFlush(trashes);
+        trashesDTO.setTrashId(trashes.getId());
+        saveThreshold(trashesDTO);
+        return trashMapper.mapear(trashes);
+    }
+
+    @Transactional
+    public TrashesDTO deleteTrashById(Long trashId) {
+        validateTrash(trashId);
+        trashesEventsService.deleteByTrashId(trashId);
+        trashesThresholdsRepository.deleteTrashesThresholdsByTrashesId(trashId);
+        Trashes trash = trashesRepository.findByTrashId(trashId);
+        trashesRepository.delete(trash);
+        return trashMapper.mapear(trash);
+    }
+
+    @Transactional
+    public TrashesDTO updateTrashById(Long trashId, TrashesDTO trashesDTO) throws ParseException {
+        validateTrash(trashId);
+
+        trashesDTO.setTrashId(trashId);
+
+        trashesThresholdsRepository.deleteTrashesThresholdsByTrashesId(trashId);
+
+        return save(trashesDTO);
+    }
+
+
+    public void validateTrash(Long trashId) {
+        findById(trashId)
+                .orElseThrow(() -> new NotFoundException(new ErrorResponse("Lixeira não encontrada para o id " + trashId)));
+    }
+
+
+    private void saveThreshold (TrashesDTO trashesDTO) {
+        trashesThresholdsRepository.saveAll(
+                trashesThresholdMapper.mapToEntity(
+                        trashMapper.mapearToEntity(trashesDTO),
+                        trashesDTO.getTrashesThreshold()
+                )
+        );
     }
 }

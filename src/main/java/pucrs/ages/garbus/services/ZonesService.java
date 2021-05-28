@@ -18,13 +18,18 @@ public class ZonesService {
     private final ZonesRepository repository;
 
     public List<ZonesDTO> findAll() {
-        List<Zones> zones = repository.findAll();
-        return mapper.entityToDTO(zones);
+        List<ZonesDTO> zonesDTOS = mapper.entityToDTO(repository.findAll());
+        zonesDTOS.forEach(this::insertCounts);
+        return zonesDTOS;
     }
 
     public ZonesDTO findById(Long id) {
         Zones source = repository.findById(id).orElse(null);
-        return mapper.entityToDTO(source);
+        ZonesDTO zonesDTO = mapper.entityToDTO(source);
+        if (source != null) {
+            insertCounts(zonesDTO);
+        }
+        return zonesDTO;
     }
 
     public void save(final ZonesDTO zonesDTO) throws ParseException {
@@ -36,4 +41,17 @@ public class ZonesService {
         repository.deleteById(id);
     }
 
+    private int countBuildingsByIdZone(Long zoneId) {
+        return repository.countBuildingsByIdZone(zoneId);
+    }
+
+    private int countTrashesByIdZone(Long zoneId) {
+        return repository.countTrashesByIdZone(zoneId);
+    }
+
+    private void insertCounts(ZonesDTO zones) {
+        zones.setBuildingsCount(countBuildingsByIdZone(zones.getId()));
+        zones.setTrashesCount(countTrashesByIdZone(zones.getId()));
+    }
+    
 }

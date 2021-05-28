@@ -14,8 +14,12 @@ import java.util.List;
 public interface TrashesController {
 
     @GetMapping
+    @ApiOperation("Find all trashes and buildings on map")
+    ResponseEntity<TrashesAndBuildingsOnMapDTO> findAll();
+
+    @GetMapping("/list")
     @ApiOperation("Find all trashes")
-    ResponseEntity<TrashesListDTO> findAll();
+    ResponseEntity<List<TrashesDTO>> findListOfTrashes();
 
 
     @GetMapping("/zone/{zoneId}")
@@ -42,8 +46,21 @@ public interface TrashesController {
     @ApiOperation("Find trash by trashId")
     ResponseEntity<TrashDetailsDTO> findTrashById(Long id);
 
+    @DeleteMapping("/{trashId}")
+    @ApiOperation("Delete trash by trashId")
+    ResponseEntity<TrashesDTO> deleteTrashById(@NotNull @PathVariable Long id);
+
+    @PutMapping("/{trashId}")
+    @ApiOperation("Update trash by trashId")
+    ResponseEntity<TrashesDTO> updateTrashById(@NotNull @PathVariable Long trashId,
+                                               @RequestBody TrashesDTO trashesDTO);
+
     @GetMapping("/status/{statusId}")
     @ApiOperation("Find all trashes by status id")
-    ResponseEntity<TrashesListDTO> findAllByStatus(@NotNull @PathVariable("statusId") Long statusId);
+    ResponseEntity<TrashesAndBuildingsOnMapDTO> findAllByStatus(@NotNull @PathVariable("statusId") Long statusId);
+
+    @PostMapping
+    @ApiOperation("Save trashes")
+    ResponseEntity<TrashesDTO> saveTrashes(@RequestBody @Valid TrashesDTO trashesDTO);
 
 }
