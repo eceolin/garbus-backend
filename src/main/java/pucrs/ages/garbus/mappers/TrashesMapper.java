@@ -23,6 +23,7 @@ public class TrashesMapper {
 
     public TrashesDTO mapear(Trashes trash) {
         TrashesDTO trashesDTO = modelMapper.map(trash, TrashesDTO.class);
+        trashesDTO.setTrashId(trash.getId());
         trashesDTO.setTrashDescription(trash.getDescription());
         trashesDTO.setBuilding(trash.getBuildings());
         trashesDTO.setZone(trash.getZones());
@@ -55,6 +56,7 @@ public class TrashesMapper {
 
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         Trashes trashes = modelMapper.map(trashDTO, Trashes.class);
+        trashes.setId(trashDTO.getTrashId());
         trashes.setDescription(trashDTO.getTrashDescription());
         trashes.setBuildings(trashDTO.getBuilding());
         trashes.setZones(trashDTO.getZone());

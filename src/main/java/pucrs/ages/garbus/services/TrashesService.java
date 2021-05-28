@@ -162,7 +162,7 @@ public class TrashesService {
     public TrashesDTO updateTrashById(Long trashId, TrashesDTO trashesDTO) throws ParseException {
         validateTrash(trashId);
 
-        trashesDTO.setId(trashId);
+        trashesDTO.setTrashId(trashId);
 
         trashesThresholdsRepository.deleteTrashesThresholdsByTrashesId(trashId);
         trashesThresholdsRepository.saveAll(

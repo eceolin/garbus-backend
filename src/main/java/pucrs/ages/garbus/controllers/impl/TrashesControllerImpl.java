@@ -95,7 +95,7 @@ public class TrashesControllerImpl implements TrashesController {
 
     @Override
     public ResponseEntity<TrashesDTO> saveTrashes(TrashesDTO trashesDTO) {
-        trashesDTO.setId(0L);
+        trashesDTO.setTrashId(0L);
         return getResponseEntity(trashesDTO);
     }
 

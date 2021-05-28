@@ -17,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 public class TrashesDTO {
 
-    private long id;
+    private long trashId;
 
     private String brand;
 
