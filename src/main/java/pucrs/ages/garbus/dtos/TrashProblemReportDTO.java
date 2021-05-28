@@ -9,9 +9,8 @@ import javax.validation.constraints.NotNull;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ErrorRequest {
+public class TrashProblemReportDTO {
     @NotNull private Long trashId;
     private Long typeEventId;
-    @NotNull private String login;
     private String others;
 }

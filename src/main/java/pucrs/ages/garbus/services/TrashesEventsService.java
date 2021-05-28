@@ -3,12 +3,7 @@ package pucrs.ages.garbus.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pucrs.ages.garbus.dtos.ErrorResponse;
-import pucrs.ages.garbus.entities.Events;
-import pucrs.ages.garbus.entities.Trashes;
-import pucrs.ages.garbus.entities.TrashesEvents;
-import pucrs.ages.garbus.entities.Users;
-import pucrs.ages.garbus.enuns.TrashStatusEnum;
-import pucrs.ages.garbus.excpetion.BadRequestException;
+import pucrs.ages.garbus.entities.*;
 import pucrs.ages.garbus.excpetion.NotFoundException;
 import pucrs.ages.garbus.repositories.TrashesEventsRepository;
 
@@ -29,17 +24,27 @@ public class TrashesEventsService {
     private TrashesService trashesService;
     private final TrashesEventsRepository trashesEventsRepository;
 
-    public void insertErrorOnTrash(Long trashId, Long typeEventId, String login, String others) throws NotFoundException {
+    public void insertTrashProblemReport(Long trashId, Long typeEventId, String others, String login) throws NotFoundException {
         Users users = Optional.ofNullable(usersService.findByLoginEquals(login))
-                .orElseThrow(() -> new NotFoundException(new ErrorResponse("Não foi possível encontrar usuário logado para o id " + login)));
+                .orElseThrow(() -> new NotFoundException(
+                        new ErrorResponse("Não foi possível encontrar usuário logado para o id " + login)
+                ));
         Trashes trashes = trashesService.findById(trashId)
-                .orElseThrow(() -> new NotFoundException(new ErrorResponse("Lixeira não encontrada para o id " + trashId)));
-        if (trashes.getTrashesStatus().getId() == TrashStatusEnum.MANUTENCAO.getId())
-            throw new BadRequestException(new ErrorResponse(String.format("Lixeira com id %s já está em manutenção", trashId)));
+                .orElseThrow(() -> new NotFoundException(
+                        new ErrorResponse("Lixeira não encontrada para o id " + trashId)
+                ));
+
         Events events = null;
-        if(!Objects.isNull(typeEventId)) {
-                events = Optional.ofNullable(eventsService.findEventsByTypeEventsId(typeEventId))
-                    .orElseThrow(() -> new NotFoundException(new ErrorResponse("Tipo de evento não encontrado para o id " + typeEventId)));
+        if (!Objects.isNull(typeEventId)) {
+            events = Optional.ofNullable(eventsService.findErrorEventById(typeEventId))
+                    .orElseThrow(() -> new NotFoundException(
+                            new ErrorResponse("Tipo de evento não encontrado para o id " + typeEventId))
+                    );
+        } else {
+            events = Optional.ofNullable(eventsService.findOtherErrorEvent())
+                    .orElseThrow(() -> new NotFoundException(
+                            new ErrorResponse("Tipo de evento OUTROS não encontrado")
+                    ));
         }
 
         trashesEventsRepository.save(TrashesEvents.builder()
@@ -49,7 +54,22 @@ public class TrashesEventsService {
                 .others(others)
                 .data(Calendar.getInstance().getTime())
                 .build());
+    }
 
+    public void insertTrashReactivation(Long trashId, String login) throws NotFoundException {
+        Users users = Optional.ofNullable(usersService.findByLoginEquals(login))
+                .orElseThrow(() -> new NotFoundException(new ErrorResponse("Não foi possível encontrar usuário logado para o id " + login)));
+        Trashes trashes = trashesService.findById(trashId)
+                .orElseThrow(() -> new NotFoundException(new ErrorResponse("Lixeira não encontrada para o id " + trashId)));
+
+        Events events = Optional.ofNullable(eventsService.findEventByProblemStatusReactivate()).orElseThrow(() -> new NotFoundException(new ErrorResponse("Evento de reativação não encontrado")));
+
+        trashesEventsRepository.save(TrashesEvents.builder()
+                .events(events)
+                .trashes(trashes)
+                .users(users)
+                .data(Calendar.getInstance().getTime())
+                .build());
     }
 
 

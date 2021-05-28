@@ -2,8 +2,8 @@ package pucrs.ages.garbus.controllers.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import pucrs.ages.garbus.controllers.TrashesController;
 import pucrs.ages.garbus.dtos.*;
@@ -13,6 +13,7 @@ import pucrs.ages.garbus.services.TrashesService;
 
 import javax.annotation.Resource;
 import java.text.ParseException;
+import javax.validation.Valid;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.*;
@@ -62,10 +63,29 @@ public class TrashesControllerImpl implements TrashesController {
     }
 
     @Override
-    public ResponseEntity<?> insertErrorInTrash(ErrorRequest errorRequest) {
+    public ResponseEntity<Object> insertErrorInTrash(TrashProblemReportDTO trashProblemReport, Authentication authentication) {
         try {
-            trashesService.insertErrorInTrash(errorRequest);
-            return new ResponseEntity<>("Evento criado!", CREATED);
+            String login = authentication.getName();
+            trashesService.insertErrorInTrash(trashProblemReport, login);
+            return new ResponseEntity<>("Problema reportado com sucesso", OK);
+        } catch (BadRequestException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getError(), BAD_REQUEST);
+        } catch (NotFoundException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getError(), NOT_FOUND);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    public ResponseEntity<Object> reactivate(@Valid TrashReactivateDTO trashReactivateDTO, Authentication authentication) {
+        try {
+            String login = authentication.getName();
+            trashesService.reactivate(trashReactivateDTO, login);
+            return new ResponseEntity<>("Lixeira ativada com sucesso", OK);
         } catch (BadRequestException e) {
             e.printStackTrace();
             return new ResponseEntity<>(e.getError(), BAD_REQUEST);
@@ -119,10 +139,7 @@ public class TrashesControllerImpl implements TrashesController {
         try {
             trashesDTO = trashesService.save(trashesDTO);
             return new ResponseEntity<>(trashesDTO, CREATED);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(e.getMessage(), BAD_REQUEST);
-        } catch (BadRequestException e) {
+        } catch (ParseException | BadRequestException e) {
             e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(), BAD_REQUEST);
         } catch (Exception e) {

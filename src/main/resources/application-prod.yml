@@ -38,6 +38,8 @@ spring:
 events:
   problem_status:
     error: E
+    error_others: O
+    reactivated: R
 
 mail:
   sender:
