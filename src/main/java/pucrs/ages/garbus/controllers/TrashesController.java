@@ -2,6 +2,7 @@ package pucrs.ages.garbus.controllers;
 
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import pucrs.ages.garbus.dtos.*;
 
@@ -27,11 +28,11 @@ public interface TrashesController {
 
     @PostMapping(path = "/send-problem-report")
     @ApiOperation("Send problem report")
-    ResponseEntity<?> insertErrorInTrash(@RequestBody @Valid ErrorRequest errorRequest);
+    ResponseEntity<Object> insertErrorInTrash(@RequestBody @Valid TrashProblemReportDTO trashProblemReport, Authentication authentication);
 
-    @PostMapping(path = "/update-status")
-    @ApiOperation("Update trash status")
-    ResponseEntity<?> updateStatus(@RequestBody @Valid ErrorRequest errorRequest);
+    @PostMapping(path = "/reactivate")
+    @ApiOperation("Reactivate trash, removing from maintenance status")
+    ResponseEntity<Object> reactivate(@RequestBody @Valid TrashReactivateDTO trashReactivateDTO, Authentication authentication);
 
     @GetMapping("/building/{buildingId}")
     @ApiOperation("Find trashes by building")

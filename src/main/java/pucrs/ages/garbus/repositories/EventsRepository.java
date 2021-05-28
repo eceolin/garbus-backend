@@ -13,6 +13,7 @@ import java.util.List;
 @Repository
 public interface EventsRepository extends JpaRepository<Events, Long> {
     List<Events> findEventsByProblemStatusEquals(char problemStatus);
+
     Events findEventsByProblemStatusEqualsAndTypesEventsId(char problemStatus, Long id);
 
     Events findEventsByTypesEventsId(Long id);

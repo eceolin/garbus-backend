@@ -1,6 +1,7 @@
 package pucrs.ages.garbus.services;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import pucrs.ages.garbus.dtos.EventsDTO;
 import pucrs.ages.garbus.dtos.TypesEventsDTO;
@@ -15,6 +16,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class EventsService {
 
+    @Value("${events.problem_status.reactivated}")
+    private char statusReactivated;
+
+    @Value("${events.problem_status.error_others}")
+    private char statusErrorOther;
+
     @Resource
     private TypesEventsService typesEventsService;
     private final EventsMapper eventsMapper;
@@ -28,12 +35,16 @@ public class EventsService {
         return typesEventsService.findAllErrorTypeEvent();
     }
 
-    public Events findEventsByTypeEventsId(Long id) {
+    public Events findErrorEventById(Long id) {
         return eventsRepository.findEventsByProblemStatusEqualsAndTypesEventsId(typesEventsService.statusError(), id);
     }
 
-    public Events teste(Long id) {
-        return eventsRepository.findEventsByTypesEventsId(id);
+    public Events findOtherErrorEvent() {
+        return eventsRepository.findEventsByProblemStatusEquals(statusErrorOther).get(0);
+    }
+
+    public Events findEventByProblemStatusReactivate() {
+        return eventsRepository.findEventsByProblemStatusEquals(statusReactivated).get(0);
     }
 
 }

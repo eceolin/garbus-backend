@@ -2,6 +2,7 @@ package pucrs.ages.garbus.controllers.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import pucrs.ages.garbus.controllers.TrashesController;
@@ -40,10 +41,11 @@ public class TrashesControllerImpl implements TrashesController {
     }
 
     @Override
-    public ResponseEntity<?> insertErrorInTrash(ErrorRequest errorRequest) {
+    public ResponseEntity<Object> insertErrorInTrash(TrashProblemReportDTO trashProblemReport, Authentication authentication) {
         try {
-            trashesService.insertErrorInTrash(errorRequest);
-            return new ResponseEntity<>("Evento criado!", CREATED);
+            String login = authentication.getName();
+            trashesService.insertErrorInTrash(trashProblemReport, login);
+            return new ResponseEntity<>("Problema reportado com sucesso", OK);
         } catch (BadRequestException e) {
             e.printStackTrace();
             return new ResponseEntity<>(e.getError(), BAD_REQUEST);
@@ -57,9 +59,21 @@ public class TrashesControllerImpl implements TrashesController {
     }
 
     @Override
-    public ResponseEntity<?> updateStatus(@Valid ErrorRequest errorRequest) {
-        trashesService.updateStatusToActive(errorRequest);
-        return new ResponseEntity<>("Lixeira agora está ativa!", CREATED);
+    public ResponseEntity<Object> reactivate(@Valid TrashReactivateDTO trashReactivateDTO, Authentication authentication) {
+        try {
+            String login = authentication.getName();
+            trashesService.reactivate(trashReactivateDTO, login);
+            return new ResponseEntity<>("Lixeira ativada com sucesso", OK);
+        } catch (BadRequestException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getError(), BAD_REQUEST);
+        } catch (NotFoundException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getError(), NOT_FOUND);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Override

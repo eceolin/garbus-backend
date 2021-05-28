@@ -6,7 +6,6 @@ import pucrs.ages.garbus.dtos.*;
 import pucrs.ages.garbus.entities.Buildings;
 import pucrs.ages.garbus.entities.Trashes;
 import pucrs.ages.garbus.entities.TrashesStatus;
-import pucrs.ages.garbus.entities.Users;
 import pucrs.ages.garbus.enuns.TrashStatusEnum;
 import pucrs.ages.garbus.excpetion.BadRequestException;
 import pucrs.ages.garbus.excpetion.NotFoundException;
@@ -57,21 +56,62 @@ public class TrashesService {
         trashesRepository.saveAndFlush(trashes);
     }
 
-    public void insertErrorInTrash(ErrorRequest errorRequest) {
-        validateInput(errorRequest);
-        trashesEventsService.insertErrorOnTrash(errorRequest.getTrashId(), errorRequest.getTypeEventId(), errorRequest.getLogin(), errorRequest.getOthers());
-        Optional<Trashes> trashes = findById(errorRequest.getTrashId());
-        if (trashes.isPresent()) {
-            trashes.get()
-                    .setTrashesStatus(trashesStatusService.findById(TrashStatusEnum.MANUTENCAO.getId()).get());
-            updateStatus(trashes.get());
-        }
+    public void insertErrorInTrash(TrashProblemReportDTO trashProblemReport, String login) {
+        validateInput(trashProblemReport);
 
+        long trashId = trashProblemReport.getTrashId();
+        Trashes trashes = findById(trashId)
+                .orElseThrow(() -> new NotFoundException(
+                        new ErrorResponse(
+                                String.format("Lixeira com id %s não encontrada", trashId)
+                        )
+                ));
+        TrashesStatus status = trashesStatusService.findById(TrashStatusEnum.MANUTENCAO.getId())
+                .orElseThrow(() -> new NotFoundException(
+                        new ErrorResponse("Status de manutenção não encontrado")
+                ));
+
+        if (trashes.getTrashesStatus().getId() == TrashStatusEnum.MANUTENCAO.getId())
+            throw new BadRequestException(
+                    new ErrorResponse(String.format("A lixeira com id %s já está em manutenção", trashId))
+            );
+
+        trashesEventsService.insertTrashProblemReport(
+                trashId,
+                trashProblemReport.getTypeEventId(),
+                trashProblemReport.getOthers(),
+                login
+        );
+        trashes.setTrashesStatus(status);
+        updateStatus(trashes);
     }
 
-    private void validateInput(ErrorRequest errorRequest) {
-        if(Objects.isNull(errorRequest.getTypeEventId()) && Objects.isNull(errorRequest.getOthers()) ||
-           (!Objects.isNull(errorRequest.getTypeEventId()) && !Objects.isNull(errorRequest.getOthers()))) {
+    public void reactivate(TrashReactivateDTO trashReactivateDTO, String login) throws NotFoundException {
+        long trashId = trashReactivateDTO.getTrashId();
+        Trashes trashes = this.findById(trashId)
+                .orElseThrow(() -> new NotFoundException(
+                        new ErrorResponse(String.format("Lixeira com id %s não encontrada", trashId))
+                ));
+        TrashesStatus status = trashesStatusService.findById(TrashStatusEnum.ATIVA.getId())
+                .orElseThrow(() -> new NotFoundException(
+                        new ErrorResponse("Status de reativação não encontrado")
+                ));
+
+        if (trashes.getTrashesStatus().getId() == TrashStatusEnum.ATIVA.getId())
+            throw new BadRequestException(
+                    new ErrorResponse(
+                            String.format("A lixeira com id %s já está ativa", trashId)
+                    )
+            );
+
+        trashesEventsService.insertTrashReactivation(trashId, login);
+        trashes.setTrashesStatus(status);
+        updateStatus(trashes);
+    }
+
+    private void validateInput(TrashProblemReportDTO trashProblemReport) {
+        if (Objects.isNull(trashProblemReport.getTypeEventId()) && Objects.isNull(trashProblemReport.getOthers()) ||
+                (!Objects.isNull(trashProblemReport.getTypeEventId()) && !Objects.isNull(trashProblemReport.getOthers()))) {
             throw new BadRequestException(new ErrorResponse("Deve ser informado ou tipo do evento, ou texto com descrição do problema 'others', exclusivamente"));
         }
     }
@@ -133,14 +173,5 @@ public class TrashesService {
                 .trashes(trashesOutBuildings(trashesList))
                 .buildings(buildingsReduceDTOS(countAndTrashesInBuildings(trashesList)))
                 .build();
-    }
-
-    public void updateStatusToActive(ErrorRequest errorRequest) throws NotFoundException {
-        Trashes trashes = this.findById(errorRequest.getTrashId())
-                .orElseThrow(() -> new NotFoundException(new ErrorResponse("Lixeira não encontrada para o id " + errorRequest.getTrashId())));
-        TrashesStatus trashesStatus = trashesStatusRepository.findById(errorRequest.getTypeEventId())
-                .orElseThrow(() -> new NotFoundException(new ErrorResponse("Evento não encontrado para o id " + errorRequest.getTypeEventId())));
-        trashes.setTrashesStatus(trashesStatus);
-        trashesRepository.save(trashes);
     }
 }

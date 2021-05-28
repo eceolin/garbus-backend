@@ -19,7 +19,7 @@ public class TypesEventsService {
     private final TypesEventsRepository typesEventsRepository;
 
     @Value("${events.problem_status.error}")
-    private char STATUS_ERROR;
+    private char statusError;
 
     public List<TypesEventsDTO> findAll() {
         return typesEventsMapper.mapearTypeEvents(typesEventsRepository.findAll());
@@ -33,15 +33,11 @@ public class TypesEventsService {
         return typesEventsMapper.mapearEventsToTypeEvents(eventsRepository.findEventsByProblemStatusEquals(statusError()));
     }
 
-    public void save(TypesEventsDTO typesEventsDTO) throws Exception {
+    public void save(TypesEventsDTO typesEventsDTO) {
         typesEventsRepository.save(typesEventsMapper.mapDtoToEntity(typesEventsDTO));
     }
 
     public char statusError() {
-        return STATUS_ERROR;
-    }
-
-    public char statusActive() {
-        return STATUS_ERROR;
+        return statusError;
     }
 }
