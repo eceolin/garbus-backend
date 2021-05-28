@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import pucrs.ages.garbus.controllers.TrashesController;
 import pucrs.ages.garbus.dtos.*;
@@ -140,10 +139,7 @@ public class TrashesControllerImpl implements TrashesController {
         try {
             trashesDTO = trashesService.save(trashesDTO);
             return new ResponseEntity<>(trashesDTO, CREATED);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(e.getMessage(), BAD_REQUEST);
-        } catch (BadRequestException e) {
+        } catch (ParseException | BadRequestException e) {
             e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(), BAD_REQUEST);
         } catch (Exception e) {
