@@ -23,4 +23,8 @@ public class ZonesDTO {
 
     private double latitude;
 
+    private int buildingsCount;
+
+    private int trashesCount;
+
 }
