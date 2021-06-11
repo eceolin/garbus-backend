@@ -62,4 +62,8 @@ public interface TrashesController {
     @ApiOperation("Save trashes")
     ResponseEntity<TrashesDTO> saveTrashes(@RequestBody @Valid TrashesDTO trashesDTO);
 
+    @GetMapping("/{trashId}/events")
+    @ApiOperation("Find all events by trashes id")
+    ResponseEntity<List<TrashesEventsDTO>> findAllEventsByTrashId(@NotNull @PathVariable Long trashId);
+
 }

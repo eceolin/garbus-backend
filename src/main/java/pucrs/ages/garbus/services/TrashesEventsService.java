@@ -3,12 +3,15 @@ package pucrs.ages.garbus.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pucrs.ages.garbus.dtos.ErrorResponse;
+import pucrs.ages.garbus.dtos.TrashesEventsDTO;
 import pucrs.ages.garbus.entities.*;
 import pucrs.ages.garbus.excpetion.NotFoundException;
+import pucrs.ages.garbus.mappers.TrashesEventsMapper;
 import pucrs.ages.garbus.repositories.TrashesEventsRepository;
 
 import javax.annotation.Resource;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -22,7 +25,10 @@ public class TrashesEventsService {
     private UsersService usersService;
     @Resource
     private TrashesService trashesService;
+
     private final TrashesEventsRepository trashesEventsRepository;
+
+    private final TrashesEventsMapper trashesEventsMapper;
 
     public void insertTrashProblemReport(Long trashId, Long typeEventId, String others, String login) throws NotFoundException {
         Users users = Optional.ofNullable(usersService.findByLoginEquals(login))
@@ -77,4 +83,8 @@ public class TrashesEventsService {
         trashesEventsRepository.deleteTrashesEventsByTrashesId(trashId);
     }
 
+    public List<TrashesEventsDTO> findAllByTrashId(Long trashId) {
+        List<TrashesEventsDTO> list = trashesEventsMapper.mapear(trashesEventsRepository.findAllByTrashesId(trashId));
+        return list.isEmpty() ? null : list;
+    }
 }

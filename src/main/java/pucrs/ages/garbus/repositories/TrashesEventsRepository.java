@@ -6,6 +6,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import pucrs.ages.garbus.entities.TrashesEvents;
 
+import java.util.List;
+
 /**
  * JPA repository to Buildings entities.
  *
@@ -14,4 +16,6 @@ import pucrs.ages.garbus.entities.TrashesEvents;
 public interface TrashesEventsRepository extends JpaRepository<TrashesEvents, Long> {
     @Modifying
     void deleteTrashesEventsByTrashesId(@Param("trashId") Long trashId);
+
+    List<TrashesEvents> findAllByTrashesId(@Param("trashId") Long trashId);
 }

@@ -21,11 +21,11 @@ public class TrashesEventsDTO {
 
     private long id;
 
-    private List<Events> events;
+    private Events events;
 
-    private List<Trashes> trashes;
+//    private Trashes trashes;
 
-    private List<Users> users;
+    private Users users;
 
     private double occupation;
 
