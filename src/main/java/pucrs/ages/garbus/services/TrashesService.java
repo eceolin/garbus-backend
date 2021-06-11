@@ -1,14 +1,13 @@
 package pucrs.ages.garbus.services;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pucrs.ages.garbus.dtos.*;
 import pucrs.ages.garbus.entities.Buildings;
 import pucrs.ages.garbus.entities.Trashes;
+import pucrs.ages.garbus.entities.TrashesEvents;
 import pucrs.ages.garbus.entities.TrashesStatus;
-import pucrs.ages.garbus.entities.TrashesThreshold;
 import pucrs.ages.garbus.enuns.TrashStatusEnum;
 import pucrs.ages.garbus.excpetion.BadRequestException;
 import pucrs.ages.garbus.excpetion.NotFoundException;
@@ -20,6 +19,7 @@ import pucrs.ages.garbus.repositories.*;
 
 import javax.annotation.Resource;
 import java.text.ParseException;
+import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -40,6 +40,8 @@ public class TrashesService {
     private final TrashDetailsMapper trashDetailsMapper;
     private final TrashesThresholdMapper trashesThresholdMapper;
     private final SimplifiedTrashesWithThresholdsMapper simplifiedTrashesWithThresholdsMapper;
+    private final TrashesEventsRepository trashesEventsRepository;
+    private final EventsRepository eventsRepository;
 
 
     public TrashesAndBuildingsOnMapDTO findAll() {
@@ -183,7 +185,7 @@ public class TrashesService {
         return simplifiedTrashesWithThresholdsMapper.mapToTrashesDTOWithThresholds(trashes, trashesThresholdsRepository.findAllThresholds());
     }
 
-    public TrashesDTO save(final TrashesDTO trashesDTO)  throws ParseException {
+    public TrashesDTO save(final TrashesDTO trashesDTO) throws ParseException {
         Trashes trashes = trashMapper.mapearToEntity(trashesDTO);
         trashes = trashesRepository.saveAndFlush(trashes);
         trashesDTO.setTrashId(trashes.getId());
@@ -219,12 +221,34 @@ public class TrashesService {
     }
 
 
-    private void saveThreshold (TrashesDTO trashesDTO) {
+    private void saveThreshold(TrashesDTO trashesDTO) {
         trashesThresholdsRepository.saveAll(
                 trashesThresholdMapper.mapToEntity(
                         trashMapper.mapearToEntity(trashesDTO),
                         trashesDTO.getTrashesThreshold()
                 )
         );
+    }
+
+    public String saveEvents(long trashId, double occupation) {
+        String successMessage = "Evento Salvo";
+
+        Trashes trashes = this.findById(trashId)
+                .orElseThrow(() -> new NotFoundException(
+                        new ErrorResponse("Lixeira não encontrada para o id " + trashId)
+                ));
+        trashes.setOccupation(occupation);
+        trashesRepository.save(trashes);
+
+        trashesEventsRepository.save(TrashesEvents.builder()
+                .events(eventsRepository.findById(Long.parseLong("1")).orElseThrow(() -> new NotFoundException(
+                        new ErrorResponse("Lixeira não encontrada para o id " + trashId)
+                )))
+                .trashes(trashes)
+                .occupation(occupation)
+                .data(Date.from(Instant.now()))
+                .build());
+
+        return successMessage;
     }
 }
