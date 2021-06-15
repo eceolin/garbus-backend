@@ -220,6 +220,10 @@ public class TrashesService {
                 .orElseThrow(() -> new NotFoundException(new ErrorResponse("Lixeira não encontrada para o id " + trashId)));
     }
 
+    public List<TrashesEventsDTO> findAllEventsByTrashId(Long trashId) {
+        return Optional.ofNullable(trashesEventsService.findAllByTrashId(trashId))
+                .orElseThrow(() -> new NotFoundException(new ErrorResponse("Lixeira não possui eventos")));
+    }
 
     private void saveThreshold(TrashesDTO trashesDTO) {
         trashesThresholdsRepository.saveAll(
@@ -242,7 +246,7 @@ public class TrashesService {
 
         trashesEventsRepository.save(TrashesEvents.builder()
                 .events(eventsRepository.findById(Long.parseLong("1")).orElseThrow(() -> new NotFoundException(
-                        new ErrorResponse("Lixeira não encontrada para o id " + trashId)
+                        new ErrorResponse("ID de evento não encontrado " + trashId)
                 )))
                 .trashes(trashes)
                 .occupation(occupation)
