@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import pucrs.ages.garbus.dtos.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -62,8 +63,9 @@ public interface TrashesController {
     @ApiOperation("Save trashes")
     ResponseEntity<TrashesDTO> saveTrashes(@RequestBody @Valid TrashesDTO trashesDTO);
 
-    @GetMapping("/{trashId}/events")
-    @ApiOperation("Find all events by trashes id")
-    ResponseEntity<List<TrashesEventsDTO>> findAllEventsByTrashId(@NotNull @PathVariable Long trashId);
+    @PostMapping("/save-event")
+    @ApiOperation("Save event")
+    ResponseEntity<String> saveEvents(@RequestParam(value = "trashId") @Valid @NotEmpty long trashId,
+                                      @RequestParam(value = "occupation") @Valid @NotEmpty double occupation);
 
 }
