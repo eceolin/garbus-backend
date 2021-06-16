@@ -102,6 +102,9 @@ VALUES ('projetogarbus@gmail.com', 'Usuario Default Operador', 'garbus', 'garbus
 INSERT INTO USERS (EMAIL, NAME, LOGIN, PASSWORD, DT_REGISTER, ID_PROFILE)
 VALUES ('projetogarbus@gmail.com', 'Usuario Gestor Admin', 'admin', 'admin', CURRENT_TIMESTAMP, 2);
 
+INSERT INTO USERS_NOTIFICATIONS (ID_USER, NOTIFICATION_TOKEN)
+VALUES (1, 'Teste');
+
 INSERT INTO USER_ZONE (ID_USER, ID_ZONE)
 VALUES (1, 1);
 
