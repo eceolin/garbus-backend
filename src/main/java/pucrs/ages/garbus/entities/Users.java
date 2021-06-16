@@ -30,7 +30,6 @@ public class Users {
         this.name = usersRequestDTO.getName();
         this.login = usersRequestDTO.getLogin();
         this.password = usersRequestDTO.getPassword();
-        this.registerDate = usersRequestDTO.getRegisterDate();
         this.profiles = usersRequestDTO.getProfile();
         this.zone = usersRequestDTO.getZone();
     }
