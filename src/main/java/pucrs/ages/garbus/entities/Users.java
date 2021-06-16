@@ -42,6 +42,9 @@ public class Users {
     @Column(name = "BLOCKED")
     private boolean blocked;
 
+    @Column(name = "MUST_CHANGE_PWD")
+    private boolean mustChangePwd;
+
     @Column(name = "DT_REGISTER")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date registerDate;

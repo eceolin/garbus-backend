@@ -3,6 +3,7 @@ package pucrs.ages.garbus.services;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,10 +15,13 @@ import pucrs.ages.garbus.Utils.PasswordUtil;
 import pucrs.ages.garbus.dtos.*;
 import pucrs.ages.garbus.entities.Users;
 import pucrs.ages.garbus.excpetion.NotFoundException;
+import pucrs.ages.garbus.repositories.UsersRepository;
 
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Optional;
+
+import static org.springframework.http.HttpStatus.OK;
 
 @Slf4j
 @Service
@@ -38,6 +42,8 @@ public class UsersAuthenticationService {
 
     @Autowired
     private PasswordUtil passwordUtil;
+
+    private final UsersRepository usersRepository;
 
     public JwtResponse authenticateUser(JwtRequest jwtRequest) throws Exception {
 
@@ -91,5 +97,21 @@ public class UsersAuthenticationService {
         usersService.save(user);
 
         return newPassword;
+    }
+
+    public String changePassword (long userId, String password){
+        String success = "Senha alterada";
+
+        Users user = usersRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException(
+                        new ErrorResponse("Usuário não encontrado para o id " + userId)
+                ));
+
+        user.setPassword(password);
+        user.setMustChangePwd(false);
+
+        usersRepository.save(user);
+
+        return success;
     }
 }
