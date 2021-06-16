@@ -22,13 +22,13 @@ public class UserZone {
     private long id;
 
     @Autowired
-    @OneToMany
+    @ManyToOne
     @JoinColumn(name = "ID_USER")
-    private List<Users> users;
+    private Users users;
 
     @Autowired
-    @OneToMany
+    @ManyToOne
     @JoinColumn(name = "ID_ZONE")
-    private List<Zones> zones;
+    private Zones zones;
 
 }

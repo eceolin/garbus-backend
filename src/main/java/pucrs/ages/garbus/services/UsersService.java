@@ -6,18 +6,19 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pucrs.ages.garbus.dtos.UsersDTO;
 import pucrs.ages.garbus.dtos.UsersRequestDTO;
 import pucrs.ages.garbus.entities.Profiles;
+import pucrs.ages.garbus.entities.UserZone;
 import pucrs.ages.garbus.entities.Users;
 import pucrs.ages.garbus.excpetion.NotFoundException;
 import pucrs.ages.garbus.mappers.UsersMapper;
 import pucrs.ages.garbus.repositories.ProfilesRepository;
+import pucrs.ages.garbus.repositories.UserZoneRepository;
 import pucrs.ages.garbus.repositories.UsersRepository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,9 +28,19 @@ public class UsersService implements UserDetailsService {
     private final UsersMapper maptools;
     private final UsersRepository usersRepository;
     private final ProfilesRepository profilesRepository;
+    private final UserZoneRepository userZoneRepository;
 
-    public List<Users> findAll() {
-        return usersRepository.findAll();
+    public List<UsersDTO> findAll() {
+        List<Users> users = usersRepository.findAll();
+        List<UsersDTO> usersDTO = users.stream()
+                .map(UsersDTO::of)
+                .collect(Collectors.toList());
+        buscarZonasUsuarios(usersDTO);
+        return usersDTO;
+    }
+
+    private void buscarZonasUsuarios(List<UsersDTO> users) {
+        users.forEach(user -> user.setZone(userZoneRepository.findUserZoneByUsersId(user.getId()).getZones()));
     }
 
     public Optional<Users> findById(Long id) {
@@ -57,23 +68,27 @@ public class UsersService implements UserDetailsService {
         return usersRepository.save(new Users(user, profiles));
     }
 
+    @Transactional
     public void deleteUser (Long idUser) {
-        Users user = findUser(idUser);
-        usersRepository.delete(user);
+        userZoneRepository.deleteByUsersId(idUser);
+        usersRepository.deleteById(idUser);
     }
 
     public Users updateUser (Long idUser, UsersRequestDTO usersRequestDTO) {
-        Users users = findUser(idUser);
-        users.updateBy(usersRequestDTO);
-        return usersRepository.save(users);
+        Users user = usersRepository.findById(idUser).orElseThrow(() -> new IllegalArgumentException("Error"));
+        user.updateBy(usersRequestDTO);
+        return usersRepository.save(user);
     }
 
-    public Users findUserById (Long idUser) {
+    public UsersDTO findUserById (Long idUser) {
         return findUser(idUser);
     }
 
-    private Users findUser(Long idUser) {
-        return usersRepository.findById(idUser).orElseThrow(() -> new IllegalArgumentException("Error"));
+    private UsersDTO findUser(Long idUser) {
+        Users user = usersRepository.findById(idUser).orElseThrow(() -> new IllegalArgumentException("Error"));
+        UsersDTO usersDTO = UsersDTO.of(user);
+        buscarZonasUsuarios(Collections.singletonList(usersDTO));
+        return usersDTO;
     }
 
     @Override

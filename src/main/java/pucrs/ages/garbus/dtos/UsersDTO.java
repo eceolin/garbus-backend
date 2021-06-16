@@ -10,6 +10,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import pucrs.ages.garbus.entities.Profiles;
 import pucrs.ages.garbus.entities.TypesEvents;
 import pucrs.ages.garbus.entities.Users;
+import pucrs.ages.garbus.entities.Zones;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -29,7 +30,7 @@ public class UsersDTO {
         this.name = users.getName();
         this.login = users.getLogin();
         this.registerDate = users.getRegisterDate();
-        this.profiles = users.getProfiles();
+        this.profile = users.getProfiles();
     }
 
     public static UsersDTO of(Users users) {
@@ -49,8 +50,10 @@ public class UsersDTO {
 
     private Date registerDate;
 
-    private Profiles profiles;
+    private Profiles profile;
 
     private String password;
+
+    private Zones zone;
 
 }

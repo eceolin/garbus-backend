@@ -23,10 +23,7 @@ public class UserControllerImpl implements UserController {
 
     @Override
     public List<UsersDTO> findAll() {
-        List<Users> users = usersService.findAll();
-        return users.stream()
-                .map(UsersDTO::of)
-                .collect(Collectors.toList());
+        return usersService.findAll();
     }
 
     @Override
@@ -42,8 +39,7 @@ public class UserControllerImpl implements UserController {
 
     @Override
     public UsersDTO findUserById(Long idUser) {
-        Users users = usersService.findUserById(idUser);
-        return new UsersDTO(users);
+        return usersService.findUserById(idUser);
     }
 
     @Override
