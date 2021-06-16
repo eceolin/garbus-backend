@@ -11,6 +11,9 @@ import pucrs.ages.garbus.dtos.UsersRequestDTO;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
 
@@ -57,7 +60,7 @@ public class Users {
 
     @Column(name = "DT_REGISTER")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date registerDate;
+    private Date registerDate = Date.from(Instant.now());
 
     @Autowired
     @OneToOne
@@ -81,6 +84,9 @@ public class Users {
         }
         if (Objects.nonNull(usersRequestDTO.getLogin())) {
             this.login = usersRequestDTO.getLogin();
+        }
+        if (Objects.nonNull(usersRequestDTO.getProfile())) {
+            this.profiles = usersRequestDTO.getProfile();
         }
     }
 }
