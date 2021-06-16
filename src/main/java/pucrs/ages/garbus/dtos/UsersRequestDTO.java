@@ -23,4 +23,6 @@ public class UsersRequestDTO {
     private Long idProfile;
 
     private String password;
+
+    private ZonesDTO zone;
 }

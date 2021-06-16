@@ -14,4 +14,7 @@ import pucrs.ages.garbus.entities.TrashesEvents;
 public interface TrashesEventsRepository extends JpaRepository<TrashesEvents, Long> {
     @Modifying
     void deleteTrashesEventsByTrashesId(@Param("trashId") Long trashId);
+
+    @Modifying
+    void deleteTrashesEventsByUsersId(@Param("trashId") Long trashId);
 }

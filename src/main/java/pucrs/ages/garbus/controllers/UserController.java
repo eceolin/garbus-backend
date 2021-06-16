@@ -6,6 +6,7 @@ import pucrs.ages.garbus.dtos.UsersDTO;
 import pucrs.ages.garbus.dtos.UsersRequestDTO;
 
 import javax.validation.Valid;
+import java.text.ParseException;
 import java.util.List;
 
 @RequestMapping("/users")
@@ -29,5 +30,5 @@ public interface UserController {
 
     @PutMapping("/{idUser}")
     @ApiOperation("Update user")
-    UsersDTO updateUser(@RequestBody @Valid UsersRequestDTO usersDTO, @PathVariable Long idUser);
+    UsersDTO updateUser(@RequestBody @Valid UsersRequestDTO usersDTO, @PathVariable Long idUser) throws ParseException;
 }

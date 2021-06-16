@@ -31,6 +31,7 @@ public class UsersDTO {
         this.login = users.getLogin();
         this.registerDate = users.getRegisterDate();
         this.profile = users.getProfiles();
+        this.zone = users.getZone();
     }
 
     public static UsersDTO of(Users users) {

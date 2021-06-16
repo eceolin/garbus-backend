@@ -77,4 +77,8 @@ public class TrashesEventsService {
         trashesEventsRepository.deleteTrashesEventsByTrashesId(trashId);
     }
 
+    public void deleteByUserId(Long trashId) {
+        trashesEventsRepository.deleteTrashesEventsByUsersId(trashId);
+    }
+
 }

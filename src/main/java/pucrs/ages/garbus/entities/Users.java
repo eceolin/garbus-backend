@@ -63,6 +63,11 @@ public class Users {
     @JoinColumn(name = "ID_PROFILE")
     private Profiles profiles;
 
+    @Autowired
+    @OneToOne
+    @JoinColumn(name = "ID_ZONE")
+    private Zones zone;
+
     public void updateBy(UsersRequestDTO usersRequestDTO) {
         if (Objects.nonNull(usersRequestDTO.getEmail())) {
             this.email = usersRequestDTO.getEmail();

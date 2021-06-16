@@ -11,6 +11,7 @@ import pucrs.ages.garbus.services.UsersService;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.text.ParseException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,7 +24,10 @@ public class UserControllerImpl implements UserController {
 
     @Override
     public List<UsersDTO> findAll() {
-        return usersService.findAll();
+        List<Users> users = usersService.findAll();
+        return users.stream()
+                .map(UsersDTO::of)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -39,11 +43,12 @@ public class UserControllerImpl implements UserController {
 
     @Override
     public UsersDTO findUserById(Long idUser) {
-        return usersService.findUserById(idUser);
+        Users users = usersService.findUserById(idUser);
+        return new UsersDTO(users);
     }
 
     @Override
-    public UsersDTO updateUser(@Valid UsersRequestDTO usersRequestDTO, @PathVariable Long idUser) {
+    public UsersDTO updateUser(@Valid UsersRequestDTO usersRequestDTO, @PathVariable Long idUser) throws ParseException {
         Users users = usersService.updateUser(idUser, usersRequestDTO);
         return new UsersDTO(users);
     }
