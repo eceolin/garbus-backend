@@ -22,13 +22,14 @@ import java.util.Objects;
 @Table(name= "USERS")
 public class Users {
 
-    public Users (UsersRequestDTO usersRequestDTO, Profiles profiles) {
+    public Users (UsersRequestDTO usersRequestDTO) {
         this.email = usersRequestDTO.getEmail();
         this.name = usersRequestDTO.getName();
         this.login = usersRequestDTO.getLogin();
         this.password = usersRequestDTO.getPassword();
         this.registerDate = usersRequestDTO.getRegisterDate();
-        this.profiles = profiles;
+        this.profiles = usersRequestDTO.getProfile();
+        this.zone = usersRequestDTO.getZone();
     }
 
     @Id

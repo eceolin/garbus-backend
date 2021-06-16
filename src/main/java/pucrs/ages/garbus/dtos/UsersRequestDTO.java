@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.context.annotation.Profile;
+import pucrs.ages.garbus.entities.Profiles;
+import pucrs.ages.garbus.entities.Zones;
 
 import java.util.Date;
 @Data
@@ -20,9 +23,9 @@ public class UsersRequestDTO {
 
     private Date registerDate;
 
-    private Long idProfile;
+    private Profiles profile;
 
     private String password;
 
-    private ZonesDTO zone;
+    private Zones zone;
 }

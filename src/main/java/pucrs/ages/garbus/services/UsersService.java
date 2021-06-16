@@ -61,8 +61,7 @@ public class UsersService implements UserDetailsService {
     }
 
     public Users save(UsersRequestDTO user) {
-        Profiles profiles = profilesRepository.findById(user.getIdProfile()).orElseThrow(NotFoundException::new);
-        return usersRepository.save(new Users(user, profiles));
+        return usersRepository.save(new Users(user));
     }
 
     @Transactional
@@ -74,7 +73,7 @@ public class UsersService implements UserDetailsService {
     public Users updateUser (Long idUser, UsersRequestDTO usersRequestDTO) throws ParseException {
         Users users = findUser(idUser);
         if(users.getZone() != null && users.getZone().getId() != usersRequestDTO.getZone().getId()) {
-            users.setZone(mapper.dtoToEntity(usersRequestDTO.getZone()));
+            users.setZone(usersRequestDTO.getZone());
         }
         users.updateBy(usersRequestDTO);
         return usersRepository.save(users);

@@ -29,6 +29,7 @@ public class UsersDTO {
         this.email = users.getEmail();
         this.name = users.getName();
         this.login = users.getLogin();
+        this.password = users.getPassword();
         this.registerDate = users.getRegisterDate();
         this.profile = users.getProfiles();
         this.zone = users.getZone();
