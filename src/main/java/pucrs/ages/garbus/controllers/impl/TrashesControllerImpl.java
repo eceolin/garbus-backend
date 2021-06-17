@@ -9,11 +9,14 @@ import pucrs.ages.garbus.controllers.TrashesController;
 import pucrs.ages.garbus.dtos.*;
 import pucrs.ages.garbus.excpetion.BadRequestException;
 import pucrs.ages.garbus.excpetion.NotFoundException;
+import pucrs.ages.garbus.repositories.EventsRepository;
+import pucrs.ages.garbus.repositories.TrashesEventsRepository;
+import pucrs.ages.garbus.repositories.TrashesRepository;
 import pucrs.ages.garbus.services.TrashesService;
 
 import javax.annotation.Resource;
-import java.text.ParseException;
 import javax.validation.Valid;
+import java.text.ParseException;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.*;
@@ -120,7 +123,7 @@ public class TrashesControllerImpl implements TrashesController {
     }
 
     @Override
-    public ResponseEntity updateTrashById(Long trashId, TrashesDTO trashesDTO ){
+    public ResponseEntity updateTrashById(Long trashId, TrashesDTO trashesDTO) {
         try {
             return new ResponseEntity<>(trashesService.updateTrashById(trashId, trashesDTO), OK);
         } catch (ParseException | BadRequestException e) {
@@ -142,6 +145,23 @@ public class TrashesControllerImpl implements TrashesController {
         } catch (ParseException | BadRequestException e) {
             e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(), BAD_REQUEST);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    public ResponseEntity<String> saveEvents(long trashId, double occupation) {
+        return new ResponseEntity<>(trashesService.saveEvents(trashId, occupation), OK);
+    }
+
+    @Override
+    public ResponseEntity findAllEventsByTrashId(Long trashId) {
+        try {
+            return new ResponseEntity<>(trashesService.findAllEventsByTrashId(trashId), OK);
+        } catch (NotFoundException e) {
+            return new ResponseEntity<>(e.getError(), NO_CONTENT);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(), INTERNAL_SERVER_ERROR);
