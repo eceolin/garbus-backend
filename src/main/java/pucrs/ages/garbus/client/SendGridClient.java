@@ -24,7 +24,7 @@ public class SendGridClient {
     @Value("${mail.sender.username}")
     private String username;
 
-    @Value("${mail.sender.api-key}")
+    @Value("${mail.sender.mail-api-key}")
     private String sendGridAPIKey;
 
     @Async
