@@ -52,6 +52,7 @@ mail:
   sender:
     username: projetogarbus@gmail.com
     password:
+    api-key:
   server:
     host: smtp.gmail.com
     port: 587

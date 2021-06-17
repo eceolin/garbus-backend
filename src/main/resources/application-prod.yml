@@ -45,6 +45,7 @@ mail:
   sender:
     username: ${MAIL_USERNAME}
     password: ${MAIL_PASSWORD}
+    api-key: ${API_KEY}
   server:
     host: ${MAIL_HOST}
     port: ${PORT_HOST}

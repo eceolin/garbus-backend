@@ -17,6 +17,7 @@ import pucrs.ages.garbus.entities.Users;
 import pucrs.ages.garbus.excpetion.NotFoundException;
 import pucrs.ages.garbus.repositories.UsersRepository;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Optional;
@@ -36,6 +37,9 @@ public class UsersAuthenticationService {
 
     @Autowired
     private EmailService emailService;
+
+    @Autowired
+    private EmailServiceSendGrid emailServiceSendGrid;
 
     @Autowired
     private UsersService usersService;
@@ -69,7 +73,7 @@ public class UsersAuthenticationService {
         return new JwtResponse(token);
     }
 
-    public PasswordRecoveryResponse recoveryPassword(String login) {
+    public PasswordRecoveryResponse recoveryPassword(String login) throws IOException {
         Users user = Optional.ofNullable(usersService.findByLoginEquals(login))
                 .orElseThrow(() -> new NotFoundException(new ErrorResponse(String.format("Usuário com Login %s não encontrado.", login))));
         PasswordRecoveryResponse passwordRecoveryResponse = new PasswordRecoveryResponse();
@@ -86,8 +90,9 @@ public class UsersAuthenticationService {
     }
 
 
-    private void sendPasswordRecoveryMail(Users user, String newPassword) {
-        emailService.sendTo(user.getEmail(),"Recuperação Senha", "Sua nova senha temporária é: " + newPassword);
+    private void sendPasswordRecoveryMail(Users user, String newPassword) throws IOException {
+//        emailService.sendTo(user.getEmail(),"Recuperação Senha", "Sua nova senha temporária é: " + newPassword);
+        emailServiceSendGrid.sendTo(user.getEmail(),"Recuperação Senha", "Sua nova senha temporária é: " + newPassword);
     }
 
     public String redefinePassword(String login) {
