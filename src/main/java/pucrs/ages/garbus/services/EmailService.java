@@ -13,7 +13,6 @@ import java.io.IOException;
 @Slf4j
 public class EmailService {
     private final SendGridClient sendGridClient;
-    private final GmailClient gmailClient;
 
     public void sendTo(String recipient, String subject, String text) throws IOException {
         sendGridClient.sendTo(recipient, subject, text);
