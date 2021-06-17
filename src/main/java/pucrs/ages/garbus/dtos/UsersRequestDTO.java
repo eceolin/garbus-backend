@@ -28,4 +28,6 @@ public class UsersRequestDTO {
     private String password;
 
     private Zones zone;
+
+    private boolean mustChangePwd;
 }

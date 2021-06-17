@@ -32,6 +32,7 @@ public class Users {
         this.password = usersRequestDTO.getPassword();
         this.profiles = usersRequestDTO.getProfile();
         this.zone = usersRequestDTO.getZone();
+        this.mustChangePwd = usersRequestDTO.isMustChangePwd();
     }
 
     @Id

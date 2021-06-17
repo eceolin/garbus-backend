@@ -33,6 +33,7 @@ public class UsersDTO {
         this.registerDate = users.getRegisterDate();
         this.profile = users.getProfiles();
         this.zone = users.getZone();
+        this.mustChangePwd = users.isMustChangePwd();
     }
 
     public static UsersDTO of(Users users) {
@@ -57,5 +58,7 @@ public class UsersDTO {
     private String password;
 
     private Zones zone;
+
+    private boolean mustChangePwd;
 
 }
