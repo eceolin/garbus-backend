@@ -155,6 +155,19 @@ public class TrashesControllerImpl implements TrashesController {
     public ResponseEntity<String> saveEvents(long trashId, double occupation) {
         return new ResponseEntity<>(trashesService.saveEvents(trashId, occupation), OK);
     }
+
+    @Override
+    public ResponseEntity findAllEventsByTrashId(Long trashId) {
+        try {
+            return new ResponseEntity<>(trashesService.findAllEventsByTrashId(trashId), OK);
+        } catch (NotFoundException e) {
+            return new ResponseEntity<>(e.getError(), NO_CONTENT);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }
 
 
