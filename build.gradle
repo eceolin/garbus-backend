@@ -80,6 +80,8 @@ dependencies {
 
 	implementation group: 'org.passay', name: 'passay', version: '1.6.0'
 
+	implementation 'com.sendgrid:sendgrid-java:4.7.2'
+
 }
 
 test {

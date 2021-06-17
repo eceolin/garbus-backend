@@ -3,7 +3,6 @@ package pucrs.ages.garbus.services;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,11 +16,10 @@ import pucrs.ages.garbus.entities.Users;
 import pucrs.ages.garbus.excpetion.NotFoundException;
 import pucrs.ages.garbus.repositories.UsersRepository;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Optional;
-
-import static org.springframework.http.HttpStatus.OK;
 
 @Slf4j
 @Service
@@ -69,7 +67,7 @@ public class UsersAuthenticationService {
         return new JwtResponse(token);
     }
 
-    public PasswordRecoveryResponse recoveryPassword(String login) {
+    public PasswordRecoveryResponse recoveryPassword(String login) throws IOException {
         Users user = Optional.ofNullable(usersService.findByLoginEquals(login))
                 .orElseThrow(() -> new NotFoundException(new ErrorResponse(String.format("Usuário com Login %s não encontrado.", login))));
         PasswordRecoveryResponse passwordRecoveryResponse = new PasswordRecoveryResponse();
@@ -86,7 +84,7 @@ public class UsersAuthenticationService {
     }
 
 
-    private void sendPasswordRecoveryMail(Users user, String newPassword) {
+    private void sendPasswordRecoveryMail(Users user, String newPassword) throws IOException {
         emailService.sendTo(user.getEmail(),"Recuperação Senha", "Sua nova senha temporária é: " + newPassword);
     }
 
