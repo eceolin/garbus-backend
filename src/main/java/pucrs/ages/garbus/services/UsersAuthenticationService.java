@@ -3,7 +3,6 @@ package pucrs.ages.garbus.services;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,8 +21,6 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Optional;
 
-import static org.springframework.http.HttpStatus.OK;
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -36,7 +33,7 @@ public class UsersAuthenticationService {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private EmailServiceSendGrid emailServiceSendGrid;
+    private EmailService emailService;
 
     @Autowired
     private UsersService usersService;
@@ -88,7 +85,7 @@ public class UsersAuthenticationService {
 
 
     private void sendPasswordRecoveryMail(Users user, String newPassword) throws IOException {
-        emailServiceSendGrid.sendTo(user.getEmail(),"Recuperação Senha", "Sua nova senha temporária é: " + newPassword);
+        emailService.sendTo(user.getEmail(),"Recuperação Senha", "Sua nova senha temporária é: " + newPassword);
     }
 
     public String redefinePassword(String login) {
