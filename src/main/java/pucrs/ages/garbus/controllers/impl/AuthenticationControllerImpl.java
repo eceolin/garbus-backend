@@ -1,23 +1,20 @@
 package pucrs.ages.garbus.controllers.impl;
 
-import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pucrs.ages.garbus.controllers.AuthenticationController;
-import pucrs.ages.garbus.dtos.*;
-import pucrs.ages.garbus.entities.Users;
+import pucrs.ages.garbus.dtos.JwtRequest;
+import pucrs.ages.garbus.dtos.LoginResponse;
+import pucrs.ages.garbus.dtos.PasswordRecoveryRequest;
 import pucrs.ages.garbus.excpetion.NotFoundException;
 import pucrs.ages.garbus.repositories.UsersRepository;
 import pucrs.ages.garbus.services.UsersAuthenticationService;
 
 import javax.annotation.Resource;
-import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
 
-import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,7 +26,7 @@ public class AuthenticationControllerImpl implements AuthenticationController {
     private final UsersRepository usersRepository;
 
     @Override
-    public ResponseEntity<JwtResponse> authenticate(JwtRequest jwtRequest) throws Exception {
+    public ResponseEntity<LoginResponse> authenticate(JwtRequest jwtRequest) throws Exception {
         return new ResponseEntity<>(usersAuthenticationService.authenticateUser(jwtRequest), OK);
     }
 

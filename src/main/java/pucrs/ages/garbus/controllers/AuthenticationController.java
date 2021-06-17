@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import pucrs.ages.garbus.dtos.JwtRequest;
-import pucrs.ages.garbus.dtos.JwtResponse;
+import pucrs.ages.garbus.dtos.LoginResponse;
 import pucrs.ages.garbus.dtos.PasswordRecoveryRequest;
 import pucrs.ages.garbus.dtos.PasswordRecoveryResponse;
 
@@ -17,7 +17,7 @@ import javax.validation.constraints.NotEmpty;
 public interface AuthenticationController {
     @PostMapping("/login")
     @ApiOperation("User authentication")
-    ResponseEntity<JwtResponse> authenticate(@RequestBody @Valid JwtRequest jwtRequest) throws Exception;
+    ResponseEntity<LoginResponse> authenticate(@RequestBody @Valid JwtRequest jwtRequest) throws Exception;
 
     @PostMapping("/password-recovery")
     @ApiOperation("Password Recovery")

@@ -3,7 +3,6 @@ package pucrs.ages.garbus.services;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,8 +19,6 @@ import pucrs.ages.garbus.repositories.UsersRepository;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Optional;
-
-import static org.springframework.http.HttpStatus.OK;
 
 @Slf4j
 @Service
@@ -45,7 +42,7 @@ public class UsersAuthenticationService {
 
     private final UsersRepository usersRepository;
 
-    public JwtResponse authenticateUser(JwtRequest jwtRequest) throws Exception {
+    public LoginResponse authenticateUser(JwtRequest jwtRequest) throws Exception {
 
         Users user = usersService.findByLogin(jwtRequest.getLogin());
         if (user == null || !user.getPassword().equals(jwtRequest.getPassword())) {
@@ -66,7 +63,7 @@ public class UsersAuthenticationService {
         final UserDetails userDetails = new User(jwtRequest.getLogin(), jwtRequest.getPassword(), new ArrayList<>());
         final String token = jwtUtility.generateToken(userDetails, user);
 
-        return new JwtResponse(token);
+        return new LoginResponse(token, user.isMustChangePwd());
     }
 
     public PasswordRecoveryResponse recoveryPassword(String login) {
