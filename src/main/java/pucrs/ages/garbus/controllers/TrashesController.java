@@ -68,4 +68,7 @@ public interface TrashesController {
     ResponseEntity<String> saveEvents(@RequestParam(value = "trashId") @Valid @NotEmpty long trashId,
                                       @RequestParam(value = "occupation") @Valid @NotEmpty double occupation);
 
+    @GetMapping("/{trashId}/events")
+    @ApiOperation("Find all events by trashes id")
+    ResponseEntity<List<TrashesEventsDTO>> findAllEventsByTrashId(@NotNull @PathVariable Long trashId);
 }
