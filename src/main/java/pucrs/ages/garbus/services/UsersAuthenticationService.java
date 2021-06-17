@@ -36,9 +36,6 @@ public class UsersAuthenticationService {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private EmailService emailService;
-
-    @Autowired
     private EmailServiceSendGrid emailServiceSendGrid;
 
     @Autowired
@@ -91,7 +88,6 @@ public class UsersAuthenticationService {
 
 
     private void sendPasswordRecoveryMail(Users user, String newPassword) throws IOException {
-//        emailService.sendTo(user.getEmail(),"Recuperação Senha", "Sua nova senha temporária é: " + newPassword);
         emailServiceSendGrid.sendTo(user.getEmail(),"Recuperação Senha", "Sua nova senha temporária é: " + newPassword);
     }
 
