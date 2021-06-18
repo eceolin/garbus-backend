@@ -102,9 +102,6 @@ VALUES ('projetogarbus@gmail.com', 'Usuario Default Operador', 'garbus', 'garbus
 INSERT INTO USERS (EMAIL, NAME, LOGIN, PASSWORD, DT_REGISTER, ID_PROFILE, ID_ZONE)
 VALUES ('projetogarbus@gmail.com', 'Usuario Gestor Admin', 'admin', 'admin', CURRENT_TIMESTAMP, 2, 1);
 
-INSERT INTO USERS_NOTIFICATIONS (ID_USER, NOTIFICATION_TOKEN)
-VALUES (1, 'Teste');
-
 INSERT INTO TRASHES (BRAND, DESCRIPTION, CAPACITY, OCCUPATION, ID_STATUS, ID_TYPE, ID_BUILDING, ID_ZONE, LOCAL_DESCRIPTION, LONGITUDE, LATITUDE)
 VALUES ('Sanremo', 'Lixeira Industrial Sanremo', 50.0, 30.0, 4, 1, NULL, 1, 'Entrada principal', -51.173491, -30.061278);
 
