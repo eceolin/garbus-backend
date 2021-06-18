@@ -2,14 +2,8 @@ package pucrs.ages.garbus.controllers;
 
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import pucrs.ages.garbus.dtos.JwtRequest;
-import pucrs.ages.garbus.dtos.JwtResponse;
-import pucrs.ages.garbus.dtos.PasswordRecoveryRequest;
-import pucrs.ages.garbus.dtos.PasswordRecoveryResponse;
+import org.springframework.web.bind.annotation.*;
+import pucrs.ages.garbus.dtos.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
@@ -27,4 +21,8 @@ public interface AuthenticationController {
     @ApiOperation("Update password")
     ResponseEntity<String> updatePassword(@RequestParam(value = "userId") @Valid @NotEmpty long userId,
                                           @RequestParam(value = "password") @Valid @NotEmpty String password);
+
+    @PutMapping("/generate-temp-password/{userId}")
+    @ApiOperation("Generate password")
+    ResponseEntity<TempPasswordGenerationResponse> generateTempPassword(@PathVariable(value = "userId") @Valid @NotEmpty long userId);
 }
