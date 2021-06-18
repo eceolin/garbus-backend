@@ -2,17 +2,17 @@ package pucrs.ages.garbus.controllers.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.RestController;
 import pucrs.ages.garbus.controllers.UsersNotificationsController;
+import pucrs.ages.garbus.dtos.DisableNotificationsRequest;
+import pucrs.ages.garbus.dtos.SaveNotificationTokenRequest;
 import pucrs.ages.garbus.excpetion.BadRequestException;
 import pucrs.ages.garbus.services.UsersNotificationsService;
 
 import javax.annotation.Resource;
-import javax.validation.constraints.NotNull;
 
 import static org.springframework.http.HttpStatus.*;
-
 
 @RestController
 @RequiredArgsConstructor
@@ -22,9 +22,9 @@ public class UsersNotificationsControllerImpl implements UsersNotificationsContr
     private UsersNotificationsService usersNotificationsService;
 
     @Override
-    public ResponseEntity<Object> disableNotifications(long userId) {
+    public ResponseEntity<Object> disableNotifications(DisableNotificationsRequest disableNotificationsRequest, Authentication authentication) {
         try {
-            usersNotificationsService.disableNotifications(userId);
+            usersNotificationsService.disableNotifications(authentication.getName(), disableNotificationsRequest.getSeconds());
             return new ResponseEntity<>("Notificações desativadas", CREATED);
         } catch (BadRequestException e) {
             e.printStackTrace();
@@ -36,9 +36,9 @@ public class UsersNotificationsControllerImpl implements UsersNotificationsContr
     }
 
     @Override
-    public ResponseEntity<Object> saveToken(long userId, String notificationToken) {
+    public ResponseEntity<Object> saveToken(SaveNotificationTokenRequest tokenRequest, Authentication authentication) {
         try {
-            usersNotificationsService.saveToken(userId, notificationToken);
+            usersNotificationsService.saveToken(authentication.getName(), tokenRequest.getNotificationToken());
             return new ResponseEntity<>("Token salvo", CREATED);
         } catch (BadRequestException e) {
             e.printStackTrace();

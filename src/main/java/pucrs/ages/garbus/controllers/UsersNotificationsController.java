@@ -2,18 +2,21 @@ package pucrs.ages.garbus.controllers;
 
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.constraints.NotNull;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import pucrs.ages.garbus.dtos.DisableNotificationsRequest;
+import pucrs.ages.garbus.dtos.SaveNotificationTokenRequest;
 
 @RequestMapping("/notifications")
 public interface UsersNotificationsController {
-    @PostMapping("/disable/{userId}")
-    @ApiOperation("Update password")
-    ResponseEntity<Object> disableNotifications(@PathVariable(value = "userId") @NotNull long userId);
+    @PostMapping("/disable")
+    @ApiOperation("Disable notifications temporarily")
+    ResponseEntity<Object> disableNotifications(@RequestBody DisableNotificationsRequest disableNotificationsRequest, Authentication authentication);
 
     @PutMapping("/save-token")
     @ApiOperation("Save token")
-    ResponseEntity<Object> saveToken(@RequestParam(value = "userId") @NotNull long userId,
-                                     @RequestParam(value = "notificationToken") @NotNull String notificationToken);
+    ResponseEntity<Object> saveToken(@RequestBody SaveNotificationTokenRequest tokenRequest, Authentication authentication);
 }

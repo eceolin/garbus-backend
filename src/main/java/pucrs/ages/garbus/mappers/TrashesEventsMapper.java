@@ -22,8 +22,19 @@ public class TrashesEventsMapper {
     public List<TrashesEventsDTO> mapear(List<TrashesEvents> source) {
         return source
                 .stream()
-                .map(entity -> modelMapper.map(entity, TrashesEventsDTO.class))
+                .map(entity -> TrashesEventsDTO
+                        .builder()
+                        .id(entity.getId())
+                        .event(entity.getEvents())
+                        .user(entity.getUsers())
+                        .data(entity.getData())
+                        .occupation(entity.getOccupation())
+                        .build())
                 .collect(Collectors.toList());
+//        return source
+//                .stream()
+//                .map(entity -> modelMapper.map(entity, TrashesEventsDTO.class))
+//                .collect(Collectors.toList());
     }
 
     public TrashesEventsDTO mapear(TrashesEvents source) {
