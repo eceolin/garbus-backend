@@ -24,4 +24,10 @@ public class UsersNotificationsService {
         usersNotifications.setUserNotificationFlag(false);
         usersNotificationsRepository.save(usersNotifications);
     }
+
+    public void saveToken(Long userId, String notificationToken) {
+        UsersNotifications usersNotifications = usersNotificationsRepository.findByUserId(userId);
+        usersNotifications.setNotificationToken(notificationToken);
+        usersNotificationsRepository.save(usersNotifications);
+    }
 }
