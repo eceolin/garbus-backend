@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class JwtResponse {
+public class LoginResponse {
 
     private String jwtToken;
+    private boolean mustChangePwd;
+
 }
