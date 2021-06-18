@@ -6,14 +6,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import pucrs.ages.garbus.dtos.JwtRequest;
 import pucrs.ages.garbus.dtos.JwtResponse;
 import pucrs.ages.garbus.dtos.PasswordRecoveryRequest;
 import pucrs.ages.garbus.dtos.PasswordRecoveryResponse;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
 
 public interface AuthenticationController {
     @PostMapping("/login")
@@ -27,5 +25,5 @@ public interface AuthenticationController {
     @PutMapping("/change-password")
     @ApiOperation("Update password")
     ResponseEntity<String> updatePassword(Authentication authentication,
-                                          @RequestParam(value = "password") @Valid @NotEmpty String password);
+                                          @RequestBody String password);
 }
