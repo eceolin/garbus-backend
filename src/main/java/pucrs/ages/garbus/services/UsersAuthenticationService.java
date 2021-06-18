@@ -43,7 +43,7 @@ public class UsersAuthenticationService {
 
     private final UsersRepository usersRepository;
 
-    public JwtResponse authenticateUser(JwtRequest jwtRequest) throws Exception {
+    public LoginResponse authenticateUser(JwtRequest jwtRequest) throws Exception {
 
         Users user = usersService.findByLogin(jwtRequest.getLogin());
         if (user == null || !user.getPassword().equals(jwtRequest.getPassword())) {
@@ -64,7 +64,7 @@ public class UsersAuthenticationService {
         final UserDetails userDetails = new User(jwtRequest.getLogin(), jwtRequest.getPassword(), new ArrayList<>());
         final String token = jwtUtility.generateToken(userDetails, user);
 
-        return new JwtResponse(token);
+        return new LoginResponse(token, user.isMustChangePwd());
     }
 
     public PasswordRecoveryResponse recoveryPassword(String login) throws IOException {
