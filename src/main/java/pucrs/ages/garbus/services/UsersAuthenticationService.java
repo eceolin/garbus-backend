@@ -73,7 +73,7 @@ public class UsersAuthenticationService {
         PasswordRecoveryResponse passwordRecoveryResponse = new PasswordRecoveryResponse();
         if (!Objects.isNull(user.getEmail()) && !user.getEmail().isBlank()) {
             passwordRecoveryResponse.setHasEmail(true);
-            String newPassword = redefinePassword(login);
+            String newPassword = redefinePassword(user);
             sendPasswordRecoveryMail(user, newPassword);
             passwordRecoveryResponse.setEmailSent(true);
             return passwordRecoveryResponse;
@@ -88,10 +88,18 @@ public class UsersAuthenticationService {
         emailService.sendTo(user.getEmail(),"Recuperação Senha", "Sua nova senha temporária é: " + newPassword);
     }
 
-    public String redefinePassword(String login) {
-        Users user = usersService.findByLogin(login);
+    public TempPasswordGenerationResponse generateTempPassword(long userId) {
+        Users user = usersRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException(
+                        new ErrorResponse("Usuário não encontrado para o id " + userId)
+                ));
+        return new TempPasswordGenerationResponse(redefinePassword(user));
+    }
+
+    public String redefinePassword(Users user) {
         String newPassword = passwordUtil.generatePassayPassword();
         user.setPassword(newPassword);
+        user.setMustChangePwd(true);
         usersService.save(user);
 
         return newPassword;
