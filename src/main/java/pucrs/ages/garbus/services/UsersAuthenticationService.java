@@ -105,12 +105,12 @@ public class UsersAuthenticationService {
         return newPassword;
     }
 
-    public String changePassword (long userId, String password){
+    public String changePassword(String login, String password) {
         String success = "Senha alterada";
 
-        Users user = usersRepository.findById(userId)
+        Users user = Optional.ofNullable(usersRepository.findByLogin(login))
                 .orElseThrow(() -> new NotFoundException(
-                        new ErrorResponse("Usuário não encontrado para o id " + userId)
+                        new ErrorResponse("Usuário não encontrado para o id " + login)
                 ));
 
         user.setPassword(password);

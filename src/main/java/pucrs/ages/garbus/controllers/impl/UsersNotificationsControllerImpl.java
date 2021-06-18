@@ -2,6 +2,7 @@ package pucrs.ages.garbus.controllers.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.RestController;
 import pucrs.ages.garbus.controllers.UsersNotificationsController;
 import pucrs.ages.garbus.excpetion.BadRequestException;
@@ -20,9 +21,9 @@ public class UsersNotificationsControllerImpl implements UsersNotificationsContr
     private UsersNotificationsService usersNotificationsService;
 
     @Override
-    public ResponseEntity<Object> disableNotifications(long userId) {
+    public ResponseEntity<Object> disableNotifications(Authentication authentication) {
         try {
-            usersNotificationsService.disableNotifications(userId);
+            usersNotificationsService.disableNotifications(authentication.getName());
             return new ResponseEntity<>("Notificações desativadas", CREATED);
         } catch (BadRequestException e) {
             e.printStackTrace();
