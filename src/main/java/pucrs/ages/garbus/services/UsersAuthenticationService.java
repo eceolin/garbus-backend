@@ -16,6 +16,7 @@ import pucrs.ages.garbus.entities.Users;
 import pucrs.ages.garbus.excpetion.NotFoundException;
 import pucrs.ages.garbus.repositories.UsersRepository;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Optional;
@@ -66,13 +67,13 @@ public class UsersAuthenticationService {
         return new LoginResponse(token, user.isMustChangePwd());
     }
 
-    public PasswordRecoveryResponse recoveryPassword(String login) {
+    public PasswordRecoveryResponse recoveryPassword(String login) throws IOException {
         Users user = Optional.ofNullable(usersService.findByLoginEquals(login))
                 .orElseThrow(() -> new NotFoundException(new ErrorResponse(String.format("Usuário com Login %s não encontrado.", login))));
         PasswordRecoveryResponse passwordRecoveryResponse = new PasswordRecoveryResponse();
         if (!Objects.isNull(user.getEmail()) && !user.getEmail().isBlank()) {
             passwordRecoveryResponse.setHasEmail(true);
-            String newPassword = redefinePassword(login);
+            String newPassword = redefinePassword(user);
             sendPasswordRecoveryMail(user, newPassword);
             passwordRecoveryResponse.setEmailSent(true);
             return passwordRecoveryResponse;
@@ -83,25 +84,33 @@ public class UsersAuthenticationService {
     }
 
 
-    private void sendPasswordRecoveryMail(Users user, String newPassword) {
+    private void sendPasswordRecoveryMail(Users user, String newPassword) throws IOException {
         emailService.sendTo(user.getEmail(),"Recuperação Senha", "Sua nova senha temporária é: " + newPassword);
     }
 
-    public String redefinePassword(String login) {
-        Users user = usersService.findByLogin(login);
+    public TempPasswordGenerationResponse generateTempPassword(long userId) {
+        Users user = usersRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException(
+                        new ErrorResponse("Usuário não encontrado para o id " + userId)
+                ));
+        return new TempPasswordGenerationResponse(redefinePassword(user));
+    }
+
+    public String redefinePassword(Users user) {
         String newPassword = passwordUtil.generatePassayPassword();
         user.setPassword(newPassword);
+        user.setMustChangePwd(true);
         usersService.save(user);
 
         return newPassword;
     }
 
-    public String changePassword (long userId, String password){
+    public String changePassword(String login, String password) {
         String success = "Senha alterada";
 
-        Users user = usersRepository.findById(userId)
+        Users user = Optional.ofNullable(usersRepository.findByLogin(login))
                 .orElseThrow(() -> new NotFoundException(
-                        new ErrorResponse("Usuário não encontrado para o id " + userId)
+                        new ErrorResponse("Usuário não encontrado para o id " + login)
                 ));
 
         user.setPassword(password);

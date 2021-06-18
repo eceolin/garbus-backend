@@ -17,5 +17,8 @@ public interface TrashesEventsRepository extends JpaRepository<TrashesEvents, Lo
     @Modifying
     void deleteTrashesEventsByTrashesId(@Param("trashId") Long trashId);
 
+    @Modifying
+    void deleteTrashesEventsByUsersId(@Param("trashId") Long trashId);
+
     List<TrashesEvents> findAllByTrashesId(@Param("trashId") Long trashId);
 }
