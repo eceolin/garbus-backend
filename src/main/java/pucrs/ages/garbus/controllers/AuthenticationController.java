@@ -2,6 +2,7 @@ package pucrs.ages.garbus.controllers;
 
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,6 +26,6 @@ public interface AuthenticationController {
 
     @PutMapping("/change-password")
     @ApiOperation("Update password")
-    ResponseEntity<String> updatePassword(@RequestParam(value = "userId") @Valid @NotEmpty long userId,
+    ResponseEntity<String> updatePassword(Authentication authentication,
                                           @RequestParam(value = "password") @Valid @NotEmpty String password);
 }

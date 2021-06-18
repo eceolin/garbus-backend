@@ -1,21 +1,16 @@
 package pucrs.ages.garbus.controllers.impl;
 
-import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.RestController;
 import pucrs.ages.garbus.controllers.AuthenticationController;
 import pucrs.ages.garbus.dtos.*;
-import pucrs.ages.garbus.entities.Users;
 import pucrs.ages.garbus.excpetion.NotFoundException;
 import pucrs.ages.garbus.repositories.UsersRepository;
 import pucrs.ages.garbus.services.UsersAuthenticationService;
 
 import javax.annotation.Resource;
-import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
 
 import static org.springframework.http.HttpStatus.*;
 
@@ -44,7 +39,7 @@ public class AuthenticationControllerImpl implements AuthenticationController {
     }
 
     @Override
-    public ResponseEntity<String> updatePassword(long userId, String password){
-        return new ResponseEntity<>(usersAuthenticationService.changePassword(userId, password), OK);
+    public ResponseEntity<String> updatePassword(Authentication authentication, String password){
+        return new ResponseEntity<>(usersAuthenticationService.changePassword(authentication.getName(), password), OK);
     }
 }

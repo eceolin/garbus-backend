@@ -17,4 +17,10 @@ public interface UsersNotificationsRepository extends JpaRepository<UsersNotific
             nativeQuery = true
     )
     UsersNotifications findByUserId(@Param("userId") Long userId);
+
+    @Query(
+            value = UsersNotificationsSql.findByLogin,
+            nativeQuery = true
+    )
+    UsersNotifications findByLogin(@Param("login") String login);
 }

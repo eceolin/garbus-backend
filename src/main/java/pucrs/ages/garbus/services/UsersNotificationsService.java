@@ -19,8 +19,8 @@ public class UsersNotificationsService {
         return usersNotificationsRepository.findById(id);
     }
 
-    public void disableNotifications(Long userId) {
-        UsersNotifications usersNotifications = usersNotificationsRepository.findByUserId(userId);
+    public void disableNotifications(String login) {
+        UsersNotifications usersNotifications = usersNotificationsRepository.findByLogin(login);
         usersNotifications.setUserNotificationFlag(false);
         usersNotificationsRepository.save(usersNotifications);
     }
