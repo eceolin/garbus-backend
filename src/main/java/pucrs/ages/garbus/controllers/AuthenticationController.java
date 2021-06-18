@@ -7,11 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import pucrs.ages.garbus.dtos.JwtRequest;
-import pucrs.ages.garbus.dtos.LoginResponse;
-import pucrs.ages.garbus.dtos.PasswordRecoveryRequest;
-import pucrs.ages.garbus.dtos.PasswordRecoveryResponse;
-import pucrs.ages.garbus.dtos.TempPasswordGenerationResponse;
+import pucrs.ages.garbus.dtos.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
@@ -27,7 +23,7 @@ public interface AuthenticationController {
 
     @PutMapping("/change-password")
     @ApiOperation("Update password")
-    ResponseEntity<String> updatePassword(Authentication authentication, @RequestBody String password);
+    ResponseEntity<String> updatePassword(Authentication authentication, @RequestBody PasswordChangeRequest password);
 
     @PutMapping("/generate-temp-password/{userId}")
     @ApiOperation("Generate password")

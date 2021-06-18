@@ -4,10 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import pucrs.ages.garbus.controllers.AuthenticationController;
-import pucrs.ages.garbus.dtos.JwtRequest;
-import pucrs.ages.garbus.dtos.LoginResponse;
-import pucrs.ages.garbus.dtos.PasswordRecoveryRequest;
-import pucrs.ages.garbus.dtos.JwtResponse;
+import pucrs.ages.garbus.dtos.*;
 import pucrs.ages.garbus.dtos.PasswordRecoveryRequest;
 import org.springframework.security.core.Authentication;
 import pucrs.ages.garbus.excpetion.NotFoundException;
@@ -44,8 +41,8 @@ public class AuthenticationControllerImpl implements AuthenticationController {
     }
 
     @Override
-    public ResponseEntity<String> updatePassword(Authentication authentication, String password){
-        return new ResponseEntity<>(usersAuthenticationService.changePassword(authentication.getName(), password), OK);
+    public ResponseEntity<String> updatePassword(Authentication authentication, PasswordChangeRequest password){
+        return new ResponseEntity<>(usersAuthenticationService.changePassword(authentication.getName(), password.getPassword()), OK);
     }
 
     @Override
