@@ -48,6 +48,19 @@ public class UsersNotificationsControllerImpl implements UsersNotificationsContr
             return new ResponseEntity<>(e.getMessage(), INTERNAL_SERVER_ERROR);
         }
     }
+
+    @Override
+    public ResponseEntity<Object> isDisabledUntilWhen(Authentication authentication) {
+        try {
+            return new ResponseEntity<>(usersNotificationsService.isDisabledUntilWhen(authentication.getName()), OK);
+        } catch (BadRequestException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), BAD_REQUEST);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), INTERNAL_SERVER_ERROR);
+        }
+    }
 }
 
 

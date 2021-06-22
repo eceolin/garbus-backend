@@ -2,7 +2,9 @@ package pucrs.ages.garbus.services;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import pucrs.ages.garbus.dtos.NotificationsDisabledUntilWhenDTO;
 import pucrs.ages.garbus.entities.NotificationTokens;
 import pucrs.ages.garbus.entities.Users;
 import pucrs.ages.garbus.repositories.NotificationTokensRepository;
@@ -49,5 +51,17 @@ public class UsersNotificationsService {
 
         NotificationTokens nt = NotificationTokens.builder().users(user).token(notificationToken).build();
         notificationTokensRepository.save(nt);
+    }
+
+    public NotificationsDisabledUntilWhenDTO isDisabledUntilWhen(String login) {
+        LocalDateTime disabledUntil = null;
+        Optional<UsersNotifications> usersNotifications = Optional.ofNullable(usersNotificationsRepository.findByLogin(login));
+        if (usersNotifications.isPresent()) {
+            disabledUntil = usersNotifications.get().getDisabledUntil();
+        }
+
+        return NotificationsDisabledUntilWhenDTO.builder().disabledUntil(disabledUntil).build();
+
+
     }
 }
