@@ -15,12 +15,14 @@ import org.mockito.Mock;
 
 import static org.mockito.BDDMockito.given;
 import static org.assertj.core.api.Assertions.fail;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.BDDAssertions.then;
 
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import pucrs.ages.garbus.entities.Users;
 import pucrs.ages.garbus.entities.UsersNotifications;
+import pucrs.ages.garbus.excpetion.BadRequestException;
 import pucrs.ages.garbus.repositories.NotificationTokensRepository;
 import pucrs.ages.garbus.repositories.UsersNotificationsRepository;
 
@@ -45,7 +47,7 @@ class UsersNotificationsServiceTest {
     }
 
     @Test
-    @DisplayName("Reativar notificações")
+    @DisplayName("Reactivate notifications")
     void reactivateNotifications() {
         // Given
         List<Users> users = generateUsers();
@@ -67,6 +69,17 @@ class UsersNotificationsServiceTest {
         } else {
             fail("UsersNotifications not found");
         }
+    }
+
+    @Test
+    @DisplayName("Try to reactivate notifications but there aren't registered devices")
+    void reactivateNotificationsNotFound() {
+        // Given
+        List<Users> users = generateUsers();
+        String login = users.get(0).getLogin();
+
+        // Then
+        assertThatThrownBy(() -> usersNotificationsService.reactivate(login)).isInstanceOf(BadRequestException.class);
     }
 
     private List<Users> generateUsers() {
