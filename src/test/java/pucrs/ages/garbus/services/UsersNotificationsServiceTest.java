@@ -20,6 +20,8 @@ import static org.assertj.core.api.BDDAssertions.then;
 
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import pucrs.ages.garbus.dtos.NotificationsDisabledUntilWhenDTO;
+import pucrs.ages.garbus.entities.NotificationTokens;
 import pucrs.ages.garbus.entities.Users;
 import pucrs.ages.garbus.entities.UsersNotifications;
 import pucrs.ages.garbus.excpetion.BadRequestException;
@@ -44,6 +46,90 @@ class UsersNotificationsServiceTest {
     @BeforeEach
     void setup() {
         usersNotificationsService = new UsersNotificationsService(usersNotificationsRepository, notificationTokensRepository, usersService);
+    }
+
+    @Test
+    @DisplayName("Saving already existing token")
+    void saveTokenAlreadyExisting() {
+        // Given
+        List<Users> users = generateUsers();
+        String login = users.get(0).getLogin();
+        String token = "asdfhjklasdfhjklasdfhjkl";
+
+        // When
+        given(notificationTokensRepository.findByToken(token)).willReturn(NotificationTokens.builder().token(token).build());
+        usersNotificationsService.saveToken(login, token);
+
+        // Then
+        then(notificationTokensRepository.findByToken(token).getToken().equals(token));
+    }
+
+    @Test
+    @DisplayName("Notifications disabled until when")
+    void isDisabledUntilWhen() {
+        // Given
+        List<Users> users = generateUsers();
+        String login = users.get(0).getLogin();
+        LocalDateTime disabledUntil = LocalDateTime.now().plusSeconds(10);
+
+        // When
+        given(usersNotificationsRepository.findByLogin(login)).willReturn(
+                Optional.ofNullable(
+                        UsersNotifications.builder().users(users.get(0)).disabledUntil(disabledUntil).build()
+                )
+        );
+        NotificationsDisabledUntilWhenDTO disabledUntilWhenDto = usersNotificationsService.isDisabledUntilWhen(login);
+
+        // Then
+        then(disabledUntilWhenDto.getDisabledUntil().equals(disabledUntil));
+    }
+
+    @Test
+    @DisplayName("Notifications disabled until when - No registered devices")
+    void isDisabledUntilWhenNotFound() {
+        // Given
+        List<Users> users = generateUsers();
+        String login = users.get(0).getLogin();
+
+        //Then
+        assertThatThrownBy(() -> usersNotificationsService.isDisabledUntilWhen(login)).isInstanceOf(BadRequestException.class);
+    }
+
+    @Test
+    @DisplayName("Disable notifications")
+    void disableNotifications() {
+        // Given
+        List<Users> users = generateUsers();
+        String login = users.get(0).getLogin();
+        int seconds = 3600;
+
+        // When
+        given(usersNotificationsRepository.findByLogin(login)).willReturn(
+                Optional.ofNullable(
+                        UsersNotifications.builder().users(users.get(0)).disabledUntil(null).build()
+                )
+        );
+        usersNotificationsService.disable(login, seconds);
+
+        // Then
+        Optional<UsersNotifications> nr = usersNotificationsRepository.findByLogin(login);
+        if (nr.isPresent()) {
+            then(nr.get().getDisabledUntil()).isNotNull();
+        } else {
+            fail("UsersNotifications not found");
+        }
+    }
+
+    @Test
+    @DisplayName("Disable notifications - No registered devices")
+    void disableNotificationsNotFound() {
+        // Given
+        List<Users> users = generateUsers();
+        String login = users.get(0).getLogin();
+        int seconds = 3600;
+
+        // Then
+        assertThatThrownBy(() -> usersNotificationsService.disable(login, seconds)).isInstanceOf(BadRequestException.class);
     }
 
     @Test
@@ -72,7 +158,7 @@ class UsersNotificationsServiceTest {
     }
 
     @Test
-    @DisplayName("Try to reactivate notifications but there aren't registered devices")
+    @DisplayName("Reactivate notifications - No registered devices")
     void reactivateNotificationsNotFound() {
         // Given
         List<Users> users = generateUsers();

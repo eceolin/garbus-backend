@@ -3,6 +3,7 @@ package pucrs.ages.garbus.services;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import pucrs.ages.garbus.dtos.NotificationsDisabledUntilWhenDTO;
 import pucrs.ages.garbus.dtos.ErrorResponse;
 import pucrs.ages.garbus.entities.NotificationTokens;
 import pucrs.ages.garbus.entities.Users;
@@ -12,6 +13,7 @@ import pucrs.ages.garbus.repositories.UsersNotificationsRepository;
 import pucrs.ages.garbus.entities.UsersNotifications;
 
 import java.time.LocalDateTime;
+
 import java.util.Optional;
 
 @Slf4j
@@ -36,17 +38,6 @@ public class UsersNotificationsService {
         usersNotificationsRepository.saveAndFlush(usersNotifications);
     }
 
-    public void disableNotifications(String login, int seconds) {
-        UsersNotifications usersNotifications = this.findByLogin(login).orElseThrow(() ->
-                new BadRequestException(
-                        new ErrorResponse("Não há dispositivos registrados para notificações")
-                )
-        );
-        LocalDateTime disabledUntil = LocalDateTime.now().plusSeconds(seconds);
-        usersNotifications.setDisabledUntil(disabledUntil);
-        usersNotificationsRepository.save(usersNotifications);
-    }
-
     public void saveToken(String login, String notificationToken) {
         Optional<NotificationTokens> notificationTokens = Optional.ofNullable(notificationTokensRepository.findByToken(notificationToken));
         if (notificationTokens.isPresent()) {
@@ -65,6 +56,17 @@ public class UsersNotificationsService {
         notificationTokensRepository.save(nt);
     }
 
+    public void disable(String login, int seconds) {
+        UsersNotifications usersNotifications = this.findByLogin(login).orElseThrow(() ->
+                new BadRequestException(
+                        new ErrorResponse("Não há dispositivos registrados para notificações")
+                )
+        );
+        LocalDateTime disabledUntil = LocalDateTime.now().plusSeconds(seconds);
+        usersNotifications.setDisabledUntil(disabledUntil);
+        usersNotificationsRepository.save(usersNotifications);
+    }
+
     public void reactivate(String login) throws BadRequestException {
         UsersNotifications usersNotifications = this.findByLogin(login)
                 .orElseThrow(() -> new BadRequestException(
@@ -72,5 +74,16 @@ public class UsersNotificationsService {
                 ));
         usersNotifications.setDisabledUntil(null);
         this.updateUsersNotifications(usersNotifications);
+    }
+
+    public NotificationsDisabledUntilWhenDTO isDisabledUntilWhen(String login) {
+        UsersNotifications usersNotifications = this.findByLogin(login)
+                .orElseThrow(() -> new BadRequestException(
+                        new ErrorResponse("Não há dispositivos registrados para notificações")
+                ));
+
+        LocalDateTime disabledUntil = usersNotifications.getDisabledUntil();
+
+        return NotificationsDisabledUntilWhenDTO.builder().disabledUntil(disabledUntil).build();
     }
 }
