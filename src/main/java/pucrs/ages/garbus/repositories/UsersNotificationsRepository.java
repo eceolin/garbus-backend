@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 import pucrs.ages.garbus.entities.UsersNotifications;
 import pucrs.ages.garbus.repositories.sql.UsersNotificationsSql;
 
+import java.util.Optional;
+
 /**
  * JPA repository to UserNotifications entities.
  */
@@ -22,5 +24,5 @@ public interface UsersNotificationsRepository extends JpaRepository<UsersNotific
             value = UsersNotificationsSql.findByLogin,
             nativeQuery = true
     )
-    UsersNotifications findByLogin(@Param("login") String login);
+    Optional<UsersNotifications> findByLogin(@Param("login") String login);
 }

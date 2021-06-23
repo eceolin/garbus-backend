@@ -9,14 +9,26 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pucrs.ages.garbus.dtos.DisableNotificationsRequest;
 import pucrs.ages.garbus.dtos.SaveNotificationTokenRequest;
+import springfox.documentation.annotations.ApiIgnore;
 
 @RequestMapping("/notifications")
 public interface UsersNotificationsController {
     @PostMapping("/disable")
-    @ApiOperation("Disable notifications temporarily")
-    ResponseEntity<Object> disableNotifications(@RequestBody DisableNotificationsRequest disableNotificationsRequest, Authentication authentication);
+    @ApiOperation("Disable notifications temporarily for the logged user")
+    ResponseEntity<Object> disableNotifications(
+            @RequestBody DisableNotificationsRequest disableNotificationsRequest,
+            @ApiIgnore Authentication authentication
+    );
 
     @PutMapping("/save-token")
-    @ApiOperation("Save token")
-    ResponseEntity<Object> saveToken(@RequestBody SaveNotificationTokenRequest tokenRequest, Authentication authentication);
+    @ApiOperation("Save notification token")
+    ResponseEntity<Object> saveToken(
+            @RequestBody SaveNotificationTokenRequest tokenRequest,
+            @ApiIgnore Authentication authentication
+    );
+
+    @PostMapping("/reactivate")
+    @ApiOperation("Reactive notifications for the logged user")
+    ResponseEntity<Object> reactivate(@ApiIgnore Authentication authentication);
 }
+

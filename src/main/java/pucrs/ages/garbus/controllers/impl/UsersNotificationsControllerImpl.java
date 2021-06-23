@@ -27,8 +27,7 @@ public class UsersNotificationsControllerImpl implements UsersNotificationsContr
             usersNotificationsService.disableNotifications(authentication.getName(), disableNotificationsRequest.getSeconds());
             return new ResponseEntity<>("Notificações desativadas", CREATED);
         } catch (BadRequestException e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(e.getMessage(), BAD_REQUEST);
+            return new ResponseEntity<>(e.getError(), BAD_REQUEST);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(), INTERNAL_SERVER_ERROR);
@@ -43,6 +42,19 @@ public class UsersNotificationsControllerImpl implements UsersNotificationsContr
         } catch (BadRequestException e) {
             e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(), BAD_REQUEST);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    public ResponseEntity<Object> reactivate(Authentication authentication) {
+        try {
+            usersNotificationsService.reactivate(authentication.getName());
+            return new ResponseEntity<>("Notificações reativadas", OK);
+        } catch (BadRequestException e) {
+            return new ResponseEntity<>(e.getError(), BAD_REQUEST);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(), INTERNAL_SERVER_ERROR);
