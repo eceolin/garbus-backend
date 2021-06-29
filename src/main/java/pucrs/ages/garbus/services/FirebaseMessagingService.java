@@ -13,7 +13,7 @@ public class FirebaseMessagingService {
 
     private final FirebaseMessaging firebaseMessaging;
 
-    public BatchResponse sendNotification(FirebaseMessage note, List<String> tokens) throws FirebaseMessagingException {
+    public void sendNotification(FirebaseMessage note, List<String> tokens) throws FirebaseMessagingException {
         Notification notification = Notification
                 .builder()
                 .setTitle(note.getSubject())
@@ -26,7 +26,7 @@ public class FirebaseMessagingService {
                 .setNotification(notification)
                 .build();
 
-        return firebaseMessaging.sendMulticast(message);
+        firebaseMessaging.sendMulticast(message);
     }
 
 }

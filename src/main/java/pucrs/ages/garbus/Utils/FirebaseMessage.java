@@ -7,8 +7,6 @@ import lombok.Getter;
 @Getter
 @Builder
 public class FirebaseMessage {
-
     private final @NonNull String subject;
     private final @NonNull String content;
-
 }

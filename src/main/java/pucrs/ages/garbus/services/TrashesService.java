@@ -270,7 +270,6 @@ public class TrashesService {
                 if(notificationTokens != null)
                     tokens.add(notificationTokens.getToken());
             }
-
             FirebaseMessage message = FirebaseMessage
                     .builder()
                     .subject("A lixeira está quase cheia!")
@@ -279,7 +278,6 @@ public class TrashesService {
 
             firebaseMessagingService.sendNotification(message, tokens);
         }
-
         return successMessage;
     }
 }
