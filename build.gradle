@@ -82,6 +82,7 @@ dependencies {
 
 	implementation 'com.sendgrid:sendgrid-java:4.7.2'
 
+	implementation 'com.google.firebase:firebase-admin:7.3.0'
 }
 
 test {

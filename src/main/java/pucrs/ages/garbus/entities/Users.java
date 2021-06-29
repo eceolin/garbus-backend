@@ -61,6 +61,7 @@ public class Users {
     @Column(name = "MUST_CHANGE_PWD")
     private boolean mustChangePwd;
 
+    @Builder.Default
     @Column(name = "DT_REGISTER")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date registerDate = Date.from(Instant.now());
