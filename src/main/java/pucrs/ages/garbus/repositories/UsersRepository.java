@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 import pucrs.ages.garbus.entities.Users;
 import pucrs.ages.garbus.repositories.sql.UsersSql;
 
+import java.util.List;
+
 /**
  * JPA repository to Buildings entities.
  */
@@ -19,4 +21,11 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
             nativeQuery = true
     )
     Users findByLogin(@Param("login") String login);
+
+
+    @Query(
+            value = UsersSql.findByZoneSql,
+            nativeQuery = true
+    )
+    List<Users> findByZoneId(@Param("zone") long zoneId);
 }
