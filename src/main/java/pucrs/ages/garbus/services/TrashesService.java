@@ -1,10 +1,7 @@
 package pucrs.ages.garbus.services;
 
-import com.google.cloud.firestore.Firestore;
-import com.google.firebase.cloud.FirestoreClient;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pucrs.ages.garbus.Utils.FirebaseMessage;
@@ -239,8 +236,10 @@ public class TrashesService {
         );
     }
 
-    public String saveEvents(long trashId, double occupation) throws FirebaseMessagingException {
+    public String report(TrashReportDTO trashReportDTO) {
         String successMessage = "Evento Salvo";
+        long trashId = trashReportDTO.getId();
+        double occupation = trashReportDTO.getOccupation();
 
         Trashes trash = this.findById(trashId)
                 .orElseThrow(() -> new NotFoundException(
@@ -259,8 +258,18 @@ public class TrashesService {
                 .data(Date.from(Instant.now()))
                 .build());
 
-        TrashesThreshold TrashesThreshold = trashesThresholdsRepository.findThresholdsMaxOccupationByTrashId(trashId);
-        if(occupation >= TrashesThreshold.getMaxOcuppation()) {
+        try {
+            sendNotificationIfTrashIsFull(trash);
+        } catch (FirebaseMessagingException e) {
+            e.printStackTrace();
+        }
+
+        return successMessage;
+    }
+
+    public void sendNotificationIfTrashIsFull(Trashes trash) throws FirebaseMessagingException {
+        TrashesThreshold trashesThreshold = trashesThresholdsRepository.findThresholdsMaxOccupationByTrashId(trash.getId());
+        if(trash.getOccupation() >= trashesThreshold.getMaxOcuppation()) {
             List<String> tokens = new LinkedList<>();
             Zones zone = trash.getZones();
 
@@ -273,11 +282,10 @@ public class TrashesService {
             FirebaseMessage message = FirebaseMessage
                     .builder()
                     .subject("A lixeira está quase cheia!")
-                    .content(trash.getDescription() + " no(a) " + trash.getLocalDescription() + " está com " + occupation + "%")
+                    .content(trash.getDescription() + " em " + trash.getLocalDescription() + " está com " + trash.getOccupation() + "%")
                     .build();
 
             firebaseMessagingService.sendNotification(message, tokens);
         }
-        return successMessage;
     }
 }

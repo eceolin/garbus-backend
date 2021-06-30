@@ -9,9 +9,6 @@ import pucrs.ages.garbus.controllers.TrashesController;
 import pucrs.ages.garbus.dtos.*;
 import pucrs.ages.garbus.excpetion.BadRequestException;
 import pucrs.ages.garbus.excpetion.NotFoundException;
-import pucrs.ages.garbus.repositories.EventsRepository;
-import pucrs.ages.garbus.repositories.TrashesEventsRepository;
-import pucrs.ages.garbus.repositories.TrashesRepository;
 import pucrs.ages.garbus.services.TrashesService;
 
 import javax.annotation.Resource;
@@ -152,8 +149,15 @@ public class TrashesControllerImpl implements TrashesController {
     }
 
     @Override
-    public ResponseEntity<String> saveEvents(long trashId, double occupation) {
-        return new ResponseEntity<>(trashesService.saveEvents(trashId, occupation), OK);
+    public ResponseEntity report(TrashReportDTO trashReportDTO) {
+        try {
+            return new ResponseEntity<>(trashesService.report(trashReportDTO), OK);
+        } catch (NotFoundException e) {
+            return new ResponseEntity<>(e.getError(), BAD_REQUEST);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Override
