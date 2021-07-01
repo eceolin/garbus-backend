@@ -26,9 +26,10 @@ public class TrashesEventsMapper {
                         .builder()
                         .id(entity.getId())
                         .event(entity.getEvents())
-                        .user(entity.getUsers())
-                        .data(entity.getData())
+                        .login(entity.getUsers().getLogin())
+                        .date(entity.getData())
                         .occupation(entity.getOccupation())
+                        .others(entity.getOthers())
                         .build())
                 .collect(Collectors.toList());
 //        return source
