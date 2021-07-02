@@ -47,13 +47,16 @@ class TrashesServiceTest {
     @Mock
     private EventsRepository eventsRepository;
 
+    @Mock
+    private NotificationTokensRepository notificationTokensRepository;
+
+    @Mock
+    private UsersRepository usersRepository;
+
     private TrashesService trashesService;
 
     @Mock
-    private TrashesEventsService trashesEventsService;
-
-    @Mock
-    private TrashesStatusService trashesStatusService;
+    private FirebaseMessagingService firebaseMessagingService;
 
 
     private ModelMapper modelMapper;
@@ -69,9 +72,15 @@ class TrashesServiceTest {
         trashesThresholdMapper = new TrashesThresholdMapper(modelMapper);
         trashDetailsMapper = new TrashDetailsMapper(trashesThresholdMapper);
         simplifiedTrashesWithThresholdsMapper = new SimplifiedTrashesWithThresholdsMapper(trashesThresholdMapper, trashMapper);
-        trashesService = new TrashesService(trashMapper, trashesRepository, trashesStatusRepository, trashesThresholdsRepository,
-                zonesRepository, buildingsRepository, trashDetailsMapper, trashesThresholdMapper, simplifiedTrashesWithThresholdsMapper,
-                trashesEventsRepository, eventsRepository);
+        trashesService = new TrashesService(
+                simplifiedTrashesWithThresholdsMapper, notificationTokensRepository, trashesThresholdsRepository,
+                firebaseMessagingService, trashesEventsRepository, trashesThresholdMapper, buildingsRepository,
+                trashDetailsMapper, trashesRepository, eventsRepository, zonesRepository, usersRepository,
+                trashMapper
+        );
+//        trashesService = new TrashesService(simplifiedTrashesWithThresholdsMapper, trashMapper, trashesRepository, trashesStatusRepository, trashesThresholdsRepository,
+//                zonesRepository, buildingsRepository, trashDetailsMapper, trashesThresholdMapper, ,
+//                trashesEventsRepository, eventsRepository, firebaseMessagingService);
     }
 
     @Test

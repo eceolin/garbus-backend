@@ -1,13 +1,12 @@
 package pucrs.ages.garbus.services;
 
+import com.google.firebase.messaging.FirebaseMessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pucrs.ages.garbus.Utils.FirebaseMessage;
 import pucrs.ages.garbus.dtos.*;
-import pucrs.ages.garbus.entities.Buildings;
-import pucrs.ages.garbus.entities.Trashes;
-import pucrs.ages.garbus.entities.TrashesEvents;
-import pucrs.ages.garbus.entities.TrashesStatus;
+import pucrs.ages.garbus.entities.*;
 import pucrs.ages.garbus.enuns.TrashStatusEnum;
 import pucrs.ages.garbus.excpetion.BadRequestException;
 import pucrs.ages.garbus.excpetion.NotFoundException;
@@ -31,17 +30,20 @@ public class TrashesService {
     private TrashesEventsService trashesEventsService;
     @Resource
     private TrashesStatusService trashesStatusService;
-    private final TrashesMapper trashMapper;
-    private final TrashesRepository trashesRepository;
-    private final TrashesStatusRepository trashesStatusRepository;
+
+    private final SimplifiedTrashesWithThresholdsMapper simplifiedTrashesWithThresholdsMapper;
+    private final NotificationTokensRepository notificationTokensRepository;
     private final TrashesThresholdsRepository trashesThresholdsRepository;
-    private final ZonesRepository zonesRepository;
+    private final FirebaseMessagingService firebaseMessagingService;
+    private final TrashesEventsRepository trashesEventsRepository;
+    private final TrashesThresholdMapper trashesThresholdMapper;
     private final BuildingsRepository buildingsRepository;
     private final TrashDetailsMapper trashDetailsMapper;
-    private final TrashesThresholdMapper trashesThresholdMapper;
-    private final SimplifiedTrashesWithThresholdsMapper simplifiedTrashesWithThresholdsMapper;
-    private final TrashesEventsRepository trashesEventsRepository;
+    private final TrashesRepository trashesRepository;
     private final EventsRepository eventsRepository;
+    private final ZonesRepository zonesRepository;
+    private final UsersRepository usersRepository;
+    private final TrashesMapper trashMapper;
 
 
     public TrashesAndBuildingsOnMapDTO findAll() {
@@ -234,25 +236,61 @@ public class TrashesService {
         );
     }
 
-    public String saveEvents(long trashId, double occupation) {
+    public String report(TrashReportDTO trashReportDTO) {
         String successMessage = "Evento Salvo";
+        long trashId = trashReportDTO.getId();
+        double occupation = trashReportDTO.getOccupation();
 
-        Trashes trashes = this.findById(trashId)
+        Trashes trash = this.findById(trashId)
                 .orElseThrow(() -> new NotFoundException(
                         new ErrorResponse("Lixeira não encontrada para o id " + trashId)
                 ));
-        trashes.setOccupation(occupation);
-        trashesRepository.save(trashes);
+        trash.setOccupation(occupation);
+        trashesRepository.save(trash);
 
+        Events event = eventsRepository.findById(Long.parseLong("1")).orElseThrow(() -> new NotFoundException(
+                new ErrorResponse("ID de evento não encontrado " + trashId)
+        ));
         trashesEventsRepository.save(TrashesEvents.builder()
-                .events(eventsRepository.findById(Long.parseLong("1")).orElseThrow(() -> new NotFoundException(
-                        new ErrorResponse("ID de evento não encontrado " + trashId)
-                )))
-                .trashes(trashes)
+                .events(event)
+                .trashes(trash)
                 .occupation(occupation)
                 .data(Date.from(Instant.now()))
                 .build());
 
+        try {
+            sendNotificationIfTrashIsFull(trash);
+        } catch (FirebaseMessagingException e) {
+            e.printStackTrace();
+        }
+
         return successMessage;
+    }
+
+    public void sendNotificationIfTrashIsFull(Trashes trash) throws FirebaseMessagingException {
+        TrashesThreshold trashesThreshold = trashesThresholdsRepository.findThresholdsMaxOccupationByTrashId(trash.getId());
+        if(trash.getOccupation() >= trashesThreshold.getMaxOcuppation()) {
+            List<String> tokens = new LinkedList<>();
+            Zones zone = trash.getZones();
+
+            List<Users> users = usersRepository.findByZoneId(zone.getId());
+            for(Users user: users) {
+                Optional<NotificationTokens> notificationTokens = notificationTokensRepository.findById(user.getId());
+                if(notificationTokens.isPresent())
+                    tokens.add(notificationTokens.get().getToken());
+            }
+            
+            if (tokens.isEmpty()) {
+                return;
+            }
+
+            FirebaseMessage message = FirebaseMessage
+                    .builder()
+                    .subject("A lixeira está quase cheia!")
+                    .content(trash.getDescription() + " em " + trash.getLocalDescription() + " está com " + trash.getOccupation() + "%")
+                    .build();
+
+            firebaseMessagingService.sendNotification(message, tokens);
+        }
     }
 }

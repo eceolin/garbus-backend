@@ -24,6 +24,11 @@ public interface TrashesThresholdsRepository extends JpaRepository<TrashesThresh
     )
     List<TrashesThreshold> findThresholdsByTrashId(@Param("trashId") Long trashId);
 
+    @Query(
+            value = TrashesThresholdsSql.findThresholdsMaxOccupationByTrashIdSql,
+            nativeQuery = true
+    )
+    TrashesThreshold findThresholdsMaxOccupationByTrashId(@Param("trashId") Long trashId);
 
     @Modifying
     void deleteTrashesThresholdsByTrashesId(@Param("trashId") Long trashId);
