@@ -23,8 +23,6 @@ public class AuthenticationControllerImpl implements AuthenticationController {
     @Resource
     private UsersAuthenticationService usersAuthenticationService;
 
-    private final UsersRepository usersRepository;
-
     @Override
     public ResponseEntity<LoginResponse> authenticate(JwtRequest jwtRequest) throws Exception {
         return new ResponseEntity<>(usersAuthenticationService.authenticateUser(jwtRequest), OK);

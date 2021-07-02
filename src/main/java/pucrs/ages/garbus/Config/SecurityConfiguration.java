@@ -47,7 +47,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable().authorizeRequests()
                 .antMatchers("/login", "/h2/**", "/csrf", "/v2/api-docs", "/configuration/ui",
                         "/configuration/security", "/swagger-resources", "/swagger-resources/configuration/**",
-                    "/swagger-ui.html", "/webjars/springfox-swagger-ui/**", "/swagger-ui.html", "/password-recovery")
+                    "/swagger-ui.html", "/webjars/springfox-swagger-ui/**", "/swagger-ui.html", "/password-recovery", "/trashes/report")
                 .permitAll().anyRequest().authenticated().and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
