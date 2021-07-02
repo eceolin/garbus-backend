@@ -19,13 +19,13 @@ INSERT INTO TYPES_EVENTS (NAME, DESCRIPTION)
 VALUES ('Outros', 'Lixeira com infiltração');
 
 INSERT INTO ZONES
-VALUES (1, 'Norte', 'Prédios lado Bento Gonçalves', 0.0, 0.0);
+VALUES (1, 'Norte', 'Prédios lado Ipiranga', 0.0, 0.0);
 
 INSERT INTO ZONES
 VALUES (2, 'Leste', 'Prédios lado Colégio', 0.0, 0.0);
 
 INSERT INTO ZONES
-VALUES (3, 'Sul', 'Prédios lado Ipiranga', 0.0, 0.0);
+VALUES (3, 'Sul', 'Prédios lado Bento Gonçalves', 0.0, 0.0);
 
 INSERT INTO TRASH_STATUS (NAME, DESCRIPTION)
 VALUES ('Cheia', 'Lixeira ultrapasou capacidade máxima definida');
