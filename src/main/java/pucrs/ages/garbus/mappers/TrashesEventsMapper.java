@@ -8,8 +8,10 @@ import pucrs.ages.garbus.dtos.EventsDTO;
 import pucrs.ages.garbus.dtos.TrashesEventsDTO;
 import pucrs.ages.garbus.entities.Events;
 import pucrs.ages.garbus.entities.TrashesEvents;
+import pucrs.ages.garbus.entities.Users;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -22,15 +24,19 @@ public class TrashesEventsMapper {
     public List<TrashesEventsDTO> mapear(List<TrashesEvents> source) {
         return source
                 .stream()
-                .map(entity -> TrashesEventsDTO
+                .map(entity -> {
+                    Users user = entity.getUsers();
+                    String login = user == null ? null : user.getLogin();
+                    return TrashesEventsDTO
                         .builder()
                         .id(entity.getId())
                         .event(entity.getEvents())
-                        .login(entity.getUsers().getLogin())
+                        .login(login)
                         .date(entity.getData())
                         .occupation(entity.getOccupation())
                         .others(entity.getOthers())
-                        .build())
+                        .build();
+                })
                 .collect(Collectors.toList());
 //        return source
 //                .stream()
