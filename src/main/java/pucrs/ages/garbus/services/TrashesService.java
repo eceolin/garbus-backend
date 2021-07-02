@@ -275,10 +275,15 @@ public class TrashesService {
 
             List<Users> users = usersRepository.findByZoneId(zone.getId());
             for(Users user: users) {
-                NotificationTokens notificationTokens = notificationTokensRepository.findById(user.getId()).orElseThrow(() -> null);
-                if(notificationTokens != null)
-                    tokens.add(notificationTokens.getToken());
+                Optional<NotificationTokens> notificationTokens = notificationTokensRepository.findById(user.getId());
+                if(notificationTokens.isPresent())
+                    tokens.add(notificationTokens.get().getToken());
             }
+            
+            if (tokens.isEmpty()) {
+                return;
+            }
+
             FirebaseMessage message = FirebaseMessage
                     .builder()
                     .subject("A lixeira está quase cheia!")
