@@ -25,11 +25,13 @@ public class TrashesEventsDTO {
 
 //    private Trashes trashes;
 
-    private Users user;
+    private String login;
 
     private double occupation;
 
-    private Date data;
+    private String others;
+
+    private Date date;
 
 }
 //    t.id, t.brand, t.description, t.capacity, t.occupation, t.trashesStatus, t.trashType, t.buildings, t.zones
