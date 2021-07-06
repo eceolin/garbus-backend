@@ -44,10 +44,6 @@ public class UsersService implements UserDetailsService {
         return usersRepository.findById(id);
     }
 
-//    public UsersDTO findByLogin(String login) {
-//        return maptools.mapear(usersRepository.findByLoginEquals(login));
-//    }
-
     public Users findByLoginEquals(String login) {
         return usersRepository.findByLoginEquals(login);
     }
