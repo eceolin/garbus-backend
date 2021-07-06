@@ -18,7 +18,4 @@ public class TrashesAndBuildingsOnMapDTO {
 
     private List<BuildingsReduceDTO> buildings;
 
-//    private Zones zones;
-
 }
-//    t.id, t.brand, t.description, t.capacity, t.occupation, t.trashesStatus, t.trashType, t.buildings, t.zones

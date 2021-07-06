@@ -34,4 +34,3 @@ public class TrashesEventsDTO {
     private Date date;
 
 }
-//    t.id, t.brand, t.description, t.capacity, t.occupation, t.trashesStatus, t.trashType, t.buildings, t.zones
