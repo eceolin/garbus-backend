@@ -1,0 +1,12 @@
+sonarqube {
+    properties {
+        property "sonar.projectKey", "garbus"
+        property "sonar.host.url", "http://127.0.0.1:9988/"
+        property "sonar.language", "java"
+        property "sonar.login", "admin"
+        property "sonar.password", "admin"
+        property "sonar.scm.disabled", "true"
+
+        property "sonar.jacoco.reportPaths", "build/jacoco/test.exec"
+    }
+}
