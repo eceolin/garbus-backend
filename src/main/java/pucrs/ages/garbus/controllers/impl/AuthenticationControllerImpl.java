@@ -3,19 +3,16 @@ package pucrs.ages.garbus.controllers.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.RestController;
 import pucrs.ages.garbus.controllers.AuthenticationController;
 import pucrs.ages.garbus.dtos.*;
-import pucrs.ages.garbus.dtos.PasswordRecoveryRequest;
-import org.springframework.security.core.Authentication;
 import pucrs.ages.garbus.excpetion.HttpException;
 import pucrs.ages.garbus.excpetion.NotFoundException;
-import pucrs.ages.garbus.repositories.UsersRepository;
 import pucrs.ages.garbus.services.UsersAuthenticationService;
 
 import javax.annotation.Resource;
 
-import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
 
 @RestController

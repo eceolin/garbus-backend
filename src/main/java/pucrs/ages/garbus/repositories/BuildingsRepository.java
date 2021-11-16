@@ -13,7 +13,7 @@ import pucrs.ages.garbus.repositories.sql.BuildingsSql;
 @Repository
 public interface BuildingsRepository extends JpaRepository<Buildings, Long> {
     @Query(
-            value = BuildingsSql.findBuildingNameByTrashId,
+            value = BuildingsSql.FIND_BUILDING_NAME_BY_TRASH_ID,
             nativeQuery = true
     )
     String findBuildingNameByTrashId(@Param("buildingIdFromTrash") Long buildingIdFromTrash);

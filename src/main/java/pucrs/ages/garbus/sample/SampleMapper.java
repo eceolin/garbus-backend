@@ -1,13 +1,13 @@
 package pucrs.ages.garbus.sample;
 
-import org.springframework.stereotype.Component;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.mapstruct.Mapper;
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Component;
 
-import java.util.stream.Collectors;
 import java.text.ParseException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Component

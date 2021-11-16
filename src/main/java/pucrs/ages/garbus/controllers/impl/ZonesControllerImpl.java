@@ -3,7 +3,7 @@ package pucrs.ages.garbus.controllers.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RestController;
 import pucrs.ages.garbus.controllers.ZonesController;
 import pucrs.ages.garbus.dtos.ZonesDTO;
 import pucrs.ages.garbus.excpetion.BadRequestException;
@@ -19,6 +19,8 @@ import static org.springframework.http.HttpStatus.*;
 @Slf4j
 @RequiredArgsConstructor
 public class ZonesControllerImpl implements ZonesController {
+
+    private final String ERROR = "Error";
 
     @Resource
     ZonesService zonesService;
@@ -53,11 +55,11 @@ public class ZonesControllerImpl implements ZonesController {
             return new ResponseEntity<>(OK);
         } catch (ParseException e) {
 
-            log.error("Error", e);
+            log.error(ERROR, e);
             return new ResponseEntity<>(e.getMessage(), NO_CONTENT);
         } catch (Exception e) {
 
-            log.error("Error", e);
+            log.error(ERROR, e);
             return new ResponseEntity<>(e.getMessage(), INTERNAL_SERVER_ERROR);
         }
     }
@@ -67,10 +69,10 @@ public class ZonesControllerImpl implements ZonesController {
             zonesService.save(zonesDTO);
             return new ResponseEntity<>(zonesDTO, CREATED);
         } catch (ParseException | BadRequestException e) {
-            log.error("Error", e);
+            log.error(ERROR, e);
             return new ResponseEntity<>(e.getMessage(), BAD_REQUEST);
         } catch (Exception e) {
-            log.error("Error", e);
+            log.error(ERROR, e);
             return new ResponseEntity<>(e.getMessage(), INTERNAL_SERVER_ERROR);
         }
     }

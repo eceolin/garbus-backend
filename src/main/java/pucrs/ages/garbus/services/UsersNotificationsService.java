@@ -3,17 +3,16 @@ package pucrs.ages.garbus.services;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import pucrs.ages.garbus.dtos.NotificationsDisabledUntilWhenDTO;
 import pucrs.ages.garbus.dtos.ErrorResponse;
+import pucrs.ages.garbus.dtos.NotificationsDisabledUntilWhenDTO;
 import pucrs.ages.garbus.entities.NotificationTokens;
 import pucrs.ages.garbus.entities.Users;
+import pucrs.ages.garbus.entities.UsersNotifications;
 import pucrs.ages.garbus.excpetion.BadRequestException;
 import pucrs.ages.garbus.repositories.NotificationTokensRepository;
 import pucrs.ages.garbus.repositories.UsersNotificationsRepository;
-import pucrs.ages.garbus.entities.UsersNotifications;
 
 import java.time.LocalDateTime;
-
 import java.util.Optional;
 
 @Slf4j

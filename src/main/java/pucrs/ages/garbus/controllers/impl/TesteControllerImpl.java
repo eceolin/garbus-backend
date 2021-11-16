@@ -35,9 +35,9 @@ public class TesteControllerImpl implements TesteController {
             log.info(sampleDTO.toString());
             service.save(sampleDTO);
         } catch (ParseException pe) {
-            return new ResponseEntity<>(null, BAD_REQUEST);
+            return new ResponseEntity<>(BAD_REQUEST);
         }
-        return new ResponseEntity<>(null, CREATED);
+        return new ResponseEntity<>(CREATED);
     }
 
     @Override

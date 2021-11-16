@@ -25,6 +25,8 @@ import static org.springframework.http.HttpStatus.*;
 @RequiredArgsConstructor
 public class TrashesControllerImpl implements TrashesController {
 
+    private final String ERROR = "Error";
+
     @Resource
     private TrashesService trashesService;
 
@@ -49,17 +51,17 @@ public class TrashesControllerImpl implements TrashesController {
     }
 
     @Override
-    public ResponseEntity deleteTrashById(@PathVariable Long trashId) {
+    public ResponseEntity<Object> deleteTrashById(@PathVariable Long trashId) {
         try {
             return new ResponseEntity<>(trashesService.deleteTrashById(trashId), OK);
         } catch (BadRequestException e) {
-            log.error("Error", e);
+            log.error(ERROR, e);
             return new ResponseEntity<>(e.getError(), BAD_REQUEST);
         } catch (NotFoundException e) {
-            log.error("Error", e);
+            log.error(ERROR, e);
             return new ResponseEntity<>(e.getError(), NOT_FOUND);
         } catch (Exception e) {
-            log.error("Error", e);
+            log.error(ERROR, e);
             return new ResponseEntity<>(e.getMessage(), INTERNAL_SERVER_ERROR);
         }
     }
@@ -72,15 +74,15 @@ public class TrashesControllerImpl implements TrashesController {
             return new ResponseEntity<>("Problema reportado com sucesso", OK);
         } catch (BadRequestException e) {
 
-            log.error("Error", e);
+            log.error(ERROR, e);
             return new ResponseEntity<>(e.getError(), BAD_REQUEST);
         } catch (NotFoundException e) {
 
-            log.error("Error", e);
+            log.error(ERROR, e);
             return new ResponseEntity<>(e.getError(), NOT_FOUND);
         } catch (Exception e) {
 
-            log.error("Error", e);
+            log.error(ERROR, e);
             return new ResponseEntity<>(e.getMessage(), INTERNAL_SERVER_ERROR);
         }
     }
@@ -93,15 +95,15 @@ public class TrashesControllerImpl implements TrashesController {
             return new ResponseEntity<>("Lixeira ativada com sucesso", OK);
         } catch (BadRequestException e) {
 
-            log.error("Error", e);
+            log.error(ERROR, e);
             return new ResponseEntity<>(e.getError(), BAD_REQUEST);
         } catch (NotFoundException e) {
 
-            log.error("Error", e);
+            log.error(ERROR, e);
             return new ResponseEntity<>(e.getError(), NOT_FOUND);
         } catch (Exception e) {
 
-            log.error("Error", e);
+            log.error(ERROR, e);
             return new ResponseEntity<>(e.getMessage(), INTERNAL_SERVER_ERROR);
         }
     }
@@ -122,41 +124,41 @@ public class TrashesControllerImpl implements TrashesController {
     }
 
     @Override
-    public ResponseEntity<TrashesDTO> saveTrashes(TrashesDTO trashesDTO) {
+    public ResponseEntity<Object> saveTrashes(TrashesDTO trashesDTO) {
         trashesDTO.setTrashId(0L);
         return getResponseEntity(trashesDTO);
     }
 
     @Override
-    public ResponseEntity updateTrashById(Long trashId, TrashesDTO trashesDTO) {
+    public ResponseEntity<Object> updateTrashById(Long trashId, TrashesDTO trashesDTO) {
         try {
             return new ResponseEntity<>(trashesService.updateTrashById(trashId, trashesDTO), OK);
         } catch (ParseException | BadRequestException e) {
 
-            log.error("Error", e);
+            log.error(ERROR, e);
             return new ResponseEntity<>(e.getMessage(), BAD_REQUEST);
         } catch (NotFoundException e) {
 
-            log.error("Error", e);
+            log.error(ERROR, e);
             return new ResponseEntity<>(e.getError(), NOT_FOUND);
         } catch (Exception e) {
 
-            log.error("Error", e);
+            log.error(ERROR, e);
             return new ResponseEntity<>(e.getMessage(), INTERNAL_SERVER_ERROR);
         }
     }
 
-    private ResponseEntity getResponseEntity(TrashesDTO trashesDTO) {
+    private ResponseEntity<Object> getResponseEntity(TrashesDTO trashesDTO) {
         try {
             trashesDTO = trashesService.save(trashesDTO);
             return new ResponseEntity<>(trashesDTO, CREATED);
         } catch (ParseException | BadRequestException e) {
 
-            log.error("Error", e);
+            log.error(ERROR, e);
             return new ResponseEntity<>(e.getMessage(), BAD_REQUEST);
         } catch (Exception e) {
 
-            log.error("Error", e);
+            log.error(ERROR, e);
             return new ResponseEntity<>(e.getMessage(), INTERNAL_SERVER_ERROR);
         }
     }
@@ -175,7 +177,7 @@ public class TrashesControllerImpl implements TrashesController {
     }
 
     @Override
-    public ResponseEntity findAllEventsByTrashId(Long trashId) {
+    public ResponseEntity<Object> findAllEventsByTrashId(Long trashId) {
         try {
             return new ResponseEntity<>(trashesService.findAllEventsByTrashId(trashId), OK);
         } catch (NotFoundException e) {

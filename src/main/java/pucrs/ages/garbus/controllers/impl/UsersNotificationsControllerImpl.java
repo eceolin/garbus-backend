@@ -20,6 +20,8 @@ import static org.springframework.http.HttpStatus.*;
 @RequiredArgsConstructor
 public class UsersNotificationsControllerImpl implements UsersNotificationsController {
 
+    private final String ERROR = "Error";
+
     @Resource
     private UsersNotificationsService usersNotificationsService;
 
@@ -30,11 +32,11 @@ public class UsersNotificationsControllerImpl implements UsersNotificationsContr
             return new ResponseEntity<>("Token salvo", CREATED);
         } catch (BadRequestException e) {
 
-            log.error("Error", e);
+            log.error(ERROR, e);
             return new ResponseEntity<>(e.getError(), BAD_REQUEST);
         } catch (Exception e) {
 
-            log.error("Error", e);
+            log.error(ERROR, e);
             return new ResponseEntity<>(e.getMessage(), INTERNAL_SERVER_ERROR);
         }
     }
@@ -48,7 +50,7 @@ public class UsersNotificationsControllerImpl implements UsersNotificationsContr
             return new ResponseEntity<>(e.getError(), BAD_REQUEST);
         } catch (Exception e) {
 
-            log.error("Error", e);
+            log.error(ERROR, e);
             return new ResponseEntity<>(e.getMessage(), INTERNAL_SERVER_ERROR);
         }
     }
@@ -62,7 +64,7 @@ public class UsersNotificationsControllerImpl implements UsersNotificationsContr
             return new ResponseEntity<>(e.getError(), BAD_REQUEST);
         } catch (Exception e) {
 
-            log.error("Error", e);
+            log.error(ERROR, e);
             return new ResponseEntity<>(e.getMessage(), INTERNAL_SERVER_ERROR);
         }
     }
@@ -75,7 +77,7 @@ public class UsersNotificationsControllerImpl implements UsersNotificationsContr
             return new ResponseEntity<>(e.getError(), BAD_REQUEST);
         } catch (Exception e) {
 
-            log.error("Error", e);
+            log.error(ERROR, e);
             return new ResponseEntity<>(e.getMessage(), INTERNAL_SERVER_ERROR);
         }
     }

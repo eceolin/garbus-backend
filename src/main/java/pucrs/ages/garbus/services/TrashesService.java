@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pucrs.ages.garbus.utils.FirebaseMessage;
 import pucrs.ages.garbus.dtos.*;
 import pucrs.ages.garbus.entities.*;
 import pucrs.ages.garbus.enuns.TrashStatusEnum;
@@ -16,6 +15,7 @@ import pucrs.ages.garbus.mappers.TrashDetailsMapper;
 import pucrs.ages.garbus.mappers.TrashesMapper;
 import pucrs.ages.garbus.mappers.TrashesThresholdMapper;
 import pucrs.ages.garbus.repositories.*;
+import pucrs.ages.garbus.utils.FirebaseMessage;
 
 import javax.annotation.Resource;
 import java.text.ParseException;

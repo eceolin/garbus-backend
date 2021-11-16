@@ -17,14 +17,14 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
     Users findByLoginEquals(String login);
 
     @Query(
-            value = UsersSql.findByLoginSql,
+            value = UsersSql.FIND_BY_LOGIN_SQL,
             nativeQuery = true
     )
     Users findByLogin(@Param("login") String login);
 
 
     @Query(
-            value = UsersSql.findByZoneSql,
+            value = UsersSql.FIND_BY_ZONE_SQL,
             nativeQuery = true
     )
     List<Users> findByZoneId(@Param("zone") long zoneId);

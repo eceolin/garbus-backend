@@ -6,14 +6,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import pucrs.ages.garbus.dtos.UsersDTO;
 import pucrs.ages.garbus.dtos.UsersRequestDTO;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
 

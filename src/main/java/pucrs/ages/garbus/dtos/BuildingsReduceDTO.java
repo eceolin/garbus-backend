@@ -1,7 +1,6 @@
 package pucrs.ages.garbus.dtos;
 
 import lombok.*;
-import pucrs.ages.garbus.entities.Zones;
 
 @Getter
 @Setter

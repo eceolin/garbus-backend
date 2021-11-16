@@ -4,9 +4,7 @@ import lombok.AllArgsConstructor;
 import org.mapstruct.Mapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
-import pucrs.ages.garbus.dtos.EventsDTO;
 import pucrs.ages.garbus.dtos.UsersDTO;
-import pucrs.ages.garbus.entities.Events;
 import pucrs.ages.garbus.entities.Users;
 
 import java.util.List;

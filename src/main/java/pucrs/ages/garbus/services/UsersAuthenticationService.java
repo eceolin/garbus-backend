@@ -9,13 +9,13 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import pucrs.ages.garbus.excpetion.HttpException;
-import pucrs.ages.garbus.utils.JWTUtility;
-import pucrs.ages.garbus.utils.PasswordUtil;
 import pucrs.ages.garbus.dtos.*;
 import pucrs.ages.garbus.entities.Users;
+import pucrs.ages.garbus.excpetion.HttpException;
 import pucrs.ages.garbus.excpetion.NotFoundException;
 import pucrs.ages.garbus.repositories.UsersRepository;
+import pucrs.ages.garbus.utils.JWTUtility;
+import pucrs.ages.garbus.utils.PasswordUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;

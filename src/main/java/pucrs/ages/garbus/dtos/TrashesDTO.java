@@ -1,9 +1,9 @@
 package pucrs.ages.garbus.dtos;
 
 import lombok.*;
-import pucrs.ages.garbus.entities.TrashesStatus;
 import pucrs.ages.garbus.entities.Buildings;
 import pucrs.ages.garbus.entities.TrashType;
+import pucrs.ages.garbus.entities.TrashesStatus;
 import pucrs.ages.garbus.entities.Zones;
 
 import java.util.List;

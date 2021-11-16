@@ -2,9 +2,7 @@ package pucrs.ages.garbus.mappers;
 
 import lombok.AllArgsConstructor;
 import org.mapstruct.Mapper;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
-import pucrs.ages.garbus.dtos.SimplifiedTrashesWithThresholdsDTO;
 import pucrs.ages.garbus.dtos.TrashesDTO;
 import pucrs.ages.garbus.dtos.TrashesReduceDTO;
 import pucrs.ages.garbus.dtos.TrashesThresholdDTO;

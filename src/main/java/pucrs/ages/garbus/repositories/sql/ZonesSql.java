@@ -1,17 +1,20 @@
 package pucrs.ages.garbus.repositories.sql;
 
 public class ZonesSql {
-    public final static String findZoneDescriptionByTrashIdSql =
+    public ZonesSql() {
+    }
+
+    public static final String FIND_ZONE_DESCRIPTION_BY_TRASH_ID_SQL =
             "SELECT DESCRIPTION FROM ZONES WHERE ZONES.ID = :zoneIdFromTrash";
 
-    public final static String countTrashesByIdZone = ""
+    public static final String COUNT_TRASHES_BY_ID_ZONE = ""
             + "SELECT COUNT(T.*) "
             + "FROM TRASHES T "
             + "JOIN ZONES Z "
             + "ON Z.ID = T.ID_ZONE "
             + "WHERE T.ID_ZONE = :zoneId";
 
-    public final static String countBuildingsByIdZone = ""
+    public static final String COUNT_BUILDINGS_BY_ID_ZONE = ""
             + "SELECT COUNT(B.*) "
             + "FROM BUILDINGS B "
             + "JOIN ZONES Z "

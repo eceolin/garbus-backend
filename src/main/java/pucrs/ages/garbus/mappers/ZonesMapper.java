@@ -19,9 +19,8 @@ public class ZonesMapper {
 
     private final ModelMapper modelMapper;
 
-
-    public Zones dtoToEntity(ZonesDTO ZonesDTO) throws ParseException {
-        return modelMapper.map(ZonesDTO, Zones.class);
+    public Zones dtoToEntity(ZonesDTO zonesDTO) {
+        return modelMapper.map(zonesDTO, Zones.class);
     }
 
 
@@ -33,9 +32,10 @@ public class ZonesMapper {
     }
 
 
-    public ZonesDTO entityToDTO(Zones Zones) {
-        return modelMapper.map(Zones, ZonesDTO.class);
+    public ZonesDTO entityToDTO(Zones zones) {
+        return modelMapper.map(zones, ZonesDTO.class);
     }
+
     public List<ZonesDTO> entityToDTO(List<Zones> source) {
         return source
                 .stream()

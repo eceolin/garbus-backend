@@ -13,19 +13,19 @@ import java.util.List;
 @Repository
 public interface TrashesThresholdsRepository extends JpaRepository<TrashesThreshold, Long> {
     @Query(
-            value = TrashesThresholdsSql.findAllThresholdsSql,
+            value = TrashesThresholdsSql.FIND_ALL_THRESHOLDS_SQL,
             nativeQuery = true
     )
     List<TrashesThreshold> findAllThresholds();
 
     @Query(
-            value = TrashesThresholdsSql.findThresholdsByTrashIdSql,
+            value = TrashesThresholdsSql.FIND_THRESHOLDS_BY_TRASH_ID_SQL,
             nativeQuery = true
     )
     List<TrashesThreshold> findThresholdsByTrashId(@Param("trashId") Long trashId);
 
     @Query(
-            value = TrashesThresholdsSql.findThresholdsMaxOccupationByTrashIdSql,
+            value = TrashesThresholdsSql.FIND_THRESHOLDS_MAX_OCCUPATION_BY_TRASH_ID_SQL,
             nativeQuery = true
     )
     TrashesThreshold findThresholdsMaxOccupationByTrashId(@Param("trashId") Long trashId);

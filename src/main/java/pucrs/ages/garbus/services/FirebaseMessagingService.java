@@ -1,9 +1,12 @@
 package pucrs.ages.garbus.services;
 
-import com.google.firebase.messaging.*;
-import pucrs.ages.garbus.utils.FirebaseMessage;
-import org.springframework.stereotype.Service;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.FirebaseMessagingException;
+import com.google.firebase.messaging.MulticastMessage;
+import com.google.firebase.messaging.Notification;
 import lombok.Builder;
+import org.springframework.stereotype.Service;
+import pucrs.ages.garbus.utils.FirebaseMessage;
 
 import java.util.List;
 

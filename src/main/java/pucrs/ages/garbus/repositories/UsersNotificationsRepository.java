@@ -15,13 +15,13 @@ import java.util.Optional;
 @Repository
 public interface UsersNotificationsRepository extends JpaRepository<UsersNotifications, Long> {
     @Query(
-            value = UsersNotificationsSql.findByUserId,
+            value = UsersNotificationsSql.FIND_BY_USER_ID,
             nativeQuery = true
     )
     UsersNotifications findByUserId(@Param("userId") Long userId);
 
     @Query(
-            value = UsersNotificationsSql.findByLogin,
+            value = UsersNotificationsSql.FIND_BY_LOGIN,
             nativeQuery = true
     )
     Optional<UsersNotifications> findByLogin(@Param("login") String login);

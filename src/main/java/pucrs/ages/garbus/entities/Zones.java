@@ -1,12 +1,12 @@
 package pucrs.ages.garbus.entities;
 
-import javax.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 
 @Data
 @Builder
