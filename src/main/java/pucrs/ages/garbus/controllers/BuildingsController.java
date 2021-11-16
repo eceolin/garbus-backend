@@ -20,14 +20,14 @@ public interface BuildingsController {
 
     @PostMapping
     @ApiOperation("Create Building")
-    ResponseEntity saveBuilding(@RequestBody @NotNull BuildingsDTO BuildingsDTO);
+    ResponseEntity<Object> saveBuilding(@RequestBody @NotNull BuildingsDTO buildingsDTO);
 
     @PutMapping()
     @ApiOperation("Update Building")
-    ResponseEntity updateBuilding(@RequestBody @NotNull BuildingsDTO BuildingsDTO);
+    ResponseEntity<Object> updateBuilding(@RequestBody @NotNull BuildingsDTO buildingsDTO);
 
     @DeleteMapping("/{id}")
     @ApiOperation("Delete Building By Id")
-    ResponseEntity deleteBuilding(@PathVariable("id") @NotNull Long id);
+    ResponseEntity<Object> deleteBuilding(@PathVariable("id") @NotNull Long id);
 
 }

@@ -1,8 +1,8 @@
-package pucrs.ages.garbus.Utils;
+package pucrs.ages.garbus.utils;
 
-import lombok.NonNull;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NonNull;
 
 @Getter
 @Builder

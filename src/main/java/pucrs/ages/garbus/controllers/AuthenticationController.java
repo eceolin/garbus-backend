@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import pucrs.ages.garbus.dtos.*;
+import pucrs.ages.garbus.excpetion.HttpException;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
@@ -15,11 +16,11 @@ import javax.validation.constraints.NotEmpty;
 public interface AuthenticationController {
     @PostMapping("/login")
     @ApiOperation("User authentication")
-    ResponseEntity<LoginResponse> authenticate(@RequestBody @Valid JwtRequest jwtRequest) throws Exception;
+    ResponseEntity<LoginResponse> authenticate(@RequestBody @Valid JwtRequest jwtRequest) throws HttpException;
 
     @PostMapping("/password-recovery")
     @ApiOperation("Password Recovery")
-    ResponseEntity<PasswordRecoveryResponse> recovery(@RequestBody PasswordRecoveryRequest login) throws Exception;
+    ResponseEntity<PasswordRecoveryResponse> recovery(@RequestBody PasswordRecoveryRequest login) throws HttpException;
 
     @PutMapping("/change-password")
     @ApiOperation("Update password")

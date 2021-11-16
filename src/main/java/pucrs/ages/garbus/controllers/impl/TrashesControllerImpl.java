@@ -1,6 +1,7 @@
 package pucrs.ages.garbus.controllers.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +21,7 @@ import static org.springframework.http.HttpStatus.*;
 
 
 @RestController
+@Slf4j
 @RequiredArgsConstructor
 public class TrashesControllerImpl implements TrashesController {
 
@@ -51,13 +53,13 @@ public class TrashesControllerImpl implements TrashesController {
         try {
             return new ResponseEntity<>(trashesService.deleteTrashById(trashId), OK);
         } catch (BadRequestException e) {
-            e.printStackTrace();
+            log.error("Error", e);
             return new ResponseEntity<>(e.getError(), BAD_REQUEST);
         } catch (NotFoundException e) {
-            e.printStackTrace();
+            log.error("Error", e);
             return new ResponseEntity<>(e.getError(), NOT_FOUND);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Error", e);
             return new ResponseEntity<>(e.getMessage(), INTERNAL_SERVER_ERROR);
         }
     }
@@ -69,13 +71,16 @@ public class TrashesControllerImpl implements TrashesController {
             trashesService.insertErrorInTrash(trashProblemReport, login);
             return new ResponseEntity<>("Problema reportado com sucesso", OK);
         } catch (BadRequestException e) {
-            e.printStackTrace();
+
+            log.error("Error", e);
             return new ResponseEntity<>(e.getError(), BAD_REQUEST);
         } catch (NotFoundException e) {
-            e.printStackTrace();
+
+            log.error("Error", e);
             return new ResponseEntity<>(e.getError(), NOT_FOUND);
         } catch (Exception e) {
-            e.printStackTrace();
+
+            log.error("Error", e);
             return new ResponseEntity<>(e.getMessage(), INTERNAL_SERVER_ERROR);
         }
     }
@@ -87,13 +92,16 @@ public class TrashesControllerImpl implements TrashesController {
             trashesService.reactivate(trashReactivateDTO, login);
             return new ResponseEntity<>("Lixeira ativada com sucesso", OK);
         } catch (BadRequestException e) {
-            e.printStackTrace();
+
+            log.error("Error", e);
             return new ResponseEntity<>(e.getError(), BAD_REQUEST);
         } catch (NotFoundException e) {
-            e.printStackTrace();
+
+            log.error("Error", e);
             return new ResponseEntity<>(e.getError(), NOT_FOUND);
         } catch (Exception e) {
-            e.printStackTrace();
+
+            log.error("Error", e);
             return new ResponseEntity<>(e.getMessage(), INTERNAL_SERVER_ERROR);
         }
     }
@@ -124,13 +132,16 @@ public class TrashesControllerImpl implements TrashesController {
         try {
             return new ResponseEntity<>(trashesService.updateTrashById(trashId, trashesDTO), OK);
         } catch (ParseException | BadRequestException e) {
-            e.printStackTrace();
+
+            log.error("Error", e);
             return new ResponseEntity<>(e.getMessage(), BAD_REQUEST);
         } catch (NotFoundException e) {
-            e.printStackTrace();
+
+            log.error("Error", e);
             return new ResponseEntity<>(e.getError(), NOT_FOUND);
         } catch (Exception e) {
-            e.printStackTrace();
+
+            log.error("Error", e);
             return new ResponseEntity<>(e.getMessage(), INTERNAL_SERVER_ERROR);
         }
     }
@@ -140,22 +151,25 @@ public class TrashesControllerImpl implements TrashesController {
             trashesDTO = trashesService.save(trashesDTO);
             return new ResponseEntity<>(trashesDTO, CREATED);
         } catch (ParseException | BadRequestException e) {
-            e.printStackTrace();
+
+            log.error("Error", e);
             return new ResponseEntity<>(e.getMessage(), BAD_REQUEST);
         } catch (Exception e) {
-            e.printStackTrace();
+
+            log.error("Error", e);
             return new ResponseEntity<>(e.getMessage(), INTERNAL_SERVER_ERROR);
         }
     }
 
     @Override
-    public ResponseEntity report(TrashReportDTO trashReportDTO) {
+    public ResponseEntity<Object> report(TrashReportDTO trashReportDTO) {
         try {
             return new ResponseEntity<>(trashesService.report(trashReportDTO), OK);
         } catch (NotFoundException e) {
             return new ResponseEntity<>(e.getError(), BAD_REQUEST);
         } catch (Exception e) {
-            e.printStackTrace();
+
+            log.error("Report Error", e);
             return new ResponseEntity<>(e.getMessage(), INTERNAL_SERVER_ERROR);
         }
     }
@@ -167,7 +181,8 @@ public class TrashesControllerImpl implements TrashesController {
         } catch (NotFoundException e) {
             return new ResponseEntity<>(e.getError(), NO_CONTENT);
         } catch (Exception e) {
-            e.printStackTrace();
+
+            log.error("Find all Error", e);
             return new ResponseEntity<>(e.getMessage(), INTERNAL_SERVER_ERROR);
         }
     }

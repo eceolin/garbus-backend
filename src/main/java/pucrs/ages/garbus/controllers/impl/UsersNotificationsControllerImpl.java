@@ -1,6 +1,7 @@
 package pucrs.ages.garbus.controllers.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,6 +16,7 @@ import javax.annotation.Resource;
 import static org.springframework.http.HttpStatus.*;
 
 @RestController
+@Slf4j
 @RequiredArgsConstructor
 public class UsersNotificationsControllerImpl implements UsersNotificationsController {
 
@@ -27,10 +29,12 @@ public class UsersNotificationsControllerImpl implements UsersNotificationsContr
             usersNotificationsService.saveToken(authentication.getName(), tokenRequest.getNotificationToken());
             return new ResponseEntity<>("Token salvo", CREATED);
         } catch (BadRequestException e) {
-            e.printStackTrace();
+
+            log.error("Error", e);
             return new ResponseEntity<>(e.getError(), BAD_REQUEST);
         } catch (Exception e) {
-            e.printStackTrace();
+
+            log.error("Error", e);
             return new ResponseEntity<>(e.getMessage(), INTERNAL_SERVER_ERROR);
         }
     }
@@ -43,7 +47,8 @@ public class UsersNotificationsControllerImpl implements UsersNotificationsContr
         } catch (BadRequestException e) {
             return new ResponseEntity<>(e.getError(), BAD_REQUEST);
         } catch (Exception e) {
-            e.printStackTrace();
+
+            log.error("Error", e);
             return new ResponseEntity<>(e.getMessage(), INTERNAL_SERVER_ERROR);
         }
     }
@@ -56,7 +61,8 @@ public class UsersNotificationsControllerImpl implements UsersNotificationsContr
         } catch (BadRequestException e) {
             return new ResponseEntity<>(e.getError(), BAD_REQUEST);
         } catch (Exception e) {
-            e.printStackTrace();
+
+            log.error("Error", e);
             return new ResponseEntity<>(e.getMessage(), INTERNAL_SERVER_ERROR);
         }
     }
@@ -68,7 +74,8 @@ public class UsersNotificationsControllerImpl implements UsersNotificationsContr
         } catch (BadRequestException e) {
             return new ResponseEntity<>(e.getError(), BAD_REQUEST);
         } catch (Exception e) {
-            e.printStackTrace();
+
+            log.error("Error", e);
             return new ResponseEntity<>(e.getMessage(), INTERNAL_SERVER_ERROR);
         }
     }

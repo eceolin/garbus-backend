@@ -1,7 +1,7 @@
 package pucrs.ages.garbus.services;
 
 import com.google.firebase.messaging.*;
-import pucrs.ages.garbus.Utils.FirebaseMessage;
+import pucrs.ages.garbus.utils.FirebaseMessage;
 import org.springframework.stereotype.Service;
 import lombok.Builder;
 

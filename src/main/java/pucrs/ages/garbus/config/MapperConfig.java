@@ -1,4 +1,4 @@
-package pucrs.ages.garbus.Config;
+package pucrs.ages.garbus.config;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;

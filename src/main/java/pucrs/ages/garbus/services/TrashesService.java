@@ -2,9 +2,10 @@ package pucrs.ages.garbus.services;
 
 import com.google.firebase.messaging.FirebaseMessagingException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pucrs.ages.garbus.Utils.FirebaseMessage;
+import pucrs.ages.garbus.utils.FirebaseMessage;
 import pucrs.ages.garbus.dtos.*;
 import pucrs.ages.garbus.entities.*;
 import pucrs.ages.garbus.enuns.TrashStatusEnum;
@@ -23,6 +24,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class TrashesService {
 
@@ -196,7 +198,7 @@ public class TrashesService {
     }
 
     @Transactional
-    public TrashesDTO deleteTrashById(Long trashId) {
+    public TrashesDTO deleteTrashById(Long trashId) throws NotFoundException{
         validateTrash(trashId);
         trashesEventsService.deleteByTrashId(trashId);
         trashesThresholdsRepository.deleteTrashesThresholdsByTrashesId(trashId);
@@ -217,8 +219,8 @@ public class TrashesService {
     }
 
 
-    public void validateTrash(Long trashId) {
-        findById(trashId)
+    public Trashes validateTrash(Long trashId) throws NotFoundException{
+        return findById(trashId)
                 .orElseThrow(() -> new NotFoundException(new ErrorResponse("Lixeira não encontrada para o id " + trashId)));
     }
 
@@ -261,7 +263,7 @@ public class TrashesService {
         try {
             sendNotificationIfTrashIsFull(trash);
         } catch (FirebaseMessagingException e) {
-            e.printStackTrace();
+            log.error("Error", e);
         }
 
         return successMessage;

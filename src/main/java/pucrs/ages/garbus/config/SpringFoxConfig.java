@@ -1,4 +1,4 @@
-package pucrs.ages.garbus.Config;
+package pucrs.ages.garbus.config;
 
 import com.google.common.collect.Lists;
 import org.springframework.context.annotation.Bean;

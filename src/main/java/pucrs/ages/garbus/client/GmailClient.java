@@ -52,6 +52,7 @@ public class GmailClient {
     private void initializeSession() {
         this.session = Session.getInstance(this.initializeProps(),
                 new Authenticator() {
+                    @Override
                     protected PasswordAuthentication getPasswordAuthentication() {
                         return new PasswordAuthentication(username, password);
                     }

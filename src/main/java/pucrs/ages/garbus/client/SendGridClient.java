@@ -45,6 +45,7 @@ public class SendGridClient {
             log.info(response.getBody());
             log.info(String.valueOf(response.getHeaders()));
         } catch (IOException ex) {
+            log.error("Erro to send grid. ", ex);
             throw ex;
         }
     }

@@ -9,8 +9,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import pucrs.ages.garbus.Utils.JWTUtility;
-import pucrs.ages.garbus.Utils.PasswordUtil;
+import pucrs.ages.garbus.excpetion.HttpException;
+import pucrs.ages.garbus.utils.JWTUtility;
+import pucrs.ages.garbus.utils.PasswordUtil;
 import pucrs.ages.garbus.dtos.*;
 import pucrs.ages.garbus.entities.Users;
 import pucrs.ages.garbus.excpetion.NotFoundException;
@@ -43,7 +44,7 @@ public class UsersAuthenticationService {
 
     private final UsersRepository usersRepository;
 
-    public LoginResponse authenticateUser(JwtRequest jwtRequest) throws Exception {
+    public LoginResponse authenticateUser(JwtRequest jwtRequest) throws HttpException {
 
         Users user = usersService.findByLogin(jwtRequest.getLogin());
         if (user == null || !user.getPassword().equals(jwtRequest.getPassword())) {
@@ -67,14 +68,19 @@ public class UsersAuthenticationService {
         return new LoginResponse(token, user.isMustChangePwd());
     }
 
-    public PasswordRecoveryResponse recoveryPassword(String login) throws IOException {
+    public PasswordRecoveryResponse recoveryPassword(String login) throws HttpException {
         Users user = Optional.ofNullable(usersService.findByLoginEquals(login))
                 .orElseThrow(() -> new NotFoundException(new ErrorResponse(String.format("Usuário com Login %s não encontrado.", login))));
         PasswordRecoveryResponse passwordRecoveryResponse = new PasswordRecoveryResponse();
         if (!Objects.isNull(user.getEmail()) && !user.getEmail().isBlank()) {
             passwordRecoveryResponse.setHasEmail(true);
             String newPassword = redefinePassword(user);
-            sendPasswordRecoveryMail(user, newPassword);
+            try {
+                sendPasswordRecoveryMail(user, newPassword);
+            } catch (IOException e) {
+                log.error("IO error.", e);
+                throw new HttpException();
+            }
             passwordRecoveryResponse.setEmailSent(true);
             return passwordRecoveryResponse;
         }
