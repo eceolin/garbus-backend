@@ -5,10 +5,13 @@ import org.mapstruct.Mapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import pucrs.ages.garbus.dtos.TrashesThresholdDTO;
+import pucrs.ages.garbus.entities.TrashIcons;
+import pucrs.ages.garbus.entities.TrashType;
 import pucrs.ages.garbus.entities.Trashes;
 import pucrs.ages.garbus.entities.TrashesThreshold;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -17,8 +20,13 @@ import java.util.stream.Collectors;
 public class TrashesThresholdMapper {
     private final ModelMapper modelMapper;
 
-    public TrashesThresholdDTO mapToDTO(TrashesThreshold trashesThreshold) {
-        return modelMapper.map(trashesThreshold, TrashesThresholdDTO.class);
+    public TrashesThresholdDTO mapToDTO(TrashesThreshold trashesThreshold, List<TrashIcons> trashIcons, TrashType trashType) {
+        TrashesThresholdDTO dto =  modelMapper.map(trashesThreshold, TrashesThresholdDTO.class);
+        Optional<TrashIcons> trashIcon = trashIcons.stream()
+                .filter(ti -> ti.getTrashType().equals(trashType) && ti.getColor().equals(trashesThreshold.getColor()))
+                .findFirst();
+        dto.setIcon(trashIcon.isEmpty() ? null : trashIcon.get().getIcon());
+        return dto;
     }
 
     public List<TrashesThresholdDTO> mapToDTO(List<TrashesThreshold> source) {
