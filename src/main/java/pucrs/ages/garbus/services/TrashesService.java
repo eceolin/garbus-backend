@@ -39,6 +39,7 @@ public class TrashesService {
     private final FirebaseMessagingService firebaseMessagingService;
     private final TrashesEventsRepository trashesEventsRepository;
     private final TrashesThresholdMapper trashesThresholdMapper;
+    private final TrashIconsRepository trashIconsRepository;
     private final BuildingsRepository buildingsRepository;
     private final TrashDetailsMapper trashDetailsMapper;
     private final TrashesRepository trashesRepository;
@@ -126,7 +127,11 @@ public class TrashesService {
     }
 
     public List<TrashesReduceDTO> findAllByBuildingId(Long buildingId) {
-        return simplifiedTrashesWithThresholdsMapper.mapToDTO(trashesRepository.findByBuildingId(buildingId), trashesThresholdsRepository.findAllThresholds());
+        return simplifiedTrashesWithThresholdsMapper.mapToDTO(
+                trashesRepository.findByBuildingId(buildingId),
+                trashesThresholdsRepository.findAllThresholds(),
+                trashIconsRepository.findAll()
+        );
     }
 
     public Long getTrashesCountByBuilding(Long buildingId) {
@@ -174,7 +179,11 @@ public class TrashesService {
         trashesList = trashesList.stream()
                 .filter(building -> building.getBuildings() == null)
                 .collect(Collectors.toList());
-        return simplifiedTrashesWithThresholdsMapper.mapToDTO(trashesList, trashesThresholdsRepository.findAllThresholds());
+        return simplifiedTrashesWithThresholdsMapper.mapToDTO(
+                trashesList,
+                trashesThresholdsRepository.findAllThresholds(),
+                trashIconsRepository.findAll()
+        );
     }
 
     private TrashesAndBuildingsOnMapDTO trashesInsideBuildingsAndZones(List<Trashes> trashesList) {
@@ -186,7 +195,11 @@ public class TrashesService {
 
     public List<TrashesDTO> findListOfTrashes() {
         List<Trashes> trashes = trashesRepository.findAll();
-        return simplifiedTrashesWithThresholdsMapper.mapToTrashesDTOWithThresholds(trashes, trashesThresholdsRepository.findAllThresholds());
+        return simplifiedTrashesWithThresholdsMapper.mapToTrashesDTOWithThresholds(
+                trashes,
+                trashesThresholdsRepository.findAllThresholds(),
+                trashIconsRepository.findAll()
+        );
     }
 
     public TrashesDTO save(final TrashesDTO trashesDTO) throws ParseException {

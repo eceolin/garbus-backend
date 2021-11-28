@@ -30,8 +30,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(usersService)
-                .passwordEncoder(new BCryptPasswordEncoder());
+        auth.userDetailsService(usersService);
+//                .passwordEncoder(new BCryptPasswordEncoder());
     }
 
     @Override
@@ -42,7 +42,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().and().authorizeRequests()
+        http.cors().and().csrf().disable().authorizeRequests()
                 .antMatchers("/login", "/h2/**", "/csrf", "/v2/api-docs", "/configuration/ui",
                         "/configuration/security", "/swagger-resources",
                         "/swagger-resources/configuration/**", "/webjars/springfox-swagger-ui/**", "/swagger-ui.html", "/password-recovery", "/trashes/report")

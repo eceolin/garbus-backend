@@ -53,6 +53,9 @@ class TrashesServiceTest {
     @Mock
     private UsersRepository usersRepository;
 
+    @Mock
+    private TrashIconsRepository trashIconsRepository;
+
     private TrashesService trashesService;
 
     @Mock
@@ -74,9 +77,9 @@ class TrashesServiceTest {
         simplifiedTrashesWithThresholdsMapper = new SimplifiedTrashesWithThresholdsMapper(trashesThresholdMapper, trashMapper);
         trashesService = new TrashesService(
                 simplifiedTrashesWithThresholdsMapper, notificationTokensRepository, trashesThresholdsRepository,
-                firebaseMessagingService, trashesEventsRepository, trashesThresholdMapper, buildingsRepository,
-                trashDetailsMapper, trashesRepository, eventsRepository, zonesRepository, usersRepository,
-                trashMapper
+                firebaseMessagingService, trashesEventsRepository, trashesThresholdMapper, trashIconsRepository,
+                buildingsRepository, trashDetailsMapper, trashesRepository, eventsRepository, zonesRepository,
+                usersRepository, trashMapper
         );
     }
 
@@ -85,10 +88,12 @@ class TrashesServiceTest {
         //Given
         List<Trashes> trashes = generateTrashesEntitiesList();
         List<TrashesThreshold> trashesThresholds = generateTrashesThresholdsEntitiesList();
+        List<TrashIcons> trashIcons = generateTrashIconsEntitiesList();
 
         //When
         given(trashesRepository.findAll()).willReturn(trashes);
         given(trashesThresholdsRepository.findAllThresholds()).willReturn(trashesThresholds);
+        given(trashIconsRepository.findAll()).willReturn(trashIcons);
 
         TrashesAndBuildingsOnMapDTO response = trashesService.findAll();
 
@@ -129,14 +134,15 @@ class TrashesServiceTest {
         trashes.remove(1);
 
         List<TrashesThreshold> trashesThresholds = generateTrashesThresholdsEntitiesList();
+        List<TrashIcons> trashIcons = generateTrashIconsEntitiesList();
 
         //When
         given(trashesRepository.findByBuildingId(Long.parseLong("1"))).willReturn(trashes);
         given(trashesThresholdsRepository.findAllThresholds()).willReturn(trashesThresholds);
+        given(trashIconsRepository.findAll()).willReturn(trashIcons);
 
         List<TrashesReduceDTO> response = trashesService.findAllByBuildingId(Long.parseLong("1"));
 
-        //Then
         then(response.size()).isEqualTo(1);
         then(response.get(0).getBuildingName()).isEqualTo(trashes.get(0).getBuildings().getName());
         then(response.get(0).getCapacity()).isEqualTo(trashes.get(0).getCapacity());
@@ -167,10 +173,12 @@ class TrashesServiceTest {
         List<Trashes> trashes = generateTrashesEntitiesList();
         List<TrashesThreshold> trashesThresholds = generateTrashesThresholdsEntitiesList();
         List<TrashesDTO> trashesDTOList = generateTrashesDtoList();
+        List<TrashIcons> trashIcons = generateTrashIconsEntitiesList();
 
         //When
         given(trashesThresholdsRepository.findAllThresholds()).willReturn(trashesThresholds);
         given(trashesRepository.findAll()).willReturn(trashes);
+        given(trashIconsRepository.findAll()).willReturn(trashIcons);
 
         List<TrashesDTO> response = trashesService.findListOfTrashes();
 
@@ -327,6 +335,28 @@ class TrashesServiceTest {
                 .build());
 
         return trashesThresholds;
+    }
+
+    private List<TrashIcons> generateTrashIconsEntitiesList() {
+        List<TrashIcons> trashIcons = new ArrayList<>();
+
+        TrashType trashType1 = TrashType.builder().id(1).build();
+        TrashType trashType2 = TrashType.builder().id(2).build();
+        TrashType trashType3 = TrashType.builder().id(3).build();
+
+        trashIcons.add(TrashIcons.builder().id(1).color("GREEN").trashType(trashType1).icon("organic_green").build());
+        trashIcons.add(TrashIcons.builder().id(2).color("YELLOW").trashType(trashType1).icon("organic_yellow").build());
+        trashIcons.add(TrashIcons.builder().id(3).color("RED").trashType(trashType1).icon("organic_red").build());
+
+        trashIcons.add(TrashIcons.builder().id(4).color("GREEN").trashType(trashType2).icon("recyclable_green").build());
+        trashIcons.add(TrashIcons.builder().id(5).color("YELLOW").trashType(trashType1).icon("recyclable_yellow").build());
+        trashIcons.add(TrashIcons.builder().id(6).color("RED").trashType(trashType1).icon("recyclable_red").build());
+
+        trashIcons.add(TrashIcons.builder().id(7).color("GREEN").trashType(trashType3).icon("container_green").build());
+        trashIcons.add(TrashIcons.builder().id(8).color("YELLOW").trashType(trashType1).icon("container_yellow").build());
+        trashIcons.add(TrashIcons.builder().id(9).color("RED").trashType(trashType1).icon("container_red").build());
+
+        return trashIcons;
     }
 
 }
