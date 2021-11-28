@@ -1,10 +1,13 @@
 package pucrs.ages.garbus.repositories.sql;
 
 public class UsersNotificationsSql {
-    public final static String findByUserId =
+    public UsersNotificationsSql() {
+    }
+
+    public static final String FIND_BY_USER_ID =
             "SELECT * FROM USERS_NOTIFICATIONS WHERE ID_USER = :userId";
 
-    public final static String findByLogin =
+    public static final String FIND_BY_LOGIN =
             "SELECT N.* "
                     + "FROM USERS_NOTIFICATIONS N "
                     + "JOIN USERS U "

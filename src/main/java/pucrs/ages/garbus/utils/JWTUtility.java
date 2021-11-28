@@ -1,4 +1,4 @@
-package pucrs.ages.garbus.Utils;
+package pucrs.ages.garbus.utils;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -21,7 +21,7 @@ public class JWTUtility implements Serializable {
 
     //5 hours duration
     @Value("${jwt.token-validity}")
-    public int JWT_TOKEN_VALIDITY;
+    public int jwtTokenValidity;
 
     @Value("${jwt.secret}")
     private String secretKey;
@@ -64,7 +64,7 @@ public class JWTUtility implements Serializable {
     private String doGenerateToken(Map<String, Object> claims, String subject) {
 
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
+                .setExpiration(new Date(System.currentTimeMillis() + jwtTokenValidity * 1000))
                 .signWith(SignatureAlgorithm.HS512, secretKey).compact();
     }
 

@@ -1,8 +1,11 @@
 package pucrs.ages.garbus.controllers.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 import pucrs.ages.garbus.controllers.TesteController;
 import pucrs.ages.garbus.dtos.BuildingsDTO;
 import pucrs.ages.garbus.sample.SampleDTO;
@@ -16,6 +19,7 @@ import java.util.List;
 import static org.springframework.http.HttpStatus.*;
 
 @RestController
+@Slf4j
 @RequiredArgsConstructor
 public class TesteControllerImpl implements TesteController {
 
@@ -28,12 +32,12 @@ public class TesteControllerImpl implements TesteController {
     @Override
     public ResponseEntity<Void> save(@RequestBody SampleDTO sampleDTO) {
         try {
-            System.out.println(sampleDTO);
+            log.info(sampleDTO.toString());
             service.save(sampleDTO);
         } catch (ParseException pe) {
-            return new ResponseEntity<>(null, BAD_REQUEST);
+            return new ResponseEntity<>(BAD_REQUEST);
         }
-        return new ResponseEntity<>(null, CREATED);
+        return new ResponseEntity<>(CREATED);
     }
 
     @Override

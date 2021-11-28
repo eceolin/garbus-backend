@@ -19,8 +19,8 @@ public class BuildingsMapper {
     private final ModelMapper modelMapper;
 
 
-    public Buildings mapearDTO(BuildingsDTO BuildingsDTO) throws ParseException {
-        return modelMapper.map(BuildingsDTO, Buildings.class);
+    public Buildings mapearDTO(BuildingsDTO buildingsDTO) {
+        return modelMapper.map(buildingsDTO, Buildings.class);
     }
 
 
@@ -32,8 +32,8 @@ public class BuildingsMapper {
     }
 
 
-    public BuildingsDTO mapear(Buildings Buildings) {
-        return modelMapper.map(Buildings, BuildingsDTO.class);
+    public BuildingsDTO mapear(Buildings buildings) {
+        return modelMapper.map(buildings, BuildingsDTO.class);
     }
     public List<BuildingsDTO> mapear(List<Buildings> source) {
         return source

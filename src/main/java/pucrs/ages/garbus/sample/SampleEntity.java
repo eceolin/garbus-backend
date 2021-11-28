@@ -1,11 +1,11 @@
 package pucrs.ages.garbus.sample;
 
-import org.springframework.format.annotation.DateTimeFormat;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
-import javax.persistence.*;
 
 //Lombok
 @Getter

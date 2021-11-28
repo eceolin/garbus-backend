@@ -13,21 +13,20 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name= "TRASHES_THRESHOLD")
-public class TrashesThreshold {
-
+@Table(name = "TRASH_ICONS")
+public class TrashIcons {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "MAX_OCCUPATION")
-    private double maxOcuppation;
+    @Column(name = "ICON")
+    private String icon;
 
     @Column(name = "COLOR")
     private String color;
 
     @Autowired
     @OneToOne
-    @JoinColumn(name = "ID_TRASH")
-    private Trashes trashes;
+    @JoinColumn(name = "ID_TYPE")
+    private TrashType trashType;
 }

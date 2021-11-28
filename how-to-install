@@ -1,0 +1,14 @@
+## Iniciar Sonar
+
+Entrar na pasta sonar
+Rodar o seguinte comando: "docker-compose up -d"
+
+## Acessar Sonar
+
+http://localhost:9988/
+Usuario: admin
+Senha: admin
+
+## Gerar reports
+
+./gradlew sonarqube

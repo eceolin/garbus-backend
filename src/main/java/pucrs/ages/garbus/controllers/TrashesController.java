@@ -48,11 +48,11 @@ public interface TrashesController {
 
     @DeleteMapping("/{trashId}")
     @ApiOperation("Delete trash by trashId")
-    ResponseEntity<TrashesDTO> deleteTrashById(@NotNull @PathVariable Long trashId);
+    ResponseEntity<Object> deleteTrashById(@NotNull @PathVariable Long trashId);
 
     @PutMapping("/{trashId}")
     @ApiOperation("Update trash by trashId")
-    ResponseEntity<TrashesDTO> updateTrashById(@NotNull @PathVariable Long trashId,
+    ResponseEntity<Object> updateTrashById(@NotNull @PathVariable Long trashId,
                                                @RequestBody TrashesDTO trashesDTO);
 
     @GetMapping("/status/{statusId}")
@@ -61,7 +61,7 @@ public interface TrashesController {
 
     @PostMapping
     @ApiOperation("Save trashes")
-    ResponseEntity<TrashesDTO> saveTrashes(@RequestBody @Valid TrashesDTO trashesDTO);
+    ResponseEntity<Object> saveTrashes(@RequestBody @Valid TrashesDTO trashesDTO);
 
     @PostMapping("/report")
     @ApiOperation("Trash report")
@@ -69,5 +69,5 @@ public interface TrashesController {
 
     @GetMapping("/{trashId}/events")
     @ApiOperation("Find all events by trashes id")
-    ResponseEntity<List<TrashesEventsDTO>> findAllEventsByTrashId(@NotNull @PathVariable Long trashId);
+    ResponseEntity<Object> findAllEventsByTrashId(@NotNull @PathVariable Long trashId);
 }

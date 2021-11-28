@@ -5,13 +5,12 @@ import org.mapstruct.Mapper;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.stereotype.Component;
-import pucrs.ages.garbus.dtos.TrashesDTO;
 import pucrs.ages.garbus.dtos.TrashesAndBuildingsOnMapDTO;
+import pucrs.ages.garbus.dtos.TrashesDTO;
 import pucrs.ages.garbus.dtos.TrashesReduceDTO;
 import pucrs.ages.garbus.entities.Trashes;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component

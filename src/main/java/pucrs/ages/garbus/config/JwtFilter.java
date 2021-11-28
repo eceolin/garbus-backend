@@ -1,4 +1,4 @@
-package pucrs.ages.garbus.Config;
+package pucrs.ages.garbus.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -7,8 +7,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import pucrs.ages.garbus.Utils.JWTUtility;
 import pucrs.ages.garbus.services.UsersService;
+import pucrs.ages.garbus.utils.JWTUtility;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -40,7 +40,9 @@ public class JwtFilter extends OncePerRequestFilter {
             UserDetails userDetails
                     = userService.loadUserByUsername(login);
 
-            if (jwtUtility.validateToken(token, userDetails)) {
+            boolean validToken = jwtUtility.validateToken(token, userDetails);
+
+            if (validToken) {
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken
                         = new UsernamePasswordAuthenticationToken(userDetails,
                         null, userDetails.getAuthorities());

@@ -1,7 +1,6 @@
 package pucrs.ages.garbus.dtos;
 
 import lombok.*;
-import pucrs.ages.garbus.entities.Trashes;
 
 @Getter
 @Setter
@@ -15,5 +14,7 @@ public class TrashesThresholdDTO {
     private double maxOcuppation;
 
     private String color;
+
+    private String icon;
 
 }

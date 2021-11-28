@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pucrs.ages.garbus.dtos.BuildingsDTO;
+
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -20,14 +21,14 @@ public interface BuildingsController {
 
     @PostMapping
     @ApiOperation("Create Building")
-    ResponseEntity saveBuilding(@RequestBody @NotNull BuildingsDTO BuildingsDTO);
+    ResponseEntity<Object> saveBuilding(@RequestBody @NotNull BuildingsDTO buildingsDTO);
 
     @PutMapping()
     @ApiOperation("Update Building")
-    ResponseEntity updateBuilding(@RequestBody @NotNull BuildingsDTO BuildingsDTO);
+    ResponseEntity<Object> updateBuilding(@RequestBody @NotNull BuildingsDTO buildingsDTO);
 
     @DeleteMapping("/{id}")
     @ApiOperation("Delete Building By Id")
-    ResponseEntity deleteBuilding(@PathVariable("id") @NotNull Long id);
+    ResponseEntity<Object> deleteBuilding(@PathVariable("id") @NotNull Long id);
 
 }

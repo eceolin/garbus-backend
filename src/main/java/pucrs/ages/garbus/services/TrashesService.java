@@ -2,9 +2,9 @@ package pucrs.ages.garbus.services;
 
 import com.google.firebase.messaging.FirebaseMessagingException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pucrs.ages.garbus.Utils.FirebaseMessage;
 import pucrs.ages.garbus.dtos.*;
 import pucrs.ages.garbus.entities.*;
 import pucrs.ages.garbus.enuns.TrashStatusEnum;
@@ -15,6 +15,7 @@ import pucrs.ages.garbus.mappers.TrashDetailsMapper;
 import pucrs.ages.garbus.mappers.TrashesMapper;
 import pucrs.ages.garbus.mappers.TrashesThresholdMapper;
 import pucrs.ages.garbus.repositories.*;
+import pucrs.ages.garbus.utils.FirebaseMessage;
 
 import javax.annotation.Resource;
 import java.text.ParseException;
@@ -23,6 +24,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class TrashesService {
 
@@ -37,6 +39,7 @@ public class TrashesService {
     private final FirebaseMessagingService firebaseMessagingService;
     private final TrashesEventsRepository trashesEventsRepository;
     private final TrashesThresholdMapper trashesThresholdMapper;
+    private final TrashIconsRepository trashIconsRepository;
     private final BuildingsRepository buildingsRepository;
     private final TrashDetailsMapper trashDetailsMapper;
     private final TrashesRepository trashesRepository;
@@ -124,7 +127,11 @@ public class TrashesService {
     }
 
     public List<TrashesReduceDTO> findAllByBuildingId(Long buildingId) {
-        return simplifiedTrashesWithThresholdsMapper.mapToDTO(trashesRepository.findByBuildingId(buildingId), trashesThresholdsRepository.findAllThresholds());
+        return simplifiedTrashesWithThresholdsMapper.mapToDTO(
+                trashesRepository.findByBuildingId(buildingId),
+                trashesThresholdsRepository.findAllThresholds(),
+                trashIconsRepository.findAll()
+        );
     }
 
     public Long getTrashesCountByBuilding(Long buildingId) {
@@ -172,7 +179,11 @@ public class TrashesService {
         trashesList = trashesList.stream()
                 .filter(building -> building.getBuildings() == null)
                 .collect(Collectors.toList());
-        return simplifiedTrashesWithThresholdsMapper.mapToDTO(trashesList, trashesThresholdsRepository.findAllThresholds());
+        return simplifiedTrashesWithThresholdsMapper.mapToDTO(
+                trashesList,
+                trashesThresholdsRepository.findAllThresholds(),
+                trashIconsRepository.findAll()
+        );
     }
 
     private TrashesAndBuildingsOnMapDTO trashesInsideBuildingsAndZones(List<Trashes> trashesList) {
@@ -184,7 +195,11 @@ public class TrashesService {
 
     public List<TrashesDTO> findListOfTrashes() {
         List<Trashes> trashes = trashesRepository.findAll();
-        return simplifiedTrashesWithThresholdsMapper.mapToTrashesDTOWithThresholds(trashes, trashesThresholdsRepository.findAllThresholds());
+        return simplifiedTrashesWithThresholdsMapper.mapToTrashesDTOWithThresholds(
+                trashes,
+                trashesThresholdsRepository.findAllThresholds(),
+                trashIconsRepository.findAll()
+        );
     }
 
     public TrashesDTO save(final TrashesDTO trashesDTO) throws ParseException {
@@ -196,7 +211,7 @@ public class TrashesService {
     }
 
     @Transactional
-    public TrashesDTO deleteTrashById(Long trashId) {
+    public TrashesDTO deleteTrashById(Long trashId) throws NotFoundException{
         validateTrash(trashId);
         trashesEventsService.deleteByTrashId(trashId);
         trashesThresholdsRepository.deleteTrashesThresholdsByTrashesId(trashId);
@@ -217,8 +232,8 @@ public class TrashesService {
     }
 
 
-    public void validateTrash(Long trashId) {
-        findById(trashId)
+    public Trashes validateTrash(Long trashId) throws NotFoundException{
+        return findById(trashId)
                 .orElseThrow(() -> new NotFoundException(new ErrorResponse("Lixeira não encontrada para o id " + trashId)));
     }
 
@@ -261,7 +276,7 @@ public class TrashesService {
         try {
             sendNotificationIfTrashIsFull(trash);
         } catch (FirebaseMessagingException e) {
-            e.printStackTrace();
+            log.error("Error", e);
         }
 
         return successMessage;

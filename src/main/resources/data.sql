@@ -46,16 +46,13 @@ INSERT INTO TRASH_STATUS (NAME, DESCRIPTION)
 VALUES ('Excluída', 'A lixeira não existe');
 
 INSERT INTO TYPE_TRASH
-VALUES (1, 'Orgânica', 'Lixo Orgânico');
-
-INSERT INTO TYPE_TRASH
-VALUES (2, 'Reciclável', 'Lixo Seco');
-
-INSERT INTO PROFILES
-VALUES (1, 'Operador', 'Operador de lixo');
+VALUES (1, 'Orgânica', 'Lixo Orgânico'),
+       (2, 'Reciclável', 'Lixo Seco'),
+       (3, 'Contêiner', 'Contêiner');
 
 INSERT INTO PROFILES
-VALUES (2, 'Gestor', 'Gestor do sistema');
+VALUES (1, 'Operador', 'Operador de lixo'),
+       (2, 'Gestor', 'Gestor do sistema');
 
 INSERT INTO EVENTS (DESCRIPTION, CREATION_DATE, PROBLEM_STATUS, ID_TYPE_EVENTS)
 VALUES ('REPORT', CURRENT_TIMESTAMP, 'A', 1);
@@ -159,6 +156,17 @@ VALUES (9999999.99, 'RED', 16), (66, 'YELLOW', 16), (33, 'GREEN', 16),
        (9999999.99, 'RED', 19), (85, 'YELLOW', 19), (30, 'GREEN', 19),
        (9999999.99, 'RED', 20), (85, 'YELLOW', 20), (30, 'GREEN', 20),
        (9999999.99, 'RED', 21), (80, 'YELLOW', 21), (40, 'GREEN', 21);
+
+INSERT INTO TRASH_ICONS (ICON, COLOR, ID_TYPE)
+VALUES ('organic_green', 'GREEN', 1),
+       ('organic_yellow', 'YELLOW', 1),
+       ('organic_red', 'RED', 1),
+       ('recyclable_green', 'GREEN', 2),
+       ('recyclable_yellow', 'YELLOW', 2),
+       ('recyclable_red', 'RED', 2),
+       ('container_green', 'GREEN', 3),
+       ('container_yellow', 'YELLOW', 3),
+       ('container_red', 'RED', 3);
 
 INSERT INTO TRASHES_EVENTS (ID_EVENT, ID_TRASH, ID_USER, OCCUPATION, OTHERS, DATE)
 VALUES (1, 1, NULL, 20.0, NULL, '2021-06-29 19:32:10.123'),

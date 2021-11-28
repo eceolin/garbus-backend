@@ -1,11 +1,9 @@
-package pucrs.ages.garbus.Utils;
+package pucrs.ages.garbus.utils;
 
 import org.passay.CharacterData;
 import org.passay.CharacterRule;
 import org.passay.EnglishCharacterData;
 import org.passay.PasswordGenerator;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import static org.passay.RepeatCharactersRule.ERROR_CODE;
@@ -39,8 +37,7 @@ public class PasswordUtil {
         CharacterRule splCharRule = new CharacterRule(specialChars);
         splCharRule.setNumberOfCharacters(2);
 
-        String password = gen.generatePassword(8, lowerCaseRule,
+        return gen.generatePassword(8, lowerCaseRule,
                 upperCaseRule, digitRule);
-        return password;
     }
 }

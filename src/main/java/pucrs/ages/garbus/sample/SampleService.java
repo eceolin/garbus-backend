@@ -1,7 +1,7 @@
 package pucrs.ages.garbus.sample;
 
-import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.util.List;

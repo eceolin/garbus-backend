@@ -1,8 +1,10 @@
 package pucrs.ages.garbus.repositories.sql;
 
 public class TrashesSql {
+    public TrashesSql() {
+    }
 
-    public final static String findByZonesIdAndBuildingsInZonesIdSQL =
+    public static final String findByZonesIdAndBuildingsInZonesIdSQL =
             " SELECT ID, BRAND, DESCRIPTION, CAPACITY, OCCUPATION, LONGITUDE, LATITUDE, ID_STATUS, ID_TYPE, ID_BUILDING, ID_ZONE"
                 +" FROM ( "
                 +" 	SELECT id, BRAND, DESCRIPTION, CAPACITY, OCCUPATION, LONGITUDE, LATITUDE, ID_STATUS, ID_TYPE, ID_BUILDING, ID_ZONE, building, zone FROM ( "
@@ -24,13 +26,13 @@ public class TrashesSql {
                 +" ) c "
             +" WHERE ZONE = :zoneId";
 
-    public final static String findByBuildingIdSQL =
+    public static final String findByBuildingIdSQL =
             "SELECT * FROM TRASHES WHERE TRASHES.ID_BUILDING = :buildingId";
 
-    public final static String findTrashByTrashIdSql =
+    public static final String findTrashByTrashIdSql =
             "SELECT * FROM TRASHES WHERE TRASHES.ID = :trashId";
 
-    public final static String findTrashByStatusId =
+    public static final String findTrashByStatusId =
             "SELECT T.ID, T.BRAND, T.DESCRIPTION, T.CAPACITY, T.OCCUPATION, T.LONGITUDE, T.LATITUDE, T.ID_STATUS, T.ID_TYPE, T.ID_BUILDING, T.ID_ZONE "
                     + "FROM TRASHES T "
                     + "WHERE T.ID_STATUS = :statusId";

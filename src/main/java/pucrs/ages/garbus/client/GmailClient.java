@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import java.util.List;
 import java.util.Properties;
 
 import static java.util.Objects.isNull;
@@ -52,6 +51,7 @@ public class GmailClient {
     private void initializeSession() {
         this.session = Session.getInstance(this.initializeProps(),
                 new Authenticator() {
+                    @Override
                     protected PasswordAuthentication getPasswordAuthentication() {
                         return new PasswordAuthentication(username, password);
                     }

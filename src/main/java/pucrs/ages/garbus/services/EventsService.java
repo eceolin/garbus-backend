@@ -22,8 +22,7 @@ public class EventsService {
     @Value("${events.problem_status.error_others}")
     private char statusErrorOther;
 
-    @Resource
-    private TypesEventsService typesEventsService;
+    private final TypesEventsService typesEventsService;
     private final EventsMapper eventsMapper;
     private final EventsRepository eventsRepository;
 

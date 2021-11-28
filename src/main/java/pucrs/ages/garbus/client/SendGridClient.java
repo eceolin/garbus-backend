@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import javax.mail.*;
 import java.io.IOException;
 
 @Service
@@ -45,6 +44,7 @@ public class SendGridClient {
             log.info(response.getBody());
             log.info(String.valueOf(response.getHeaders()));
         } catch (IOException ex) {
+            log.error("Erro to send grid. ", ex);
             throw ex;
         }
     }

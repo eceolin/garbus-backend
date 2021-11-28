@@ -1,9 +1,14 @@
 plugins {
 	id 'org.springframework.boot' version '2.4.3'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+  id "org.sonarqube" version "2.7"
+  id 'jacoco'
 	id 'java'
 	id 'war'
 }
+
+
+apply from: './sonarqube.gradle'
 
 group = 'pucrs.ages'
 version = '0.0.1-SNAPSHOT'
@@ -29,6 +34,17 @@ repositories {
 	maven { url "https://repo.spring.io/snapshot" }
 	maven { url "https://repo.spring.io/milestone" }
 }
+
+tasks.named('sonarqube').configure {
+    dependsOn test
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+    }
+}
+test.finalizedBy jacocoTestReport
 
 dependencies {
 	def activeProfile = System.getenv('SPRING_PROFILES_ACTIVE')

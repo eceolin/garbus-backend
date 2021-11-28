@@ -4,16 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.catalina.User;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import pucrs.ages.garbus.entities.Profiles;
-import pucrs.ages.garbus.entities.TypesEvents;
 import pucrs.ages.garbus.entities.Users;
 import pucrs.ages.garbus.entities.Zones;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import java.util.Date;
 
 

@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*;
 import pucrs.ages.garbus.dtos.ZonesDTO;
 
 import javax.validation.constraints.NotNull;
-import javax.websocket.server.PathParam;
 import java.util.List;
 
 @RequestMapping("/zones")
@@ -22,14 +21,14 @@ public interface ZonesController {
 
     @PostMapping
     @ApiOperation("Create Zone")
-    ResponseEntity saveZone(@RequestBody @NotNull ZonesDTO zonesDTO);
+    ResponseEntity<Object> saveZone(@RequestBody @NotNull ZonesDTO zonesDTO);
 
     @PutMapping()
     @ApiOperation("Update Zone")
-    ResponseEntity updateZone(@RequestBody @NotNull ZonesDTO zonesDTO);
+    ResponseEntity<Object> updateZone(@RequestBody @NotNull ZonesDTO zonesDTO);
 
     @DeleteMapping("/{id}")
     @ApiOperation("Delete Zone By Id")
-    ResponseEntity deleteZone(@PathVariable("id") @NotNull Long id);
+    ResponseEntity<Object> deleteZone(@PathVariable("id") @NotNull Long id);
 
 }

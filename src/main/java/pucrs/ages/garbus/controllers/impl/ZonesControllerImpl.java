@@ -1,8 +1,9 @@
 package pucrs.ages.garbus.controllers.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RestController;
 import pucrs.ages.garbus.controllers.ZonesController;
 import pucrs.ages.garbus.dtos.ZonesDTO;
 import pucrs.ages.garbus.excpetion.BadRequestException;
@@ -15,8 +16,11 @@ import java.util.List;
 import static org.springframework.http.HttpStatus.*;
 
 @RestController
+@Slf4j
 @RequiredArgsConstructor
 public class ZonesControllerImpl implements ZonesController {
+
+    private final String ERROR = "Error";
 
     @Resource
     ZonesService zonesService;
@@ -35,41 +39,40 @@ public class ZonesControllerImpl implements ZonesController {
     }
 
     @Override
-    public ResponseEntity saveZone(ZonesDTO zonesDTO) {
+    public ResponseEntity<Object> saveZone(ZonesDTO zonesDTO) {
         return getResponseEntity(zonesDTO);
     }
 
     @Override
-    public ResponseEntity updateZone(ZonesDTO zonesDTO) {
+    public ResponseEntity<Object> updateZone(ZonesDTO zonesDTO) {
         return getResponseEntity(zonesDTO);
     }
 
     @Override
-    public ResponseEntity deleteZone(Long id) {
+    public ResponseEntity<Object> deleteZone(Long id) {
         try {
             zonesService.deleteById(id);
             return new ResponseEntity<>(OK);
         } catch (ParseException e) {
-            e.printStackTrace();
+
+            log.error(ERROR, e);
             return new ResponseEntity<>(e.getMessage(), NO_CONTENT);
         } catch (Exception e) {
-            e.printStackTrace();
+
+            log.error(ERROR, e);
             return new ResponseEntity<>(e.getMessage(), INTERNAL_SERVER_ERROR);
         }
     }
 
-    private ResponseEntity getResponseEntity(ZonesDTO zonesDTO) {
+    private ResponseEntity<Object> getResponseEntity(ZonesDTO zonesDTO) {
         try {
             zonesService.save(zonesDTO);
             return new ResponseEntity<>(zonesDTO, CREATED);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(e.getMessage(), BAD_REQUEST);
-        } catch (BadRequestException e) {
-            e.printStackTrace();
+        } catch (ParseException | BadRequestException e) {
+            log.error(ERROR, e);
             return new ResponseEntity<>(e.getMessage(), BAD_REQUEST);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(ERROR, e);
             return new ResponseEntity<>(e.getMessage(), INTERNAL_SERVER_ERROR);
         }
     }

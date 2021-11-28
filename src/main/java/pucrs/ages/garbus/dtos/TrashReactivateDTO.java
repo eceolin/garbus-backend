@@ -1,6 +1,5 @@
 package pucrs.ages.garbus.dtos;
 
-import lombok.AllArgsConstructor;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;

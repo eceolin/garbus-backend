@@ -1,6 +1,7 @@
 package pucrs.ages.garbus.controllers.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import pucrs.ages.garbus.controllers.BuildingsController;
@@ -15,6 +16,7 @@ import java.util.List;
 import static org.springframework.http.HttpStatus.*;
 
 @RestController
+@Slf4j
 @RequiredArgsConstructor
 public class BuildingsControllerImpl implements BuildingsController {
 
@@ -35,43 +37,43 @@ public class BuildingsControllerImpl implements BuildingsController {
     }
 
     @Override
-    public ResponseEntity saveBuilding (BuildingsDTO buildingsDTO) {
+    public ResponseEntity<Object> saveBuilding (BuildingsDTO buildingsDTO) {
         buildingsDTO.setId(0L);
         return getResponseEntity(buildingsDTO);
     }
 
     @Override
-    public ResponseEntity updateBuilding(BuildingsDTO buildingsDTO) {
+    public ResponseEntity<Object> updateBuilding(BuildingsDTO buildingsDTO) {
         return getResponseEntity(buildingsDTO);
     }
 
     @Override
-    public ResponseEntity deleteBuilding(Long id) {
+    public ResponseEntity<Object> deleteBuilding(Long id) {
         try {
             buildingsService.deleteById(id);
             return new ResponseEntity<>(OK);
         } catch (ParseException e) {
-            e.printStackTrace();
+            log.error("Generic bad request delete error.", e);
             return new ResponseEntity<>(e.getMessage(), NO_CONTENT);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Generic delete error.", e);
             return new ResponseEntity<>(e.getMessage(), INTERNAL_SERVER_ERROR);
         }
     }
 
-    private ResponseEntity getResponseEntity(BuildingsDTO buildingsDTO) {
+    private ResponseEntity<Object> getResponseEntity(BuildingsDTO buildingsDTO) {
         try {
             buildingsDTO = buildingsService.save(buildingsDTO);
             return new ResponseEntity<>(buildingsDTO, CREATED);
         } catch (ParseException e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(e.getMessage(), BAD_REQUEST);
+            log.error("Save Parse error.", e);
+            return ResponseEntity.badRequest().body(e.getMessage());
         } catch (BadRequestException e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(e.getMessage(), BAD_REQUEST);
+            log.error("Save Bad request error.", e);
+            return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(e.getMessage(), INTERNAL_SERVER_ERROR);
+            log.error("Save Generic error.", e);
+            return ResponseEntity.status(500).body(e.getMessage());
         }
     }
 
